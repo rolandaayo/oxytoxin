@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { useProducts, Product } from '../context/ProductContext';
 import { Pencil, Trash2, Plus } from 'lucide-react';
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
+}
+
 export const Admin = () => {
   const { state, dispatch } = useProducts();
   const [isEditing, setIsEditing] = useState(false);
@@ -66,7 +74,7 @@ export const Admin = () => {
                 <input
                   type="text"
                   value={editingProduct.name || ''}
-                  onChange={e => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, name: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
@@ -76,7 +84,7 @@ export const Admin = () => {
                 <input
                   type="number"
                   value={editingProduct.price || ''}
-                  onChange={e => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
                   step="0.01"
@@ -86,7 +94,7 @@ export const Admin = () => {
                 <label className="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
                   value={editingProduct.description || ''}
-                  onChange={e => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditingProduct({ ...editingProduct, description: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
@@ -96,7 +104,7 @@ export const Admin = () => {
                 <input
                   type="url"
                   value={editingProduct.image || ''}
-                  onChange={e => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, image: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
@@ -106,7 +114,7 @@ export const Admin = () => {
                 <input
                   type="text"
                   value={editingProduct.category || ''}
-                  onChange={e => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, category: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
                 />
@@ -152,7 +160,7 @@ export const Admin = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {state.products.map(product => (
+              {state.products.map((product: Product) => (
                 <tr key={product.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
