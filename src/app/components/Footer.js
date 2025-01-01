@@ -37,7 +37,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#304E21] text-white">
+    <footer className="bg-black text-white">
       {/* Trust Badges Section */}
       <div className="border-b border-[#3a5d28]">
         <div className="container mx-auto px-4 py-8">

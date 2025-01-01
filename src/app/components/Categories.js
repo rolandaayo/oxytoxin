@@ -27,7 +27,7 @@ export default function Categories() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)]">
+      <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)] bg-white">
         {/* Hero Section */}
         <div className="relative h-[300px] md:h-[400px]">
           <div
@@ -58,7 +58,7 @@ export default function Categories() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 whileHover={{ y: -10 }}
-                className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white/95 backdrop-blur-sm"
+                className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white backdrop-blur-sm"
               >
                 {/* Category Image */}
                 <div className="aspect-[4/3] overflow-hidden">
