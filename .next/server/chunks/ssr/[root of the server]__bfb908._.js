@@ -19,19 +19,29 @@ __turbopack_esm__({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react-hot-toast/dist/index.mjs [app-ssr] (ecmascript)");
 'use client';
+;
 ;
 ;
 const CartContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createContext"])();
 function CartProvider({ children }) {
-    const [cartItems, setCartItems] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(()=>{
-        if ("TURBOPACK compile-time truthy", 1) return [];
-        "TURBOPACK unreachable";
-    });
+    const [cartItems, setCartItems] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [showCart, setShowCart] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if ("undefined" !== 'undefined' && cartItems.length > 0) {
-            "TURBOPACK unreachable";
+        try {
+            const savedCart = localStorage.getItem('cartItems');
+            if (savedCart) {
+                setCartItems(JSON.parse(savedCart));
+            }
+        } catch (error) {
+            console.error('Error loading cart:', error);
+        }
+    }, []);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (cartItems.length > 0) {
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
         }
     }, [
         cartItems
@@ -63,6 +73,65 @@ function CartProvider({ children }) {
             "TURBOPACK unreachable";
         }
     };
+    const totalAmount = cartItems.reduce((total, item)=>total + item.price * (item.quantity || 1), 0);
+    const clearStoredData = (paymentReference)=>{
+        // Create order data before clearing cart
+        const orderData = {
+            id: Date.now(),
+            date: new Date().toISOString(),
+            status: 'processing',
+            items: cartItems,
+            totalAmount: totalAmount,
+            paymentRef: paymentReference
+        };
+        // Get existing orders and add new order
+        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const updatedOrders = [
+            ...existingOrders,
+            orderData
+        ];
+        localStorage.setItem('orders', JSON.stringify(updatedOrders));
+        // Clear cart data
+        clearCart();
+        setShowCart(false);
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success("Payment completed successfully!", {
+            duration: 3000
+        });
+    };
+    const initializePayment = async ()=>{
+        setLoading(true);
+        try {
+            const handler = PaystackPop.setup({
+                key: "pk_test_dc632dcb524653128c7ffcd7f3c74cd9c2704c79",
+                email: "customer@email.com",
+                amount: totalAmount * 100,
+                currency: "NGN",
+                ref: "" + Math.floor(Math.random() * 1000000000 + 1),
+                callback: function(response) {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success(`Payment complete! Reference: ${response.reference}`, {
+                        icon: "✅",
+                        duration: 3000
+                    });
+                    clearStoredData(response.reference);
+                },
+                onClose: function() {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error("Transaction was not completed", {
+                        icon: "❌",
+                        duration: 3000
+                    });
+                }
+            });
+            handler.openIframe();
+        } catch (error) {
+            console.error("Payment initialization failed:", error);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error("Payment initialization failed. Please try again.", {
+                icon: "⚠️",
+                duration: 3000
+            });
+        } finally{
+            setLoading(false);
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(CartContext.Provider, {
         value: {
             cartItems,
@@ -71,12 +140,15 @@ function CartProvider({ children }) {
             setShowCart,
             addToCart,
             removeFromCart,
-            clearCart
+            clearCart,
+            totalAmount,
+            loading,
+            initializePayment
         },
         children: children
     }, void 0, false, {
         fileName: "[project]/src/app/context/CartContext.js",
-        lineNumber: 52,
+        lineNumber: 122,
         columnNumber: 5
     }, this);
 }

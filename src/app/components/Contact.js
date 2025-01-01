@@ -69,7 +69,7 @@ export default function Contact() {
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-[#D6E752] mb-4">Contact Us</h1>
           <p className="text-lg md:text-xl text-[#D6E752] max-w-2xl">
-            We&apos;d love to hear from you. Get in touch with us.
+            We would love to hear from you. Get in touch with us.
           </p>
         </div>
       </div>
@@ -78,17 +78,17 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Information */}
           <div className="lg:col-span-1">
-            <h2 className="text-2xl font-bold text-black mb-6">Get In Touch</h2>
+            <h2 className="text-2xl font-bold text-[#D6E752] mb-6">Get In Touch</h2>
             <div className="space-y-8">
               {contactInfo.map((info, index) => (
                 <div key={index} className="flex gap-4">
-                  <div className="text-blue-600">
+                  <div className="text-[#D6E752]">
                     {info.icon}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-black mb-2">{info.title}</h3>
+                    <h3 className="font-semibold text-[#D6E752] mb-2">{info.title}</h3>
                     {info.details.map((detail, idx) => (
-                      <p key={idx} className="text-gray-600">{detail}</p>
+                      <p key={idx} className="text-[#D6E752]">{detail}</p>
                     ))}
                   </div>
                 </div>
@@ -97,15 +97,15 @@ export default function Contact() {
 
             {/* Social Media */}
             <div className="mt-8">
-              <h3 className="font-semibold text-black mb-4">Follow Us</h3>
+              <h3 className="font-semibold text-[#D6E752] mb-4">Follow Us</h3>
               <div className="flex gap-4">
-                <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <a href="#" className="text-[#D6E752] hover:text-blue-600 transition-colors">
                   <FaFacebook className="w-6 h-6" />
                 </a>
-                <a href="#" className="text-gray-600 hover:text-blue-400 transition-colors">
+                <a href="#" className="text-[#D6E752] hover:text-blue-400 transition-colors">
                   <FaTwitter className="w-6 h-6" />
                 </a>
-                <a href="#" className="text-gray-600 hover:text-pink-600 transition-colors">
+                <a href="#" className="text-[#D6E752] hover:text-pink-600 transition-colors">
                   <FaInstagram className="w-6 h-6" />
                 </a>
               </div>
@@ -115,11 +115,11 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-black mb-6">Send Us a Message</h2>
+              <h2 className="text-2xl font-bold text-[#D6E752] mb-6">Send Us a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="name" className="block text-sm font-medium text-[#D6E752] mb-2">
                       Your Name
                     </label>
                     <input
@@ -134,7 +134,7 @@ export default function Contact() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-[#D6E752] mb-2">
                       Your Email
                     </label>
                     <input
@@ -150,7 +150,7 @@ export default function Contact() {
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="subject" className="block text-sm font-medium text-[#D6E752] mb-2">
                     Subject
                   </label>
                   <input
@@ -165,7 +165,7 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium text-[#D6E752] mb-2">
                     Message
                   </label>
                   <textarea
@@ -181,7 +181,7 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="w-full bg-[#D6E752] text-black py-3 rounded-lg hover:bg-[#c2d248] transition-colors"
                 >
                   Send Message
                 </button>

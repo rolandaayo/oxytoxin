@@ -2,11 +2,10 @@
 import Wishlist from '../components/Wishlist'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { useState } from 'react'
+import { useCart } from '../context/CartContext'
 
 export default function WishlistPage() {
-  const [cartItems, setCartItems] = useState([])
-  const [showCart, setShowCart] = useState(false)
+  const { cartItems, setCartItems, showCart, setShowCart } = useCart();
 
   const addToCart = (item) => {
     setCartItems(prev => [...prev, item])

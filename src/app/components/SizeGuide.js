@@ -73,7 +73,7 @@ export default function SizeGuide({ onClose }) {
             
             <div className="bg-blue-50 p-4 rounded-lg">
               <p className="text-sm text-black">
-                <strong>Tip:</strong> If you're between sizes, we recommend going up a size for a more comfortable fit.
+                <strong>Tip:</strong> If you are between sizes, we recommend going up a size for a more comfortable fit.
               </p>
             </div>
           </div>

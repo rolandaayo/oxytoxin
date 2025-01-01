@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import Image from 'next/image'
 import { FaStar } from 'react-icons/fa'
 
 export default function Recommendations({ products, category, currentProductId }) {
@@ -14,7 +15,7 @@ export default function Recommendations({ products, category, currentProductId }
         {recommendations.map((product) => (
           <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="aspect-square bg-gray-50">
-              <img
+              <Image
                 src={product.image}
                 alt={product.name}
                 className="w-full h-full object-contain"
