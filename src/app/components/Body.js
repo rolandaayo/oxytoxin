@@ -514,7 +514,7 @@ export default function Body() {
                   </div>
                 </div>
                 <div className="mt-3">
-                  <div className="flex gap-1.5 mb-2 justify-center">
+                  {/* <div className="flex gap-1.5 mb-2 justify-center">
                     {sizes.map((size) => (
                       <button
                         key={size}
@@ -530,7 +530,7 @@ export default function Body() {
                         {size}
                       </button>
                     ))}
-                  </div>
+                  </div> */}
                   <div className="flex items-center justify-center gap-3 mt-3">
                     <div className="flex items-center gap-2">
                       <button

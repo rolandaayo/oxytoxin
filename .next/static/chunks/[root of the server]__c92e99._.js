@@ -2096,70 +2096,49 @@ function Body() {
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "mt-3",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex gap-1.5 mb-2 justify-center",
-                                                    children: sizes.map((size)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                            className: `w-8 h-8 text-xs md:text-sm border rounded-full flex items-center justify-center transition-all duration-300 ${selectedSize[item.id] === size ? "bg-black text-white border-black font-bold" : "border-black text-black hover:bg-black hover:text-white"}`,
-                                                            onClick: ()=>setSelectedSize({
-                                                                    ...selectedSize,
-                                                                    [item.id]: size
-                                                                }),
-                                                            children: size
-                                                        }, size, false, {
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center justify-center gap-3 mt-3",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-2",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                            className: "w-7 h-7 border border-black text-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300",
+                                                            onClick: ()=>updateQuantity(item.id, -1),
+                                                            children: "-"
+                                                        }, void 0, false, {
                                                             fileName: "[project]/src/app/components/Body.js",
-                                                            lineNumber: 519,
+                                                            lineNumber: 536,
                                                             columnNumber: 23
-                                                        }, this))
-                                                }, void 0, false, {
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "w-8 text-center text-sm",
+                                                            children: itemQuantities[item.id] || 1
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/components/Body.js",
+                                                            lineNumber: 542,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                            className: "w-7 h-7 border border-black text-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300",
+                                                            onClick: ()=>updateQuantity(item.id, 1),
+                                                            children: "+"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/components/Body.js",
+                                                            lineNumber: 545,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
                                                     fileName: "[project]/src/app/components/Body.js",
-                                                    lineNumber: 517,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center justify-center gap-3 mt-3",
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex items-center gap-2",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                                className: "w-7 h-7 border border-black text-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300",
-                                                                onClick: ()=>updateQuantity(item.id, -1),
-                                                                children: "-"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/components/Body.js",
-                                                                lineNumber: 536,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "w-8 text-center text-sm",
-                                                                children: itemQuantities[item.id] || 1
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/components/Body.js",
-                                                                lineNumber: 542,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                                className: "w-7 h-7 border border-black text-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300",
-                                                                onClick: ()=>updateQuantity(item.id, 1),
-                                                                children: "+"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/components/Body.js",
-                                                                lineNumber: 545,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/components/Body.js",
-                                                        lineNumber: 535,
-                                                        columnNumber: 21
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/components/Body.js",
-                                                    lineNumber: 534,
-                                                    columnNumber: 19
+                                                    lineNumber: 535,
+                                                    columnNumber: 21
                                                 }, this)
-                                            ]
-                                        }, void 0, true, {
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/Body.js",
+                                                lineNumber: 534,
+                                                columnNumber: 19
+                                            }, this)
+                                        }, void 0, false, {
                                             fileName: "[project]/src/app/components/Body.js",
                                             lineNumber: 516,
                                             columnNumber: 17
