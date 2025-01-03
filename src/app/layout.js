@@ -7,7 +7,7 @@ import { AnimatePresence } from "framer-motion";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Oxtoyin | Clothing Store",
+  title: "Oxtoyin - Clothing Store",
   description:
     "Oxtoyin is a clothing store that sells a wide range of products for men, women, and children.",
 };

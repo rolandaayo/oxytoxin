@@ -97,7 +97,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 ;
 ;
 const metadata = {
-    title: "Oxtoyin | Clothing Store",
+    title: "Oxtoyin - Clothing Store",
     description: "Oxtoyin is a clothing store that sells a wide range of products for men, women, and children."
 };
 function RootLayout({ children }) {
