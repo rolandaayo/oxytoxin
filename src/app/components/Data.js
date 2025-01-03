@@ -122,60 +122,60 @@ const items = [
             "Versatile style"
         ]
     },
-    {
-        id: 7,
-        name: "Ash Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        },
-        image: "/images/ash-pants.jpg",
-        price: 50,
-        description: "Stylish ash-colored pants",
-        rating: 4.5,
-        reviews: 167,
-        inStock: true,
-        features: [
-            "Modern fit",
-            "Multiple color options",
-            "Stretch fabric",
-            "Comfortable waistband"
-        ]
-    },
-    {
-        id: 8,
-        name: "Casual Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        },
-        image: "/images/11.jpeg",
-        price: 50,
-        description: "Comfortable casual pants",
-        rating: 4.4,
-        reviews: 134,
-        inStock: true,
-        features: [
-            "Casual style",
-            "Everyday comfort",
-            "Durable material",
-            "Perfect fit"
-        ]
-    },
-    {
-        id: 9,
-        name: "Fashion Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        }
-    }
+    // {
+    //     id: 7,
+    //     name: "Ash Pants",
+    //     category: "pants",
+    //     colors: {
+    //         1: "Black",
+    //         2: "White",
+    //         3: "Blue"
+    //     },
+    //     image: "/images/ash-pants.jpg",
+    //     price: 50,
+    //     description: "Stylish ash-colored pants",
+    //     rating: 4.5,
+    //     reviews: 167,
+    //     inStock: true,
+    //     features: [
+    //         "Modern fit",
+    //         "Multiple color options",
+    //         "Stretch fabric",
+    //         "Comfortable waistband"
+    //     ]
+    // },
+    // {
+    //     id: 8,
+    //     name: "Casual Pants",
+    //     category: "pants",
+    //     colors: {
+    //         1: "Black",
+    //         2: "White",
+    //         3: "Blue"
+    //     },
+    //     image: "/images/11.jpeg",
+    //     price: 50,
+    //     description: "Comfortable casual pants",
+    //     rating: 4.4,
+    //     reviews: 134,
+    //     inStock: true,
+    //     features: [
+    //         "Casual style",
+    //         "Everyday comfort",
+    //         "Durable material",
+    //         "Perfect fit"
+    //     ]
+    // },
+    // {
+    //     id: 9,
+    //     name: "Fashion Pants",
+    //     category: "pants",
+    //     colors: {
+    //         1: "Black",
+    //         2: "White",
+    //         3: "Blue"
+    //     }
+    // }
 ]
 
 export default items

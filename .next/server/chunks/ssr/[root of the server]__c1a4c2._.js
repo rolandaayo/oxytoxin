@@ -883,60 +883,6 @@ const items = [
             "Classic design",
             "Versatile style"
         ]
-    },
-    {
-        id: 7,
-        name: "Ash Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        },
-        image: "/images/ash-pants.jpg",
-        price: 50,
-        description: "Stylish ash-colored pants",
-        rating: 4.5,
-        reviews: 167,
-        inStock: true,
-        features: [
-            "Modern fit",
-            "Multiple color options",
-            "Stretch fabric",
-            "Comfortable waistband"
-        ]
-    },
-    {
-        id: 8,
-        name: "Casual Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        },
-        image: "/images/11.jpeg",
-        price: 50,
-        description: "Comfortable casual pants",
-        rating: 4.4,
-        reviews: 134,
-        inStock: true,
-        features: [
-            "Casual style",
-            "Everyday comfort",
-            "Durable material",
-            "Perfect fit"
-        ]
-    },
-    {
-        id: 9,
-        name: "Fashion Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        }
     }
 ];
 const __TURBOPACK__default__export__ = items;
@@ -1620,7 +1566,7 @@ function Body() {
                             className: "relative h-full flex flex-col justify-center items-center text-center px-4",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                    className: "text-3xl md:text-5xl font-bold text-[#D6E752] mb-4 font-sans",
+                                    className: "text-3xl md:text-5xl font-bold text-white mb-4 font-sans",
                                     children: "Discover Your Style"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Body.js",
@@ -1628,7 +1574,7 @@ function Body() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-lg md:text-xl text-[#D6E752] mb-8 max-w-2xl",
+                                    className: "text-lg md:text-xl text-white mb-8 max-w-2xl",
                                     children: "Explore our collection of premium clothing designed for comfort and style"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Body.js",
@@ -1642,7 +1588,7 @@ function Body() {
                                             behavior: "smooth"
                                         });
                                     },
-                                    className: "bg-[#D6E752] text-black px-8 py-3 rounded-full hover:bg-white/90 transition-all duration-300 animate-bounce",
+                                    className: "bg-black text-white px-8 py-3 rounded-full hover:bg-white/90 transition-all duration-300 animate-bounce",
                                     children: "Shop Now"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Body.js",
@@ -2377,7 +2323,7 @@ function Footer() {
         e.target.reset();
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-        className: "bg-black text-white",
+        className: "bg-white text-black",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "border-b border-[#3a5d28]",
             children: [
@@ -2397,7 +2343,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Free Shipping"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -2405,7 +2351,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752]",
+                                        className: "text-sm text-black",
                                         children: "On orders over $100"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -2429,7 +2375,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Secure Payment"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -2437,7 +2383,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752] ",
+                                        className: "text-sm text-black ",
                                         children: "100% secure payments"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -2461,7 +2407,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Shop with Confidence"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -2469,7 +2415,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752]",
+                                        className: "text-sm text-black",
                                         children: "30 days free returns"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -2510,7 +2456,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-[#D6E752] mb-4",
+                                        className: "text-black mb-4",
                                         children: "Stay updated with our latest trends and products"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -2532,7 +2478,7 @@ function Footer() {
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                className: "px-6 py-2 bg-[#D6E752] text-black rounded-lg hover:bg-blue-600 transition-colors",
+                                                className: "px-6 py-2 bg-ray-900 border text-black rounded-lg hover:bg-blue-600 transition-colors",
                                                 children: "Subscribe"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/Footer.js",

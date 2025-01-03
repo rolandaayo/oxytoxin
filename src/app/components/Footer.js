@@ -37,31 +37,31 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-white text-black">
       {/* Trust Badges Section */}
       <div className="border-b border-[#3a5d28]">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="flex flex-col items-center">
               <FaTruck className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-[#D6E752] mb-2">
+              <h4 className="font-semibold text-black mb-2">
                 Free Shipping
               </h4>
-              <p className="text-sm text-[#D6E752]">On orders over $100</p>
+              <p className="text-sm text-black">On orders over $100</p>
             </div>
             <div className="flex flex-col items-center">
               <FaCreditCard className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-[#D6E752] mb-2">
+              <h4 className="font-semibold text-black mb-2">
                 Secure Payment
               </h4>
-              <p className="text-sm text-[#D6E752] ">100% secure payments</p>
+              <p className="text-sm text-black ">100% secure payments</p>
             </div>
             <div className="flex flex-col items-center">
               <FaLock className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-[#D6E752] mb-2">
+              <h4 className="font-semibold text-black mb-2">
                 Shop with Confidence
               </h4>
-              <p className="text-sm text-[#D6E752]">30 days free returns</p>
+              <p className="text-sm text-black">30 days free returns</p>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function Footer() {
               <h3 className="text-lg font-semibold mb-4">
                 Subscribe to Our Newsletter
               </h3>
-              <p className="text-[#D6E752] mb-4">
+              <p className="text-black mb-4">
                 Stay updated with our latest trends and products
               </p>
               <form onSubmit={handleSubscribe} className="flex gap-2">
@@ -83,7 +83,7 @@ export default function Footer() {
                   placeholder="Enter your email"
                   className="flex-1 px-4 py-2 rounded-lg bg-gray-900 border border-gray-800 focus:outline-none focus:border-blue-500"
                 />
-                <button className="px-6 py-2 bg-[#D6E752] text-black rounded-lg hover:bg-blue-600 transition-colors">
+                <button className="px-6 py-2 bg-ray-900 border text-black rounded-lg hover:bg-blue-600 transition-colors">
                   Subscribe
                 </button>
               </form>

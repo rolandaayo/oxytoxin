@@ -312,10 +312,10 @@ export default function Body() {
             <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="relative h-full flex flex-col justify-center items-center text-center px-4">
-            <h1 className="text-3xl md:text-5xl font-bold text-[#D6E752] mb-4 font-sans">
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 font-sans">
               Discover Your Style
             </h1>
-            <p className="text-lg md:text-xl text-[#D6E752] mb-8 max-w-2xl">
+            <p className="text-lg md:text-xl text-white mb-8 max-w-2xl">
               Explore our collection of premium clothing designed for comfort
               and style
             </p>
@@ -325,7 +325,7 @@ export default function Body() {
                 const productsSection = document.getElementById("products");
                 productsSection.scrollIntoView({ behavior: "smooth" });
               }}
-              className="bg-[#D6E752] text-black px-8 py-3 rounded-full hover:bg-white/90 transition-all duration-300 animate-bounce"
+              className="bg-black text-white px-8 py-3 rounded-full hover:bg-white/90 transition-all duration-300 animate-bounce"
             >
               Shop Now
             </button>
