@@ -474,7 +474,7 @@ export default function Body() {
                 <p className="text-xs md:text-sm text-black mt-1 line-clamp-2">
                   {item.description}
                 </p>
-                <div className="flex items-center mt-2 mb-1">
+                {/* <div className="flex items-center mt-2 mb-1">
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
@@ -490,12 +490,12 @@ export default function Body() {
                   <span className="ml-1 md:ml-2 text-xs md:text-sm text-black">
                     ({item.reviews})
                   </span>
-                </div>
-                <div className="flex justify-between items-center mb-3">
+                </div> */}
+                <div className="flex justify-between pt-2 items-center mb-3">
                   <span className="text-lg md:text-xl font-bold text-black">
                     ${item.price}
                   </span>
-                  <div className="flex gap-1">
+                  {/* <div className="flex gap-1">
                     {Object.values(item.colors)
                       .slice(0, 2)
                       .map((color, index) => (
@@ -511,7 +511,7 @@ export default function Body() {
                         +{Object.values(item.colors).length - 2}
                       </span>
                     )}
-                  </div>
+                  </div> */}
                 </div>
                 <div className="mt-3">
                   {/* <div className="flex gap-1.5 mb-2 justify-center">
