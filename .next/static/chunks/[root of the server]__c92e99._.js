@@ -869,26 +869,26 @@ const items = [
             "Multiple pockets"
         ]
     },
-    {
-        id: 5,
-        name: "Tattic Sleeveless Jacket",
-        category: "jackets",
-        colors: {
-            1: "Brown"
-        },
-        image: "/images/tattic-sleeveless.jpg",
-        price: 50,
-        description: "Sleeveless tactical vest jacket",
-        rating: 4.2,
-        reviews: 89,
-        inStock: true,
-        features: [
-            "Lightweight design",
-            "Multiple storage options",
-            "Tactical styling",
-            "Easy movement"
-        ]
-    },
+    // {
+    //     id: 5,
+    //     name: "Tattic Sleeveless Jacket",
+    //     category: "jackets",
+    //     colors: {
+    //         1: "Brown"
+    //     },
+    //     image: "/images/tattic-sleeveless.jpg",
+    //     price: 50,
+    //     description: "Sleeveless tactical vest jacket",
+    //     rating: 4.2,
+    //     reviews: 89,
+    //     inStock: true,
+    //     features: [
+    //         "Lightweight design",
+    //         "Multiple storage options",
+    //         "Tactical styling",
+    //         "Easy movement"
+    //     ]
+    // },
     {
         id: 6,
         name: "Plain Pants",
