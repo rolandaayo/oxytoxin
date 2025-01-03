@@ -302,9 +302,9 @@ export default function Body() {
     <PageTransition>
       <div className="container mx-auto px-4 py-8 mt-16">
         {/* Hero Section */}
-        <div className="relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden mb-8">
+        <div className="relative h-[300px] md:h-[400px] object-cover rounded-2xl overflow-hidden mb-8">
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute h-[1100] inset-0 bg-cover bg-center"
             style={{
               backgroundImage: 'url("/images/image2.jpeg")',
             }}
