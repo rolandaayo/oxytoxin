@@ -531,7 +531,7 @@ export default function Body() {
                       </button>
                     ))}
                   </div> */}
-                  <div className="flex items-center justify-center gap-3 mt-3">
+                  {/* <div className="flex items-center justify-center gap-3 mt-3">
                     <div className="flex items-center gap-2">
                       <button
                         className="w-7 h-7 border border-black text-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300"
@@ -549,7 +549,7 @@ export default function Body() {
                         +
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <button
                   onClick={() => addToCart(item)}
