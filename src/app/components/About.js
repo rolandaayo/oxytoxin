@@ -42,7 +42,7 @@ export default function About() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)]">
+      <div className="min-h-screen bg-white pt-16 md:pt-[calc(4rem+32px)]">
         {/* Hero Section */}
         <div className="relative h-[400px] md:h-[500px]">
           <div
@@ -54,7 +54,7 @@ export default function About() {
             <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-[#D6E752] mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
               Our Story
             </h1>
             <p className="text-lg md:text-xl text-white/90 max-w-2xl">

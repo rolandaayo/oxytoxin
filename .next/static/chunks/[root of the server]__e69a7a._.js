@@ -112,7 +112,7 @@ function Categories() {
                             className: "relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                    className: "text-4xl md:text-6xl font-bold text-[#D6E752] mb-4",
+                                    className: "text-4xl md:text-6xl font-bold text-white mb-4",
                                     children: "Categories"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Categories.js",
@@ -120,7 +120,7 @@ function Categories() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-lg md:text-xl text-[#D6E752] max-w-2xl",
+                                    className: "text-lg md:text-xl text-white max-w-2xl",
                                     children: "Explore our wide range of fashion categories"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Categories.js",
@@ -190,7 +190,7 @@ function Categories() {
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "absolute bottom-0 left-0 right-0 p-6 text-[#D6E752]",
+                                            className: "absolute bottom-0 left-0 right-0 p-6 text-white",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex justify-between items-end",
                                                 children: [
@@ -205,7 +205,7 @@ function Categories() {
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                className: "text-[#D6E752]/80 text-sm mb-4",
+                                                                className: "text-white/80 text-sm mb-4",
                                                                 children: category.description
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/Categories.js",
@@ -270,7 +270,7 @@ function Categories() {
                             className: "mt-20",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-3xl font-bold text-[#D6E752] text-center mb-12",
+                                    className: "text-3xl font-bold text-black text-center mb-12",
                                     children: "Featured Collections"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Categories.js",
@@ -302,7 +302,7 @@ function Categories() {
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "absolute inset-0 flex flex-col justify-center items-center text-[#D6E752] p-6 text-center",
+                                                    className: "absolute inset-0 flex flex-col justify-center items-center text-white p-6 text-center",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                             className: "text-2xl font-bold mb-2",
@@ -313,7 +313,7 @@ function Categories() {
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[#D6E752]/90 mb-4",
+                                                            className: "text-white/90 mb-4",
                                                             children: "Check out our latest collection"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/components/Categories.js",
@@ -322,7 +322,7 @@ function Categories() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                             href: "/",
-                                                            className: "bg-[#D6E752] text-black px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors",
+                                                            className: "bg-black text-white px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors",
                                                             children: "Shop Now"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/components/Categories.js",
@@ -363,7 +363,7 @@ function Categories() {
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "absolute inset-0 flex flex-col justify-center items-center text-[#D6E752] p-6 text-center",
+                                                    className: "absolute inset-0 flex flex-col justify-center items-center text-white p-6 text-center",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                             className: "text-2xl font-bold mb-2",
@@ -374,7 +374,7 @@ function Categories() {
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[#D6E752]/90 mb-4",
+                                                            className: "text-white/90 mb-4",
                                                             children: "Our most popular items"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/components/Categories.js",
@@ -383,7 +383,7 @@ function Categories() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                             href: "/",
-                                                            className: "bg-[#D6E752] text-black px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors",
+                                                            className: "bg-black text-white px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors",
                                                             children: "Shop Now"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/components/Categories.js",
@@ -418,7 +418,7 @@ function Categories() {
                             className: "mt-20 text-center",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-3xl font-bold text-[#D6E752] mb-4",
+                                    className: "text-3xl font-bold text-black mb-4",
                                     children: "Stay Updated"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Categories.js",
@@ -426,7 +426,7 @@ function Categories() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-[#D6E752] mb-8 max-w-2xl mx-auto",
+                                    className: "text-black mb-8 max-w-2xl mx-auto",
                                     children: "Subscribe to our newsletter to receive updates about new products and special offers."
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Categories.js",
@@ -446,7 +446,7 @@ function Categories() {
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            className: "bg-[#D6E752] text-black px-8 py-3 rounded-full hover:bg-[#D6E752]/90 transition-colors",
+                                            className: "bg-black text-white px-8 py-3 rounded-full hover:bg-slate-500 transition-colors",
                                             children: "Subscribe"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/components/Categories.js",
@@ -610,7 +610,7 @@ function Navbar() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "bg-[#304E21] text-white text-sm py-2 hidden md:block",
+                className: "bg-black text-white text-sm py-2 hidden md:block",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "container mx-auto px-4",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -739,7 +739,7 @@ function Navbar() {
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         href: "/",
                                         className: `text-2xl font-bold text-black tracking-tight ${__TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$goldman_aa4334f0$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].className}`,
-                                        children: "Oxtoyin"
+                                        children: "Oxytoxin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Navbar.js",
                                         lineNumber: 119,
@@ -1306,7 +1306,7 @@ function Footer() {
         e.target.reset();
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-        className: "bg-black text-white",
+        className: "bg-white text-black",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "border-b border-[#3a5d28]",
             children: [
@@ -1326,7 +1326,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Free Shipping"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1334,7 +1334,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752]",
+                                        className: "text-sm text-black",
                                         children: "On orders over $100"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1358,7 +1358,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Secure Payment"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1366,7 +1366,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752] ",
+                                        className: "text-sm text-black ",
                                         children: "100% secure payments"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1390,7 +1390,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Shop with Confidence"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1398,7 +1398,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752]",
+                                        className: "text-sm text-black",
                                         children: "30 days free returns"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1439,7 +1439,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-[#D6E752] mb-4",
+                                        className: "text-black mb-4",
                                         children: "Stay updated with our latest trends and products"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1461,7 +1461,7 @@ function Footer() {
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                className: "px-6 py-2 bg-[#D6E752] text-black rounded-lg hover:bg-blue-600 transition-colors",
+                                                className: "px-6 py-2 bg-ray-900 border text-black rounded-lg hover:bg-blue-600 transition-colors",
                                                 children: "Subscribe"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/Footer.js",
@@ -1550,6 +1550,32 @@ function Footer() {
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/components/Footer.js",
                                     lineNumber: 97,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-gray-400 text-sm pt-4 text-center",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                        children: [
+                                            "website built by ",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                href: "https://rolandayo.vercel.app",
+                                                target: "_blank",
+                                                children: "@rolandaayo"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/Footer.js",
+                                                lineNumber: 111,
+                                                columnNumber: 36
+                                            }, this),
+                                            " with ❤️"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/components/Footer.js",
+                                        lineNumber: 111,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/components/Footer.js",
+                                    lineNumber: 110,
                                     columnNumber: 13
                                 }, this)
                             ]

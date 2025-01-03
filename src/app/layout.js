@@ -1,10 +1,10 @@
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { CartProvider } from "./context/CartContext";
 import { AnimatePresence } from "framer-motion";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Oxtoyin | Clothing Store",
@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={montserrat.className}>
       <body>
         <CartProvider>
           <AnimatePresence mode="wait">{children}</AnimatePresence>

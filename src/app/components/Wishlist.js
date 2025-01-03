@@ -59,7 +59,7 @@ export default function Wishlist({ addToCart, setShowCart }) {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)]">
+      <div className="min-h-screen bg-white pt-16 md:pt-[calc(4rem+32px)]">
         {/* Hero Section */}
         <div className="relative h-[200px] md:h-[300px] mb-8">
           <div
@@ -71,10 +71,10 @@ export default function Wishlist({ addToCart, setShowCart }) {
             <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#D6E752] mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               My Wishlist
             </h1>
-            <p className="text-lg text-[#D6E752] max-w-2xl">
+            <p className="text-lg text-white max-w-2xl">
               Your favorite items, all in one place
             </p>
           </div>
@@ -82,7 +82,7 @@ export default function Wishlist({ addToCart, setShowCart }) {
 
         <div className="container mx-auto px-4 py-8">
           {wishlistItems.length === 0 ? (
-            <div className="text-center py-16 bg-white/95 backdrop-blur-sm rounded-lg shadow-md">
+            <div className="text-center py-16 bg-black/95 backdrop-blur-sm rounded-lg shadow-md">
               <FaHeart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-medium mb-2">
                 Your wishlist is empty
@@ -92,7 +92,7 @@ export default function Wishlist({ addToCart, setShowCart }) {
               </p>
               <Link
                 href="/"
-                className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                className="inline-block bg-white/80 text-black px-8 py-3 rounded-lg hover:bg-white/90 transition-colors duration-300"
               >
                 Continue Shopping
               </Link>

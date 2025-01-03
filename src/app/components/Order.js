@@ -176,7 +176,7 @@ export default function Order() {
   }
 
   return (
-    <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)]">
+    <div className="min-h-screen bg-white pt-16 md:pt-[calc(4rem+32px)]">
       {/* Hero Section */}
       <div className="relative h-[200px] md:h-[300px] mb-8">
         <div 
@@ -188,8 +188,8 @@ export default function Order() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#D6E752] mb-4">My Orders</h1>
-          <p className="text-lg text-[#D6E752] max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">My Orders</h1>
+          <p className="text-lg text-white max-w-2xl">
             Track and manage your orders
           </p>
         </div>
@@ -206,7 +206,7 @@ export default function Order() {
                 placeholder="Search orders..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full text-black pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               />
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
@@ -241,7 +241,7 @@ export default function Order() {
         </div>
 
         {/* Orders List */}
-        <div className="space-y-6">
+        <div className="space-y-6 ">
           {filteredOrders.map((order) => (
             <div 
               key={order.id}

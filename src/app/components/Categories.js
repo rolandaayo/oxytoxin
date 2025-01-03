@@ -39,10 +39,10 @@ export default function Categories() {
             <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-[#D6E752] mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
               Categories
             </h1>
-            <p className="text-lg md:text-xl text-[#D6E752] max-w-2xl">
+            <p className="text-lg md:text-xl text-white max-w-2xl">
               Explore our wide range of fashion categories
             </p>
           </div>
@@ -73,13 +73,13 @@ export default function Categories() {
                 </div>
 
                 {/* Category Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-[#D6E752]">
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                   <div className="flex justify-between items-end">
                     <div>
                       <h3 className="text-2xl font-bold mb-2">
                         {category.name}
                       </h3>
-                      <p className="text-[#D6E752]/80 text-sm mb-4">
+                      <p className="text-white/80 text-sm mb-4">
                         {category.description}
                       </p>
                       <p className="text-sm font-medium">
@@ -100,7 +100,7 @@ export default function Categories() {
 
           {/* Featured Collections */}
           <div className="mt-20">
-            <h2 className="text-3xl font-bold text-[#D6E752] text-center mb-12">
+            <h2 className="text-3xl font-bold text-black text-center mb-12">
               Featured Collections
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -113,14 +113,14 @@ export default function Categories() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300" />
-                <div className="absolute inset-0 flex flex-col justify-center items-center text-[#D6E752] p-6 text-center">
+                <div className="absolute inset-0 flex flex-col justify-center items-center text-white p-6 text-center">
                   <h3 className="text-2xl font-bold mb-2">New Arrivals</h3>
-                  <p className="text-[#D6E752]/90 mb-4">
+                  <p className="text-white/90 mb-4">
                     Check out our latest collection
                   </p>
                   <Link
                     href="/"
-                    className="bg-[#D6E752] text-black px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors"
+                    className="bg-black text-white px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors"
                   >
                     Shop Now
                   </Link>
@@ -136,12 +136,12 @@ export default function Categories() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300" />
-                <div className="absolute inset-0 flex flex-col justify-center items-center text-[#D6E752] p-6 text-center">
+                <div className="absolute inset-0 flex flex-col justify-center items-center text-white p-6 text-center">
                   <h3 className="text-2xl font-bold mb-2">Best Sellers</h3>
-                  <p className="text-[#D6E752]/90 mb-4">Our most popular items</p>
+                  <p className="text-white/90 mb-4">Our most popular items</p>
                   <Link
                     href="/"
-                    className="bg-[#D6E752] text-black px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors"
+                    className="bg-black text-white px-6 py-2 rounded-full hover:bg-[#D6E752]/90 transition-colors"
                   >
                     Shop Now
                   </Link>
@@ -152,8 +152,8 @@ export default function Categories() {
 
           {/* Newsletter Section */}
           <div className="mt-20 text-center">
-            <h2 className="text-3xl font-bold text-[#D6E752] mb-4">Stay Updated</h2>
-            <p className="text-[#D6E752] mb-8 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-black mb-4">Stay Updated</h2>
+            <p className="text-black mb-8 max-w-2xl mx-auto">
               Subscribe to our newsletter to receive updates about new products
               and special offers.
             </p>
@@ -163,7 +163,7 @@ export default function Categories() {
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-3 rounded-full border focus:outline-none focus:ring-2 focus:ring-[#D6E752]"
               />
-              <button className="bg-[#D6E752] text-black px-8 py-3 rounded-full hover:bg-[#D6E752]/90 transition-colors">
+              <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-slate-500 transition-colors">
                 Subscribe
               </button>
             </div>

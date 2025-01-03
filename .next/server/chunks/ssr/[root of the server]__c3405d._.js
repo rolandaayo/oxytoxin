@@ -92,26 +92,26 @@ const items = [
             "Multiple pockets"
         ]
     },
-    {
-        id: 5,
-        name: "Tattic Sleeveless Jacket",
-        category: "jackets",
-        colors: {
-            1: "Brown"
-        },
-        image: "/images/tattic-sleeveless.jpg",
-        price: 50,
-        description: "Sleeveless tactical vest jacket",
-        rating: 4.2,
-        reviews: 89,
-        inStock: true,
-        features: [
-            "Lightweight design",
-            "Multiple storage options",
-            "Tactical styling",
-            "Easy movement"
-        ]
-    },
+    // {
+    //     id: 5,
+    //     name: "Tattic Sleeveless Jacket",
+    //     category: "jackets",
+    //     colors: {
+    //         1: "Brown"
+    //     },
+    //     image: "/images/tattic-sleeveless.jpg",
+    //     price: 50,
+    //     description: "Sleeveless tactical vest jacket",
+    //     rating: 4.2,
+    //     reviews: 89,
+    //     inStock: true,
+    //     features: [
+    //         "Lightweight design",
+    //         "Multiple storage options",
+    //         "Tactical styling",
+    //         "Easy movement"
+    //     ]
+    // },
     {
         id: 6,
         name: "Plain Pants",
@@ -131,60 +131,6 @@ const items = [
             "Classic design",
             "Versatile style"
         ]
-    },
-    {
-        id: 7,
-        name: "Ash Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        },
-        image: "/images/ash-pants.jpg",
-        price: 50,
-        description: "Stylish ash-colored pants",
-        rating: 4.5,
-        reviews: 167,
-        inStock: true,
-        features: [
-            "Modern fit",
-            "Multiple color options",
-            "Stretch fabric",
-            "Comfortable waistband"
-        ]
-    },
-    {
-        id: 8,
-        name: "Casual Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        },
-        image: "/images/11.jpeg",
-        price: 50,
-        description: "Comfortable casual pants",
-        rating: 4.4,
-        reviews: 134,
-        inStock: true,
-        features: [
-            "Casual style",
-            "Everyday comfort",
-            "Durable material",
-            "Perfect fit"
-        ]
-    },
-    {
-        id: 9,
-        name: "Fashion Pants",
-        category: "pants",
-        colors: {
-            1: "Black",
-            2: "White",
-            3: "Blue"
-        }
     }
 ];
 const __TURBOPACK__default__export__ = items;
@@ -304,7 +250,7 @@ function Wishlist({ addToCart, setShowCart }) {
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$PageTransition$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "min-h-screen pt-16 md:pt-[calc(4rem+32px)]",
+            className: "min-h-screen bg-white pt-16 md:pt-[calc(4rem+32px)]",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "relative h-[200px] md:h-[300px] mb-8",
@@ -330,7 +276,7 @@ function Wishlist({ addToCart, setShowCart }) {
                             className: "relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                    className: "text-4xl md:text-5xl font-bold text-[#D6E752] mb-4",
+                                    className: "text-4xl md:text-5xl font-bold text-white mb-4",
                                     children: "My Wishlist"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Wishlist.js",
@@ -338,7 +284,7 @@ function Wishlist({ addToCart, setShowCart }) {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-lg text-[#D6E752] max-w-2xl",
+                                    className: "text-lg text-white max-w-2xl",
                                     children: "Your favorite items, all in one place"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/Wishlist.js",
@@ -360,7 +306,7 @@ function Wishlist({ addToCart, setShowCart }) {
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "container mx-auto px-4 py-8",
                     children: wishlistItems.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "text-center py-16 bg-white/95 backdrop-blur-sm rounded-lg shadow-md",
+                        className: "text-center py-16 bg-black/95 backdrop-blur-sm rounded-lg shadow-md",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FaHeart"], {
                                 className: "w-16 h-16 text-gray-400 mx-auto mb-4"
@@ -387,7 +333,7 @@ function Wishlist({ addToCart, setShowCart }) {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                 href: "/",
-                                className: "inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300",
+                                className: "inline-block bg-white/80 text-black px-8 py-3 rounded-lg hover:bg-white/90 transition-colors duration-300",
                                 children: "Continue Shopping"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/Wishlist.js",
@@ -724,7 +670,7 @@ function Navbar() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "bg-[#304E21] text-white text-sm py-2 hidden md:block",
+                className: "bg-black text-white text-sm py-2 hidden md:block",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "container mx-auto px-4",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -853,7 +799,7 @@ function Navbar() {
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                         href: "/",
                                         className: `text-2xl font-bold text-black tracking-tight ${__TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$goldman_aa4334f0$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].className}`,
-                                        children: "Oxtoyin"
+                                        children: "Oxytoxin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Navbar.js",
                                         lineNumber: 119,
@@ -1409,7 +1355,7 @@ function Footer() {
         e.target.reset();
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-        className: "bg-black text-white",
+        className: "bg-white text-black",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "border-b border-[#3a5d28]",
             children: [
@@ -1429,7 +1375,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Free Shipping"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1437,7 +1383,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752]",
+                                        className: "text-sm text-black",
                                         children: "On orders over $100"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1461,7 +1407,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Secure Payment"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1469,7 +1415,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752] ",
+                                        className: "text-sm text-black ",
                                         children: "100% secure payments"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1493,7 +1439,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "font-semibold text-[#D6E752] mb-2",
+                                        className: "font-semibold text-black mb-2",
                                         children: "Shop with Confidence"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1501,7 +1447,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-[#D6E752]",
+                                        className: "text-sm text-black",
                                         children: "30 days free returns"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1542,7 +1488,7 @@ function Footer() {
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-[#D6E752] mb-4",
+                                        className: "text-black mb-4",
                                         children: "Stay updated with our latest trends and products"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/Footer.js",
@@ -1564,7 +1510,7 @@ function Footer() {
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                className: "px-6 py-2 bg-[#D6E752] text-black rounded-lg hover:bg-blue-600 transition-colors",
+                                                className: "px-6 py-2 bg-ray-900 border text-black rounded-lg hover:bg-blue-600 transition-colors",
                                                 children: "Subscribe"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/Footer.js",
@@ -1653,6 +1599,32 @@ function Footer() {
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/components/Footer.js",
                                     lineNumber: 97,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-black/70 font-montserat text-sm pt-4 text-center",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                        children: [
+                                            "Website built by ",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                href: "https://rolandayo.vercel.app",
+                                                target: "_blank",
+                                                children: "@rolandaayo"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/Footer.js",
+                                                lineNumber: 111,
+                                                columnNumber: 36
+                                            }, this),
+                                            " with ❤️"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/components/Footer.js",
+                                        lineNumber: 111,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/components/Footer.js",
+                                    lineNumber: 110,
                                     columnNumber: 13
                                 }, this)
                             ]

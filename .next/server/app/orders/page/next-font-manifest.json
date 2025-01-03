@@ -1,0 +1,12 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/src/app/orders/page": [
+      "static/media/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y-s.p.d1a74dd0.woff2",
+      "static/media/pe0uMIWbN4JFplR2HDVyB_24C94-s.p.bbdcbba5.woff2",
+      "static/media/pe0rMIWbN4JFplR2FI5XEtCaBvRoe1Q-s.p.6a3fd6b8.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}

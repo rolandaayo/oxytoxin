@@ -107,6 +107,9 @@ export default function Footer() {
                 Sitemap
               </a>
             </div>
+            <div className="text-gray-400 text-sm pt-4 text-center">
+              <h2>website built by <a href="https://rolandayo.vercel.app" target="_blank">@rolandaayo</a> with ❤️</h2>
+            </div>
           </div>
         </div>
 

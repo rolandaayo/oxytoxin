@@ -74,7 +74,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-[#304E21] text-white text-sm py-2 hidden md:block">
+      <div className="bg-black text-white text-sm py-2 hidden md:block">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
