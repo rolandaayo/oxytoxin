@@ -120,7 +120,7 @@ export default function Navbar() {
                 href="/"
                 className={`text-2xl font-bold text-black tracking-tight ${goldman.className}`}
               >
-                Oxytoyin
+                Oxytoxin
               </Link>
             </div>
 
