@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Goldman } from "next/font/google";
 import {
   FaShoppingCart,
-  FaHeart,
   FaUser,
   FaBars,
   FaTimes,
@@ -25,7 +24,6 @@ export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [wishlistCount, setWishlistCount] = useState(0);
   const {
     cartItems,
     showCart,
@@ -35,25 +33,6 @@ export default function Navbar() {
     loading,
     initializePayment,
   } = useCart();
-
-  useEffect(() => {
-    try {
-      const savedWishlist = localStorage.getItem("wishlist");
-      if (savedWishlist) {
-        setWishlistCount(JSON.parse(savedWishlist).length);
-      }
-    } catch (error) {
-      console.error("Error loading wishlist:", error);
-    }
-
-    const handleWishlistUpdate = (event) => {
-      setWishlistCount(event.detail.count);
-    };
-
-    window.addEventListener("wishlistUpdate", handleWishlistUpdate);
-    return () =>
-      window.removeEventListener("wishlistUpdate", handleWishlistUpdate);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,18 +130,6 @@ export default function Navbar() {
 
             {/* Icons */}
             <div className="flex items-center space-x-4">
-              <Link
-                href="/wishlist"
-                className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <FaHeart className="text-gray-600 w-5 h-5" />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                    {wishlistCount}
-                  </span>
-                )}
-              </Link>
-
               <button
                 className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
                 onClick={() => setShowCart(true)}
@@ -297,11 +264,16 @@ export default function Navbar() {
                     >
                       <div className="w-24 h-24 bg-gray-50 rounded overflow-hidden">
                         <Image
-                          src={item.image}
+                          src={
+                            Array.isArray(item.image)
+                              ? item.image[0]
+                              : item.image
+                          }
                           alt={item.name}
                           width={96}
                           height={96}
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain p-2"
+                          style={{ backgroundColor: "#f8f8f8" }}
                         />
                       </div>
                       <div className="flex-1">

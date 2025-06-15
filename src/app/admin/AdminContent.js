@@ -3,97 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
-
-// API base URL from environment variable
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
-
-// API functions that match server endpoints exactly
-const adminApi = {
-  getProducts: async () => {
-    const response = await fetch(`${API_BASE_URL}/admin/products`);
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Failed to fetch products");
-    }
-    const { data } = await response.json();
-    return data;
-  },
-
-  createProduct: async (productData) => {
-    // Ensure image is an array of image URLs
-    const formattedData = {
-      ...productData,
-      image: productData.images, // Changed from images to image to match server model
-      price: Number(productData.price),
-      stock: Number(productData.stock),
-    };
-
-    console.log("Creating product with data:", formattedData); // Debug log
-
-    const response = await fetch(`${API_BASE_URL}/admin/products`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formattedData),
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to create product");
-    }
-    return result.data;
-  },
-
-  updateProduct: async (id, productData) => {
-    // Format the data to match server expectations
-    const formattedData = {
-      ...productData,
-      price: Number(productData.price),
-      stock: Number(productData.stock),
-      // Only include images if they're being updated
-      ...(productData.images && {
-        images: productData.images.map((img) => ({ url: img })),
-      }),
-    };
-
-    const response = await fetch(`${API_BASE_URL}/admin/products/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formattedData),
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to update product");
-    }
-    return result.data;
-  },
-
-  deleteProduct: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/admin/products/${id}`, {
-      method: "DELETE",
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to delete product");
-    }
-    return result;
-  },
-
-  uploadImage: async (formData) => {
-    const response = await fetch(`${API_BASE_URL}/admin/upload`, {
-      method: "POST",
-      body: formData,
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to upload image");
-    }
-    return result.data;
-  },
-};
+import { adminApi } from "../services/api";
 
 export default function AdminContent() {
   const [isClient, setIsClient] = useState(false);
@@ -120,7 +30,7 @@ export default function AdminContent() {
       const productsData = await adminApi.getProducts();
       setProducts(productsData);
     } catch (error) {
-      toast.error("Failed to fetch products");
+      toast.error(error.message || "Failed to fetch products");
       console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
@@ -128,7 +38,6 @@ export default function AdminContent() {
   };
 
   useEffect(() => {
-    console.log("AdminContent mounted on client");
     setIsClient(true);
     fetchProducts();
   }, []);
@@ -136,17 +45,12 @@ export default function AdminContent() {
   // Handle image upload
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (!file) {
-      console.log("No file selected");
-      return;
-    }
+    if (!file) return;
 
-    // Preview only - don't upload yet
+    // Preview
     const reader = new FileReader();
     reader.onloadend = () => {
-      const previewUrl = reader.result;
-      setImagePreview(previewUrl);
-      console.log("Image preview set");
+      setImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
     setSelectedFile(file);
@@ -163,41 +67,21 @@ export default function AdminContent() {
 
     try {
       setLoading(true);
-      console.log("Starting product creation process...");
 
-      // First upload the image
-      console.log("Uploading image...");
+      // Upload image
       const formData = new FormData();
       formData.append("images", selectedFile);
-
-      const uploadResponse = await fetch(`${API_BASE_URL}/admin/upload`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload image");
-      }
-
-      const uploadResult = await uploadResponse.json();
-      console.log("Image upload result:", uploadResult);
+      const uploadResult = await adminApi.uploadImage(formData);
 
       if (
         !uploadResult ||
-        uploadResult.status !== "success" ||
-        !Array.isArray(uploadResult.data)
+        !Array.isArray(uploadResult) ||
+        uploadResult.length === 0
       ) {
-        throw new Error("Invalid image upload response");
+        throw new Error("Failed to upload image");
       }
 
-      const uploadedImage = uploadResult.data[0];
-      if (!uploadedImage || !uploadedImage.url) {
-        throw new Error("No image URL received from upload");
-      }
-
-      console.log("Image uploaded successfully:", uploadedImage.url);
-
-      // Now create the product with the uploaded image
+      // Create product with uploaded image
       const productData = {
         name: newProduct.name,
         description: newProduct.description,
@@ -206,30 +90,11 @@ export default function AdminContent() {
         stock: Number(newProduct.stock),
         colors: newProduct.colors || [],
         features: newProduct.features || [],
-        images: [uploadedImage], // Send the full image object as expected by the server
+        image: uploadResult[0], // Use the first uploaded image
       };
 
-      console.log("Creating product with data:", productData);
-
-      const createResponse = await fetch(`${API_BASE_URL}/admin/products`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(productData),
-      });
-
-      if (!createResponse.ok) {
-        const error = await createResponse.json();
-        throw new Error(error.message || "Failed to create product");
-      }
-
-      const result = await createResponse.json();
-      console.log("Product creation result:", result);
-
-      if (result.status !== "success") {
-        throw new Error(result.message || "Failed to create product");
-      }
-
-      toast.success("Product created successfully");
+      await adminApi.createProduct(productData);
+      toast.success("Product created successfully!");
 
       // Reset form
       setNewProduct({
@@ -245,30 +110,26 @@ export default function AdminContent() {
       setImagePreview(null);
       setSelectedFile(null);
 
-      // Refresh product list
-      await fetchProducts();
+      // Refresh products list
+      fetchProducts();
     } catch (error) {
-      console.error("Error in product creation:", error);
       toast.error(error.message || "Failed to create product");
+      console.error("Error creating product:", error);
     } finally {
       setLoading(false);
     }
   };
 
   // Handle product update
-  const handleUpdateProduct = async (e) => {
-    e.preventDefault();
-    if (!editingProduct) return;
-
+  const handleUpdateProduct = async (id, productData) => {
     try {
       setLoading(true);
-      await adminApi.updateProduct(editingProduct._id, editingProduct);
-      toast.success("Product updated successfully");
-      setEditingProduct(null);
+      await adminApi.updateProduct(id, productData);
+      toast.success("Product updated successfully!");
       fetchProducts();
     } catch (error) {
       toast.error(error.message || "Failed to update product");
-      console.error("Update error:", error);
+      console.error("Error updating product:", error);
     } finally {
       setLoading(false);
     }
@@ -281,11 +142,11 @@ export default function AdminContent() {
     try {
       setLoading(true);
       await adminApi.deleteProduct(id);
-      toast.success("Product deleted successfully");
+      toast.success("Product deleted successfully!");
       fetchProducts();
     } catch (error) {
       toast.error(error.message || "Failed to delete product");
-      console.error("Delete error:", error);
+      console.error("Error deleting product:", error);
     } finally {
       setLoading(false);
     }

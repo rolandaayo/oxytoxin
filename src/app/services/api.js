@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:4000";
+const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
 
 // Public API calls
 export const publicApi = {
@@ -17,8 +17,8 @@ export const publicApi = {
       // Add timestamp to prevent caching
       queryParams.append("_t", Date.now());
 
-      // Use the admin endpoint as specified
-      const url = `${BACKEND_URL}/api/admin/products?${queryParams}`;
+      // Use the public endpoint
+      const url = `${BACKEND_URL}/api/public/products?${queryParams}`;
       console.log("Fetching products from:", url);
 
       const response = await fetch(url, {
@@ -28,12 +28,9 @@ export const publicApi = {
           Pragma: "no-cache",
           Expires: "0",
         },
-        // Add cache: 'no-store' to ensure fresh data
         cache: "no-store",
-        // Add next: { revalidate: 0 } for Next.js
         next: { revalidate: 0 },
       });
-      console.log("Response status:", response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -42,19 +39,13 @@ export const publicApi = {
       }
 
       const result = await response.json();
-      console.log("Response data:", result);
-
       if (result.status === "error") {
         throw new Error(result.message || "Unknown error from server");
       }
 
       return result.data;
     } catch (error) {
-      console.error("Error details:", {
-        message: error.message,
-        stack: error.stack,
-        name: error.name,
-      });
+      console.error("Error fetching products:", error);
       throw error;
     }
   },
@@ -68,8 +59,15 @@ export const adminApi = {
       const url = `${BACKEND_URL}/api/admin/products`;
       console.log("Admin fetching products from:", url);
 
-      const response = await fetch(url);
-      console.log("Response status:", response.status);
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+        cache: "no-store",
+      });
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -78,19 +76,13 @@ export const adminApi = {
       }
 
       const result = await response.json();
-      console.log("Response data:", result);
-
       if (result.status === "error") {
         throw new Error(result.message || "Unknown error from server");
       }
 
       return result.data;
     } catch (error) {
-      console.error("Error details:", {
-        message: error.message,
-        stack: error.stack,
-        name: error.name,
-      });
+      console.error("Error fetching admin products:", error);
       throw error;
     }
   },
@@ -98,21 +90,17 @@ export const adminApi = {
   // Create new product
   createProduct: async (productData) => {
     try {
-      console.log("Creating product with data:", productData);
-
       const url = `${BACKEND_URL}/api/admin/products`;
-      console.log("Sending POST request to:", url);
+      console.log("Creating product:", productData);
 
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         body: JSON.stringify(productData),
       });
-
-      console.log("Response status:", response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -121,19 +109,13 @@ export const adminApi = {
       }
 
       const result = await response.json();
-      console.log("Response data:", result);
-
       if (result.status === "error") {
-        throw new Error(result.message || "Unknown error from server");
+        throw new Error(result.message || "Failed to create product");
       }
 
       return result.data;
     } catch (error) {
-      console.error("Error details:", {
-        message: error.message,
-        stack: error.stack,
-        name: error.name,
-      });
+      console.error("Error creating product:", error);
       throw error;
     }
   },
@@ -141,15 +123,27 @@ export const adminApi = {
   // Update product
   updateProduct: async (id, productData) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/admin/products/${id}`, {
+      const url = `${BACKEND_URL}/api/admin/products/${id}`;
+      console.log("Updating product:", { id, productData });
+
+      const response = await fetch(url, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
         body: JSON.stringify(productData),
       });
-      const result = await response.json();
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
       if (result.status === "error") {
-        throw new Error(result.message);
+        throw new Error(result.message || "Failed to update product");
       }
 
       return result.data;
@@ -162,13 +156,25 @@ export const adminApi = {
   // Delete product
   deleteProduct: async (id) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/admin/products/${id}`, {
-        method: "DELETE",
-      });
-      const result = await response.json();
+      const url = `${BACKEND_URL}/api/admin/products/${id}`;
+      console.log("Deleting product:", id);
 
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
       if (result.status === "error") {
-        throw new Error(result.message);
+        throw new Error(result.message || "Failed to delete product");
       }
 
       return result.data;
@@ -181,33 +187,29 @@ export const adminApi = {
   // Upload image
   uploadImage: async (formData) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/admin/upload`, {
+      const url = `${BACKEND_URL}/api/admin/upload`;
+      console.log("Uploading image");
+
+      const response = await fetch(url, {
         method: "POST",
         body: formData,
+        headers: {
+          "Cache-Control": "no-cache",
+        },
       });
 
-      // Log the raw response for debugging
-      console.log("Upload response status:", response.status);
-      const text = await response.text();
-      console.log("Upload response text:", text);
-
-      // Try to parse the response as JSON
-      let result;
-      try {
-        result = JSON.parse(text);
-      } catch (e) {
-        console.error("Failed to parse response as JSON:", e);
-        throw new Error("Server returned invalid JSON response");
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      const result = await response.json();
       if (result.status === "error") {
-        throw new Error(result.message || "Upload failed");
+        throw new Error(result.message || "Failed to upload image");
       }
 
-      // Log the parsed result for debugging
-      console.log("Parsed upload result:", result);
-
-      return result;
+      return result.data;
     } catch (error) {
       console.error("Error uploading image:", error);
       throw error;

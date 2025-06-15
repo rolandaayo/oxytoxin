@@ -1,15 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import {
-  FaTimes,
-  FaSearch,
-  FaFilter,
-  FaHeart,
-  FaRegHeart,
-  FaStar,
-  FaSort,
-} from "react-icons/fa";
+import { FaTimes, FaSearch, FaFilter, FaStar, FaSort } from "react-icons/fa";
 import QuickView from "./QuickView";
 import toast from "react-hot-toast";
 import { useCart } from "../context/CartContext";
@@ -22,7 +14,6 @@ export default function Body() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
-  const [wishlist, setWishlist] = useState([]);
   const [selectedSize, setSelectedSize] = useState({});
   const [itemQuantities, setItemQuantities] = useState({});
   const [loading, setLoading] = useState(false);
@@ -56,12 +47,10 @@ export default function Body() {
   useEffect(() => {
     setMounted(true);
     try {
-      const savedWishlist = localStorage.getItem("wishlist");
       const savedSizes = localStorage.getItem("selectedSizes");
       const savedQuantities = localStorage.getItem("itemQuantities");
       const savedCart = localStorage.getItem("cartItems");
 
-      if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
       if (savedSizes) setSelectedSize(JSON.parse(savedSizes));
       if (savedQuantities) setItemQuantities(JSON.parse(savedQuantities));
       if (savedCart) setCartItems(JSON.parse(savedCart));
@@ -132,15 +121,6 @@ export default function Body() {
   useEffect(() => {
     if (!mounted) return;
     try {
-      localStorage.setItem("wishlist", JSON.stringify(wishlist));
-    } catch (error) {
-      console.error("Error saving wishlist:", error);
-    }
-  }, [wishlist, mounted]);
-
-  useEffect(() => {
-    if (!mounted) return;
-    try {
       localStorage.setItem("selectedSizes", JSON.stringify(selectedSize));
     } catch (error) {
       console.error("Error saving sizes:", error);
@@ -202,10 +182,6 @@ export default function Body() {
       delete newSizes[item.id];
       return newSizes;
     });
-    toast.success(`${item.name} added to cart!`, {
-      icon: "🛍️",
-      duration: 2000,
-    });
   };
 
   const removeFromCart = (itemId) => {
@@ -217,37 +193,6 @@ export default function Body() {
       icon: "🗑️",
       duration: 2000,
     });
-  };
-
-  const toggleWishlist = (itemId) => {
-    const item = products.find((item) => item.id === itemId);
-    if (wishlist.includes(itemId)) {
-      const newWishlist = wishlist.filter((id) => id !== itemId);
-      setWishlist(newWishlist);
-      localStorage.setItem("wishlist", JSON.stringify(newWishlist));
-      window.dispatchEvent(
-        new CustomEvent("wishlistUpdate", {
-          detail: { count: newWishlist.length },
-        })
-      );
-      toast.success(`${item.name} removed from wishlist`, {
-        icon: "💔",
-        duration: 2000,
-      });
-    } else {
-      const newWishlist = [...wishlist, itemId];
-      setWishlist(newWishlist);
-      localStorage.setItem("wishlist", JSON.stringify(newWishlist));
-      window.dispatchEvent(
-        new CustomEvent("wishlistUpdate", {
-          detail: { count: newWishlist.length },
-        })
-      );
-      toast.success(`${item.name} added to wishlist`, {
-        icon: "❤️",
-        duration: 2000,
-      });
-    }
   };
 
   const updateQuantity = (itemId, value) => {
@@ -513,16 +458,6 @@ export default function Body() {
                     }}
                   />
                   <button
-                    onClick={() => toggleWishlist(item.id)}
-                    className="absolute top-2 right-2 md:top-4 md:right-4 p-1.5 md:p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white"
-                  >
-                    {wishlist.includes(item.id) ? (
-                      <FaHeart className="text-red-500" />
-                    ) : (
-                      <FaRegHeart className="text-gray-500" />
-                    )}
-                  </button>
-                  <button
                     onClick={() => setQuickViewProduct(item)}
                     className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm text-black px-2 md:px-4 py-1 md:py-2 rounded-full shadow-md hover:bg-white transition-all duration-300 text-xs md:text-sm w-[calc(100%-1rem)] md:w-auto mx-2"
                   >
@@ -584,11 +519,16 @@ export default function Body() {
                       >
                         <div className="w-24 h-24 bg-gray-50 rounded overflow-hidden">
                           <Image
-                            src={item.image}
+                            src={
+                              Array.isArray(item.image)
+                                ? item.image[0]
+                                : item.image
+                            }
                             alt={item.name}
                             width={96}
                             height={96}
-                            className="w-full h-full object-contain"
+                            className="w-full h-full object-contain p-2"
+                            style={{ backgroundColor: "#f8f8f8" }}
                           />
                         </div>
                         <div className="flex-1">

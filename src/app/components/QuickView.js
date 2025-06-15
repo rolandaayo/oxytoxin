@@ -64,7 +64,7 @@ export default function QuickView({
               {/* Image Section */}
               <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden">
                 <Image
-                  src={product.image}
+                  src={product.image[0]}
                   alt={product.name}
                   width={500}
                   height={500}
