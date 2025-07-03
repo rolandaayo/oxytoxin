@@ -20,14 +20,14 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Card */}
-      <div className="bg-gradient-to-r from-gray-800 to-gray-700 text-white rounded-xl p-20 flex items-center justify-between shadow">
+      <div className="bg-gradient-to-r from-gray-800 to-gray-700 text-white rounded-xl p-6 sm:p-10 lg:p-20 flex flex-col sm:flex-row items-center sm:items-center justify-between shadow gap-4 sm:gap-0 text-center sm:text-left">
         <div>
           <div className="text-xl font-semibold mb-2">
             Welcome, Oxytoxin <span className="inline-block">👋</span>
           </div>
           <div className="text-sm">Have a great day!</div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center mt-4 sm:mt-0 gap-4">
           <div className="bg-white/10 rounded-lg px-4 py-2 flex items-center gap-2">
             <span className="text-lg">📅</span>
             <span className="font-medium">Jul 03, 2025</span>

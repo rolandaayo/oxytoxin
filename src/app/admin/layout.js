@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
@@ -104,49 +105,91 @@ const menu = [
   },
 ];
 
-function Sidebar({ pathname }) {
+function Sidebar({ pathname, open, setOpen }) {
   return (
-    <aside className="w-64 bg-white text-black flex flex-col py-8 px-4 min-h-screen border-r border-gray-200">
-      {/* Menu */}
-      <nav className="flex flex-col gap-1">
-        {menu.map((item, idx) => (
-          <div key={item.label}>
-            <Link
-              href={item.href || "#"}
-              className={`flex items-center px-4 py-3 rounded-lg transition-colors text-base font-medium ${
-                pathname.startsWith(item.href || "")
-                  ? "bg-gray-100 text-black font-semibold"
-                  : "hover:bg-gray-100"
-              }`}
-            >
-              <span className="mr-3 text-gray-500">{item.icon}</span>
-              {item.label}
-              {item.sub && (
-                <svg
-                  className="ml-auto w-4 h-4 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              )}
-            </Link>
-          </div>
-        ))}
-      </nav>
-    </aside>
+    <>
+      {/* Overlay for mobile */}
+      <div
+        className={`fixed inset-0 z-40 bg-black bg-opacity-30 transition-opacity md:hidden ${
+          open ? "block" : "hidden"
+        }`}
+        onClick={() => setOpen(false)}
+      />
+      <aside
+        className={`fixed z-50 top-0 left-0 h-full w-64 bg-white text-black flex flex-col py-8 px-4 min-h-screen border-r border-gray-200 transform transition-transform duration-200 md:static md:translate-x-0 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Close button on mobile */}
+        <button
+          className="md:hidden mb-6 self-end p-2 rounded hover:bg-gray-100"
+          onClick={() => setOpen(false)}
+        >
+          <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path
+              d="M6 18L18 6M6 6l12 12"
+              stroke="#333"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+        {/* Menu */}
+        <nav className="flex flex-col gap-1">
+          {menu.map((item, idx) => (
+            <div key={item.label}>
+              <Link
+                href={item.href || "#"}
+                className={`flex items-center px-4 py-3 rounded-lg transition-colors text-base font-medium ${
+                  pathname.startsWith(item.href || "")
+                    ? "bg-gray-100 text-black font-semibold"
+                    : "hover:bg-gray-100"
+                }`}
+                onClick={() => setOpen(false)}
+              >
+                <span className="mr-3 text-gray-500">{item.icon}</span>
+                {item.label}
+                {item.sub && (
+                  <svg
+                    className="ml-auto w-4 h-4 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                )}
+              </Link>
+            </div>
+          ))}
+        </nav>
+      </aside>
+    </>
   );
 }
 
-function AdminNavbar() {
+function AdminNavbar({ setSidebarOpen }) {
   return (
-    <div className="sticky top-0 z-30 w-full bg-white flex items-center justify-between px-8 py-4 shadow rounded-b-xl">
+    <div className="sticky top-0 z-30 w-full bg-white flex items-center justify-between px-4 md:px-8 py-4 shadow rounded-b-xl">
+      {/* Hamburger for mobile */}
+      <button
+        className="md:hidden p-2 mr-2 rounded hover:bg-gray-100"
+        onClick={() => setSidebarOpen(true)}
+      >
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+          <path
+            d="M4 6h16M4 12h16M4 18h16"
+            stroke="#333"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
       {/* Search box */}
       <div className="flex-1 flex items-center max-w-md">
         <input
@@ -155,7 +198,7 @@ function AdminNavbar() {
           className="w-full px-4 py-2 rounded-lg border border-gray-200 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-400 text-gray-700 placeholder-gray-400"
         />
       </div>
-      <div className="flex items-center gap-6 ml-8">
+      <div className="flex items-center gap-4 md:gap-6 ml-2 md:ml-8">
         {/* Settings icon */}
         <button className="p-2 rounded-full hover:bg-gray-100">
           <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
@@ -175,7 +218,7 @@ function AdminNavbar() {
           </svg>
         </button>
         {/* Super Admin box */}
-        <div className="flex items-center bg-orange-50 border border-orange-200 rounded-lg px-4 py-2 gap-3">
+        <div className="hidden sm:flex items-center bg-orange-50 border border-orange-200 rounded-lg px-4 py-2 gap-3">
           <span className="font-medium text-gray-800">Super Admin</span>
           <span className="w-8 h-8 rounded-full bg-orange-200 flex items-center justify-center">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -195,13 +238,18 @@ function AdminNavbar() {
 export default function AdminLayout({ children }) {
   const pathname =
     typeof window !== "undefined" ? window.location.pathname : "";
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className={`min-h-screen ${poppins.className} bg-gray-50`}>
-      <AdminNavbar />
+      <AdminNavbar setSidebarOpen={setSidebarOpen} />
       <div className="flex">
-        <Sidebar pathname={pathname} />
+        <Sidebar
+          pathname={pathname}
+          open={sidebarOpen}
+          setOpen={setSidebarOpen}
+        />
         {/* Main Content */}
-        <main className="flex-1 p-8 overflow-auto">
+        <main className="flex-1 p-2 sm:p-4 md:p-8 overflow-auto">
           <Toaster
             position="top-right"
             toastOptions={{
