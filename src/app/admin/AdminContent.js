@@ -9,8 +9,10 @@ export default function AdminContent() {
   const [isClient, setIsClient] = useState(false);
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [mainImagePreview, setMainImagePreview] = useState(null);
+  const [otherImagesPreview, setOtherImagesPreview] = useState([]);
+  const [mainImageFile, setMainImageFile] = useState(null);
+  const [otherImageFiles, setOtherImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -20,7 +22,6 @@ export default function AdminContent() {
     stock: "",
     colors: [],
     features: [],
-    images: [],
   });
 
   // Fetch products on component mount
@@ -42,46 +43,81 @@ export default function AdminContent() {
     fetchProducts();
   }, []);
 
-  // Handle image upload
-  const handleImageUpload = async (e) => {
+  // Handle main image upload
+  const handleMainImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    // Preview
+    setMainImageFile(file);
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
+    reader.onloadend = () => setMainImagePreview(reader.result);
     reader.readAsDataURL(file);
-    setSelectedFile(file);
+  };
+
+  // Handle other images upload (accumulate files and previews)
+  const handleOtherImagesUpload = (e) => {
+    const newFiles = Array.from(e.target.files);
+    // Filter out duplicates by name (optional, or use lastModified)
+    const uniqueNewFiles = newFiles.filter(
+      (file) =>
+        !otherImageFiles.some(
+          (f) => f.name === file.name && f.size === file.size
+        )
+    );
+    const updatedFiles = [...otherImageFiles, ...uniqueNewFiles];
+    setOtherImageFiles(updatedFiles);
+    // Generate previews for new files and accumulate
+    const newPreviewsPromises = uniqueNewFiles.map((file) => {
+      const reader = new FileReader();
+      return new Promise((resolve) => {
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    });
+    Promise.all(newPreviewsPromises).then((newPreviews) => {
+      setOtherImagesPreview((prev) => [...prev, ...newPreviews]);
+    });
+  };
+
+  // Remove an image from the other images selection
+  const handleRemoveOtherImage = (idx) => {
+    setOtherImageFiles((prev) => prev.filter((_, i) => i !== idx));
+    setOtherImagesPreview((prev) => prev.filter((_, i) => i !== idx));
   };
 
   // Handle product creation
   const handleCreateProduct = async (e) => {
     e.preventDefault();
-
-    if (!selectedFile) {
-      toast.error("Please select an image first");
+    if (!mainImageFile) {
+      toast.error("Please select a main image");
       return;
     }
-
+    setLoading(true);
     try {
-      setLoading(true);
-
-      // Upload image
-      const formData = new FormData();
-      formData.append("images", selectedFile);
-      const uploadResult = await adminApi.uploadImage(formData);
-
+      // Upload main image
+      const mainFormData = new FormData();
+      mainFormData.append("images", mainImageFile);
+      const mainUploadResult = await adminApi.uploadImage(mainFormData);
       if (
-        !uploadResult ||
-        !Array.isArray(uploadResult) ||
-        uploadResult.length === 0
+        !mainUploadResult ||
+        !Array.isArray(mainUploadResult) ||
+        mainUploadResult.length === 0
       ) {
-        throw new Error("Failed to upload image");
+        throw new Error("Failed to upload main image");
+      }
+      const mainImageUrl = mainUploadResult[0];
+
+      // Upload other images (if any)
+      let otherImagesUrls = [];
+      if (otherImageFiles.length > 0) {
+        const otherFormData = new FormData();
+        otherImageFiles.forEach((file) => otherFormData.append("images", file));
+        const otherUploadResult = await adminApi.uploadImage(otherFormData);
+        if (Array.isArray(otherUploadResult)) {
+          otherImagesUrls = otherUploadResult;
+        }
       }
 
-      // Create product with uploaded image
+      // Create product with mainImage and images array
       const productData = {
         name: newProduct.name,
         description: newProduct.description,
@@ -90,12 +126,11 @@ export default function AdminContent() {
         stock: Number(newProduct.stock),
         colors: newProduct.colors || [],
         features: newProduct.features || [],
-        image: uploadResult[0], // Use the first uploaded image
+        mainImage: mainImageUrl,
+        images: otherImagesUrls,
       };
-
       await adminApi.createProduct(productData);
       toast.success("Product created successfully!");
-
       // Reset form
       setNewProduct({
         name: "",
@@ -105,12 +140,11 @@ export default function AdminContent() {
         stock: "",
         colors: [],
         features: [],
-        images: [],
       });
-      setImagePreview(null);
-      setSelectedFile(null);
-
-      // Refresh products list
+      setMainImagePreview(null);
+      setOtherImagesPreview([]);
+      setMainImageFile(null);
+      setOtherImageFiles([]);
       fetchProducts();
     } catch (error) {
       toast.error(error.message || "Failed to create product");
@@ -342,58 +376,71 @@ export default function AdminContent() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Product Image
+                      Main Image
                     </label>
-                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-blue-500 transition-colors">
-                      <div className="space-y-1 text-center">
-                        <svg
-                          className="mx-auto h-12 w-12 text-gray-400"
-                          stroke="currentColor"
-                          fill="none"
-                          viewBox="0 0 48 48"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                            strokeWidth={2}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
+                    <div className="mt-1 flex flex-col items-center">
+                      <input
+                        id="main-image-upload"
+                        name="main-image-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleMainImageUpload}
+                        className="mb-2"
+                        disabled={loading}
+                      />
+                      {mainImagePreview && (
+                        <div className="mb-4">
+                          <Image
+                            src={mainImagePreview}
+                            alt="Main Image Preview"
+                            width={200}
+                            height={200}
+                            className="rounded-lg shadow-sm"
                           />
-                        </svg>
-                        <div className="flex text-sm text-gray-600">
-                          <label
-                            htmlFor="file-upload"
-                            className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
-                          >
-                            <span>Upload an image</span>
-                            <input
-                              id="file-upload"
-                              name="file-upload"
-                              type="file"
-                              accept="image/*"
-                              onChange={handleImageUpload}
-                              className="sr-only"
-                              disabled={loading}
-                            />
-                          </label>
-                          <p className="pl-1">or drag and drop</p>
                         </div>
-                        <p className="text-xs text-gray-500">
-                          PNG, JPG, GIF up to 5MB
-                        </p>
-                      </div>
+                      )}
                     </div>
-                    {imagePreview && (
-                      <div className="mt-4">
-                        <Image
-                          src={imagePreview}
-                          alt="Preview"
-                          width={200}
-                          height={200}
-                          className="rounded-lg shadow-sm"
-                        />
-                      </div>
-                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Other Images
+                    </label>
+                    <div className="mt-1 flex flex-col items-center">
+                      <input
+                        id="other-images-upload"
+                        name="other-images-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleOtherImagesUpload}
+                        className="mb-2"
+                        disabled={loading}
+                        multiple
+                      />
+                      {otherImagesPreview.length > 0 && (
+                        <div className="grid grid-cols-3 gap-4">
+                          {otherImagesPreview.map((preview, index) => (
+                            <div key={index} className="relative group">
+                              <Image
+                                src={preview}
+                                alt={`Other Image ${index + 1}`}
+                                width={200}
+                                height={200}
+                                className="rounded-lg shadow-sm"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveOtherImage(index)}
+                                className="absolute top-1 right-1 bg-white/80 rounded-full p-1 text-red-600 shadow hover:bg-white z-10 opacity-80 group-hover:opacity-100"
+                                title="Remove image"
+                              >
+                                &times;
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -516,18 +563,19 @@ export default function AdminContent() {
                         <tr key={product._id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              {product.image && product.image.length > 0 && (
-                                <div className="flex-shrink-0 h-10 w-10">
-                                  <Image
-                                    src={product.image[0]}
-                                    alt={product.name}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full object-cover"
-                                    unoptimized
-                                  />
-                                </div>
-                              )}
+                              {product.mainImage &&
+                                product.mainImage.length > 0 && (
+                                  <div className="flex-shrink-0 h-10 w-10">
+                                    <Image
+                                      src={product.mainImage}
+                                      alt={product.name}
+                                      width={40}
+                                      height={40}
+                                      className="rounded-full object-cover"
+                                      unoptimized
+                                    />
+                                  </div>
+                                )}
                               <div className="ml-4">
                                 <div className="text-sm font-medium text-gray-900">
                                   {product.name}

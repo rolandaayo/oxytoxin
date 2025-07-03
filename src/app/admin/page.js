@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import AdminContent from "./AdminContent";
+import { redirect } from "next/navigation";
 
 export default function AdminPage() {
   const [isReady, setIsReady] = useState(false);
@@ -27,5 +28,6 @@ export default function AdminPage() {
   }
 
   console.log("AdminPage rendering AdminContent");
-  return <AdminContent />;
+  redirect("/admin/dashboard");
+  return null;
 }

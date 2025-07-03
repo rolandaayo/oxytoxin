@@ -437,55 +437,60 @@ export default function Body() {
               No products found
             </div>
           ) : (
-            sortedItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="bg-white/95 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
-              >
-                <div className="relative h-[200px] md:h-[400px] overflow-hidden">
-                  <Image
-                    src={Array.isArray(item.image) ? item.image[0] : item.image}
-                    alt={item.name}
-                    width={500}
-                    height={500}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 p-2 md:p-4"
-                    style={{
-                      backgroundColor: "#f8f8f8",
-                    }}
-                  />
-                  <button
-                    onClick={() => setQuickViewProduct(item)}
-                    className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm text-black px-2 md:px-4 py-1 md:py-2 rounded-full shadow-md hover:bg-white transition-all duration-300 text-xs md:text-sm w-[calc(100%-1rem)] md:w-auto mx-2"
-                  >
-                    Quick View
-                  </button>
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="text-sm md:text-lg font-semibold text-black truncate">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs md:text-sm text-black mt-1 line-clamp-2">
-                    {item.description}
-                  </p>
-                  <div className="flex justify-between pt-2 items-center mb-3">
-                    <span className="text-lg md:text-xl font-bold text-black">
-                      ${item.price}
-                    </span>
+            sortedItems.map((item, index) => {
+              // Robust image handling
+              const mainImg =
+                item.mainImage ||
+                (Array.isArray(item.image) ? item.image[0] : item.image) ||
+                (item.images && item.images[0]);
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="bg-white/95 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                >
+                  <div className="relative h-[200px] md:h-[400px] overflow-hidden flex flex-col items-center justify-center">
+                    <Image
+                      src={mainImg}
+                      alt={item.name}
+                      width={500}
+                      height={500}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 p-2 md:p-4"
+                      style={{ backgroundColor: "#f8f8f8" }}
+                    />
+                    <button
+                      onClick={() => setQuickViewProduct(item)}
+                      className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm text-black px-2 md:px-4 py-1 md:py-2 rounded-full shadow-md hover:bg-white transition-all duration-300 text-xs md:text-sm w-[calc(100%-1rem)] md:w-auto mx-2"
+                    >
+                      Quick View
+                    </button>
                   </div>
-                  <div className="mt-3"></div>
-                  <button
-                    onClick={() => addToCart(item)}
-                    className="w-full mt-3 px-4 py-2 rounded-full text-sm bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </motion.div>
-            ))
+                  <div className="p-3 md:p-4">
+                    <h3 className="text-sm md:text-lg font-semibold text-black truncate">
+                      {item.name}
+                    </h3>
+                    <p className="text-xs md:text-sm text-black mt-1 line-clamp-2">
+                      {item.description}
+                    </p>
+                    <div className="flex justify-between pt-2 items-center mb-3">
+                      <span className="text-lg md:text-xl font-bold text-black">
+                        ${item.price}
+                      </span>
+                    </div>
+                    <div className="mt-3"></div>
+                    <button
+                      onClick={() => addToCart(item)}
+                      className="w-full mt-3 px-4 py-2 rounded-full text-sm bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })
           )}
         </div>
 

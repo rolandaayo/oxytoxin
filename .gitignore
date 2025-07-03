@@ -1,1 +1,49 @@
-node_modules
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+dist/
+build/
+
+# dotenv environment variables
+.env
+.env.*.local
+
+# Misc
+.DS_Store
+*.pem
+*.local
+
+# Netlify
+.netlify/
+netlify.toml
+
+# OS-specific
+Thumbs.db
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Debug
+*.tgz
+coverage/
