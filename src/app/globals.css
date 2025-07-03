@@ -18,9 +18,16 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-  background-color: black;
 }
 
 p, span {
-  color: black;
+  color: inherit;
+}
+
+/* Test styles to verify CSS is loading */
+.test-red {
+  color: red !important;
+  background: yellow !important;
+  padding: 20px !important;
+  border: 3px solid blue !important;
 }
