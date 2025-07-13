@@ -107,8 +107,8 @@ export function CartProvider({ children }) {
     setLoading(true);
     try {
       const handler = PaystackPop.setup({
-        key: "pk_test_dc632dcb524653128c7ffcd7f3c74cd9c2704c79",
-        email: "customer@email.com",
+        key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35",
+        // email: "customer@email.com",
         amount: totalAmount * 100,
         currency: "NGN",
         ref: "" + Math.floor(Math.random() * 1000000000 + 1),
