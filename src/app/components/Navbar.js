@@ -24,6 +24,7 @@ export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const {
     cartItems,
     showCart,
@@ -41,6 +42,19 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Check auth status on mount and when user menu is toggled
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem("authToken"));
+  }, [showUserMenu]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    setIsAuthenticated(false);
+    setShowUserMenu(false);
+    // Optionally, refresh the page or redirect
+    window.location.reload();
+  };
 
   const menuItems = [
     { name: "Home", href: "/" },
@@ -153,13 +167,22 @@ export default function Navbar() {
                 {/* User Dropdown */}
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
-                    <Link
-                      href="/login"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setShowUserMenu(false)}
-                    >
-                      Login
-                    </Link>
+                    {isAuthenticated ? (
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      >
+                        Logout
+                      </button>
+                    ) : (
+                      <Link
+                        href="/login"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Login
+                      </Link>
+                    )}
                   </div>
                 )}
               </div>
