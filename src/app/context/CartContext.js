@@ -104,6 +104,16 @@ export function CartProvider({ children }) {
   };
 
   const initializePayment = async () => {
+    // Check for auth token
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+    if (!token) {
+      toast.error("You must be logged in to proceed to payment.");
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
+      return;
+    }
     setLoading(true);
     try {
       const handler = PaystackPop.setup({

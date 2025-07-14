@@ -171,10 +171,15 @@ export default function Body() {
       return;
     }
     const quantity = itemQuantities[item.id] || 1;
+    // Generate a unique cartItemId based on product id, size, and color (if present)
+    const cartItemId = `${item.id}-${selectedSize[item.id]}${
+      item.color ? `-${item.color}` : ""
+    }`;
     const itemWithDetails = {
       ...item,
       size: selectedSize[item.id],
       quantity,
+      cartItemId,
     };
     contextAddToCart(itemWithDetails);
     setSelectedSize((prev) => {
@@ -184,15 +189,21 @@ export default function Body() {
     });
   };
 
-  const removeFromCart = (itemId) => {
-    const itemToRemove = cartItems.find((item) => item.id === itemId);
-    const newCartItems = cartItems.filter((item) => item.id !== itemId);
+  const removeFromCart = (cartItemId) => {
+    const itemToRemove = cartItems.find(
+      (item) => item.cartItemId === cartItemId
+    );
+    const newCartItems = cartItems.filter(
+      (item) => item.cartItemId !== cartItemId
+    );
     setCartItems(newCartItems);
     localStorage.setItem("cartItems", JSON.stringify(newCartItems));
-    toast.success(`${itemToRemove.name} removed from cart`, {
-      icon: "🗑️",
-      duration: 2000,
-    });
+    if (itemToRemove) {
+      toast.success(`${itemToRemove.name} removed from cart`, {
+        icon: "🗑️",
+        duration: 2000,
+      });
+    }
   };
 
   const updateQuantity = (itemId, value) => {
@@ -519,7 +530,7 @@ export default function Body() {
                   <>
                     {cartItems.map((item) => (
                       <div
-                        key={item.id}
+                        key={item.cartItemId}
                         className="flex items-center gap-4 mb-4 p-3 border rounded-lg"
                       >
                         <div className="w-24 h-24 bg-gray-50 rounded overflow-hidden">
@@ -551,7 +562,7 @@ export default function Body() {
                           </p>
                         </div>
                         <button
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={() => removeFromCart(item.cartItemId)}
                           className="text-black hover:text-gray-700"
                         >
                           Remove
