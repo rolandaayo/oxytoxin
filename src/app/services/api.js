@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://oxytoxin-backend.vercel.app/";
+const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
 
 // Public API calls
 export const publicApi = {
