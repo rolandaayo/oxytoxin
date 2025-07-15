@@ -1,36 +1,10 @@
 "use client";
-import { useState } from "react";
-
-const demoCustomersInit = [
-  {
-    id: 1,
-    name: "Jane Doe",
-    email: "jane@example.com",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    status: "Active",
-    joined: "2023-10-01",
-  },
-  {
-    id: 2,
-    name: "John Smith",
-    email: "john@example.com",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    status: "Inactive",
-    joined: "2023-08-15",
-  },
-  {
-    id: 3,
-    name: "Alice Johnson",
-    email: "alice@example.com",
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-    status: "Active",
-    joined: "2023-09-20",
-  },
-];
+import { useState, useEffect } from "react";
+import { adminApi } from "../../services/api";
 
 export default function CustomersPage() {
   const [search, setSearch] = useState("");
-  const [customers, setCustomers] = useState(demoCustomersInit);
+  const [customers, setCustomers] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newCustomer, setNewCustomer] = useState({
     name: "",
@@ -38,6 +12,29 @@ export default function CustomersPage() {
     avatar: "",
     status: "Active",
   });
+
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const users = await adminApi.getUsers();
+        // Map backend users to customer table format
+        setCustomers(
+          users.map((u) => ({
+            id: u._id,
+            name: u.name,
+            email: u.email,
+            avatar:
+              u.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
+            status: "Active",
+            joined: u.createdAt ? u.createdAt.slice(0, 10) : "",
+          }))
+        );
+      } catch (err) {
+        // Optionally show a toast or fallback
+      }
+    }
+    fetchUsers();
+  }, []);
 
   const filtered = customers.filter(
     (c) =>

@@ -1,3 +1,7 @@
+"use client";
+import { useEffect, useState } from "react";
+import { adminApi } from "../../services/api";
+
 const demoStats = [
   { label: "Total Users", value: 5, icon: "👥" },
   { label: "Total Transactions", value: 0, icon: "💰" },
@@ -17,6 +21,27 @@ export default function DashboardPage() {
   const vendorPercent = 80;
   const customerPercent = 20;
   const donutCirc = 2 * Math.PI * 40;
+
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const users = await adminApi.getUsers();
+        setUsers(users);
+      } catch (err) {
+        // Optionally show a toast or fallback
+      }
+    }
+    fetchUsers();
+  }, []);
+
+  // Remove demoStats and use a dynamic value for Total Users
+  const stats = [
+    { label: "Total Users", value: users.length, icon: "👥" },
+    { label: "Total Transactions", value: 0, icon: "💰" },
+    { label: "Total Products", value: 0, icon: "📦" },
+    { label: "Total Orders", value: 1, icon: "🧾" },
+  ];
   return (
     <div className="space-y-8">
       {/* Welcome Card */}
@@ -37,7 +62,7 @@ export default function DashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {demoStats.map((stat) => (
+        {stats.map((stat) => (
           <div
             key={stat.label}
             className="bg-white rounded-xl shadow flex flex-col items-center py-6"
@@ -69,12 +94,14 @@ export default function DashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {demoUsers.map((user, idx) => (
-                <tr key={user.id} className="hover:bg-gray-100">
+              {users.map((user, idx) => (
+                <tr key={user._id} className="hover:bg-gray-100">
                   <td className="py-2 px-4 text-black">{idx + 1}</td>
                   <td className="py-2 px-4 text-black">{user.name}</td>
-                  <td className="py-2 px-4 text-black">{user.type}</td>
-                  <td className="py-2 px-4 text-black">{user.date}</td>
+                  <td className="py-2 px-4 text-black">Customer</td>
+                  <td className="py-2 px-4 text-black">
+                    {user.createdAt ? user.createdAt.slice(0, 10) : ""}
+                  </td>
                 </tr>
               ))}
             </tbody>

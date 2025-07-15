@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
+const BACKEND_URL = "http://localhost:4000";
 
 // Public API calls
 export const publicApi = {
@@ -212,6 +212,33 @@ export const adminApi = {
       return result.data;
     } catch (error) {
       console.error("Error uploading image:", error);
+      throw error;
+    }
+  },
+
+  // Fetch all users (admin)
+  getUsers: async () => {
+    try {
+      const url = `${BACKEND_URL}/api/admin/users`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+        cache: "no-store",
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Unknown error from server");
+      }
+      return result.data;
+    } catch (error) {
       throw error;
     }
   },

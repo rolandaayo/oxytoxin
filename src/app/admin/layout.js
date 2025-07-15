@@ -220,7 +220,7 @@ function AdminNavbar({ setSidebarOpen }) {
         </button>
         {/* Super Admin box */}
         <div className="hidden sm:flex items-center bg-orange-50 border border-orange-200 rounded-lg px-4 py-2 gap-3">
-          <span className="font-medium text-gray-800">Super Admin</span>
+          <span className="font-medium text-gray-800">Admin</span>
           <span className="w-8 h-8 rounded-full bg-orange-200 flex items-center justify-center">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
               <circle cx="12" cy="8" r="4" fill="#F59E42" />
