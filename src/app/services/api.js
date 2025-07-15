@@ -242,4 +242,54 @@ export const adminApi = {
       throw error;
     }
   },
+
+  // Update user (admin)
+  updateUser: async (id, updates) => {
+    try {
+      const url = `${BACKEND_URL}/api/admin/users/${id}`;
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
+        body: JSON.stringify(updates),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to update user");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Delete user (admin)
+  deleteUser: async (id) => {
+    try {
+      const url = `${BACKEND_URL}/api/admin/users/${id}`;
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to delete user");
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

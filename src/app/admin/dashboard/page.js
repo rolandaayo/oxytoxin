@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { adminApi } from "../../services/api";
+import { format } from "date-fns";
 
 const demoStats = [
   { label: "Total Users", value: 5, icon: "👥" },
@@ -35,6 +36,8 @@ export default function DashboardPage() {
     fetchUsers();
   }, []);
 
+  const today = format(new Date(), "MMM dd, yyyy");
+
   // Remove demoStats and use a dynamic value for Total Users
   const stats = [
     { label: "Total Users", value: users.length, icon: "👥" },
@@ -55,7 +58,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-center mt-4 sm:mt-0 gap-4">
           <div className="bg-white/10 rounded-lg px-4 py-2 flex items-center gap-2">
             <span className="text-lg">📅</span>
-            <span className="font-medium">Jul 03, 2025</span>
+            <span className="font-medium">{today}</span>
           </div>
         </div>
       </div>

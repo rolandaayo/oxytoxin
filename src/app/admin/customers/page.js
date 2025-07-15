@@ -12,6 +12,11 @@ export default function CustomersPage() {
     avatar: "",
     status: "Active",
   });
+  const [editModal, setEditModal] = useState({ open: false, customer: null });
+  const [deleteConfirm, setDeleteConfirm] = useState({
+    open: false,
+    customer: null,
+  });
 
   useEffect(() => {
     async function fetchUsers() {
@@ -56,8 +61,57 @@ export default function CustomersPage() {
     setNewCustomer({ name: "", email: "", avatar: "", status: "Active" });
   };
 
-  const handleRemoveCustomer = (id) => {
-    setCustomers(customers.filter((c) => c.id !== id));
+  // Add a function to refresh users from the backend
+  const refreshUsers = async () => {
+    try {
+      const users = await adminApi.getUsers();
+      setCustomers(
+        users.map((u) => ({
+          id: u._id,
+          name: u.name,
+          email: u.email,
+          avatar: u.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
+          status: "Active",
+          joined: u.createdAt ? u.createdAt.slice(0, 10) : "",
+        }))
+      );
+    } catch (err) {}
+  };
+
+  // Update handleRemoveCustomer to show confirmation
+  const handleRemoveCustomer = (customer) => {
+    setDeleteConfirm({ open: true, customer });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm.customer) return;
+    try {
+      await adminApi.deleteUser(deleteConfirm.customer.id);
+      await refreshUsers();
+      setDeleteConfirm({ open: false, customer: null });
+    } catch (err) {
+      alert("Failed to delete user");
+    }
+  };
+
+  // Show edit modal
+  const handleEditCustomer = (customer) => {
+    setEditModal({ open: true, customer });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    const { customer } = editModal;
+    try {
+      await adminApi.updateUser(customer.id, {
+        name: customer.name,
+        email: customer.email,
+      });
+      await refreshUsers();
+      setEditModal({ open: false, customer: null });
+    } catch (err) {
+      alert("Failed to update user");
+    }
   };
 
   return (
@@ -142,14 +196,13 @@ export default function CustomersPage() {
                   <td className="px-6 py-4 whitespace-nowrap flex gap-2">
                     <button
                       className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-xs font-medium"
-                      // Placeholder for edit functionality
-                      onClick={() => alert("Edit feature coming soon!")}
+                      onClick={() => handleEditCustomer(customer)}
                     >
                       Edit
                     </button>
                     <button
                       className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs font-medium"
-                      onClick={() => handleRemoveCustomer(customer.id)}
+                      onClick={() => handleRemoveCustomer(customer)}
                     >
                       Remove
                     </button>
@@ -238,6 +291,106 @@ export default function CustomersPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Edit Customer Modal */}
+      {editModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+              onClick={() => setEditModal({ open: false, customer: null })}
+            >
+              &times;
+            </button>
+            <h2 className="text-xl font-bold mb-4">Edit Customer</h2>
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  value={editModal.customer.name}
+                  onChange={(e) =>
+                    setEditModal({
+                      ...editModal,
+                      customer: { ...editModal.customer, name: e.target.value },
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-black"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={editModal.customer.email}
+                  onChange={(e) =>
+                    setEditModal({
+                      ...editModal,
+                      customer: {
+                        ...editModal.customer,
+                        email: e.target.value,
+                      },
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-black"
+                  required
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+              onClick={() => setDeleteConfirm({ open: false, customer: null })}
+            >
+              &times;
+            </button>
+            <h2 className="text-xl font-bold mb-4 text-red-600">
+              Confirm Delete
+            </h2>
+            <p className="mb-6 text-gray-700">
+              Are you sure you want to remove{" "}
+              <span className="font-semibold">
+                {deleteConfirm.customer?.name}
+              </span>
+              ?
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold shadow hover:bg-gray-300 transition"
+                onClick={() =>
+                  setDeleteConfirm({ open: false, customer: null })
+                }
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold shadow hover:bg-red-700 transition"
+                onClick={confirmDelete}
+              >
+                Yes, Remove
+              </button>
+            </div>
           </div>
         </div>
       )}
