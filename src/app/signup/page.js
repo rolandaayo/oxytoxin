@@ -23,7 +23,8 @@ export default function SignupPage() {
   const router = useRouter();
 
   const BACKEND_URL =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    "https://oxytoxin-backend.vercel.app";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,9 +59,9 @@ export default function SignupPage() {
     >
       <div className="flex flex-col md:flex-row shadow-lg overflow-hidden w-full max-w-3xl items-stretch">
         {/* Image Section */}
-        <div className="md:w-1/2 w-full flex-shrink-0 flex items-stretch">
+        <div className="hidden md:flex md:w-1/2 w-full flex-shrink-0 items-stretch">
           <Image
-            src="/images/welcome2.jpg"
+            src="/images/welcome2.JPG"
             alt="Welcome"
             width={400}
             height={400}
@@ -70,7 +71,7 @@ export default function SignupPage() {
           />
         </div>
         {/* Form Section */}
-        <div className="md:w-1/2 w-full p-6 md:p-8 flex flex-col justify-center bg-white">
+        <div className="md:w-1/2 w-full p-6 md:p-8 flex flex-col justify-center items-center bg-white min-h-[400px]">
           <h2 className="text-xl md:text-2xl font-bold text-center text-blue-700 mb-2">
             Welcome to Oxytoxin
           </h2>
