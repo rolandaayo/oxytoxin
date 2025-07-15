@@ -398,7 +398,7 @@ export default function Order() {
                         Quantity: {item.quantity}
                       </p>
                       <p className="text-sm font-medium text-black">
-                        ${item.price * item.quantity}
+                        ₦{(item.price * item.quantity).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -409,7 +409,7 @@ export default function Order() {
                 <div className="flex justify-between items-center">
                   <span className="font-medium text-black">Total Amount:</span>
                   <span className="font-bold text-black">
-                    ${order.totalAmount}
+                    ₦{order.totalAmount.toLocaleString()}
                   </span>
                 </div>
                 <div className="mt-2 text-sm text-gray-600">

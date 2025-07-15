@@ -64,7 +64,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {stats.map((stat) => (
           <div
             key={stat.label}
@@ -82,7 +82,7 @@ export default function DashboardPage() {
         {/* New Users Table */}
         <div className="md:col-span-2 bg-white rounded-xl shadow p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="text-lg font-semibold">New Users</div>
+            <div className="text-lg font-semibold text-black">New Users</div>
             <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
               Export
             </button>
@@ -93,7 +93,7 @@ export default function DashboardPage() {
                 <th className="py-2 px-4 text-left text-black">#</th>
                 <th className="py-2 px-4 text-left text-black">Name</th>
                 <th className="py-2 px-4 text-left text-black">Account Type</th>
-                <th className="py-2 px-4 text-left text-black">Date</th>
+                <th className="py-2 px-4 text-left text-black">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -103,7 +103,15 @@ export default function DashboardPage() {
                   <td className="py-2 px-4 text-black">{user.name}</td>
                   <td className="py-2 px-4 text-black">Customer</td>
                   <td className="py-2 px-4 text-black">
-                    {user.createdAt ? user.createdAt.slice(0, 10) : ""}
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-semibold ${
+                        user.status === "Active"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-500"
+                      }`}
+                    >
+                      {user.status || "Active"}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -112,7 +120,9 @@ export default function DashboardPage() {
         </div>
         {/* User Analysis Donut Chart */}
         <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center justify-center">
-          <div className="text-lg font-semibold mb-4">User Analysis</div>
+          <div className="text-lg font-semibold mb-4 text-black">
+            User Analysis
+          </div>
           <svg width="120" height="120" viewBox="0 0 100 100">
             {/* Background circle */}
             <circle
@@ -151,11 +161,11 @@ export default function DashboardPage() {
           <div className="flex flex-col items-center mt-4 text-sm">
             <div className="flex items-center gap-2 mb-1">
               <span className="inline-block w-3 h-3 rounded-full bg-orange-400"></span>
-              <span>Vendors ({vendorPercent}%)</span>
+              <span className="text-black">Vendors ({vendorPercent}%)</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="inline-block w-3 h-3 rounded-full bg-gray-300"></span>
-              <span>Customers ({customerPercent}%)</span>
+              <span className="text-black">Customers ({customerPercent}%)</span>
             </div>
           </div>
         </div>

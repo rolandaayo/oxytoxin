@@ -25,6 +25,7 @@ export default function Navbar() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState("");
   const {
     cartItems,
     showCart,
@@ -43,9 +44,10 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Check auth status on mount and when user menu is toggled
+  // Check auth status and get user name on mount and when user menu is toggled
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("authToken"));
+    setUserName(localStorage.getItem("userName") || "");
   }, [showUserMenu]);
 
   const handleLogout = () => {
@@ -59,7 +61,6 @@ export default function Navbar() {
   const menuItems = [
     { name: "Home", href: "/" },
     { name: "Categories", href: "/categories" },
-    { name: "Orders", href: "/orders" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
@@ -161,7 +162,13 @@ export default function Navbar() {
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   onClick={() => setShowUserMenu(!showUserMenu)}
                 >
-                  <FaUser className="text-gray-600 w-5 h-5" />
+                  {isAuthenticated && userName ? (
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-lg uppercase">
+                      {userName.slice(0, 2)}
+                    </span>
+                  ) : (
+                    <FaUser className="text-gray-600 w-5 h-5" />
+                  )}
                 </button>
 
                 {/* User Dropdown */}

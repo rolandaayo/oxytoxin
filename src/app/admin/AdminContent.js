@@ -104,7 +104,7 @@ export default function AdminContent() {
       ) {
         throw new Error("Failed to upload main image");
       }
-      const mainImageUrl = mainUploadResult[0];
+      const mainImageUrl = mainUploadResult[0].url;
 
       // Upload other images (if any)
       let otherImagesUrls = [];
@@ -113,7 +113,7 @@ export default function AdminContent() {
         otherImageFiles.forEach((file) => otherFormData.append("images", file));
         const otherUploadResult = await adminApi.uploadImage(otherFormData);
         if (Array.isArray(otherUploadResult)) {
-          otherImagesUrls = otherUploadResult;
+          otherImagesUrls = otherUploadResult.map((img) => img.url);
         }
       }
 
@@ -186,6 +186,26 @@ export default function AdminContent() {
     }
   };
 
+  // Add a wrapper for edit form submission
+  const handleEditFormSubmit = async (e) => {
+    e.preventDefault();
+    if (!editingProduct) return;
+    // Prepare the product data for update
+    const productData = {
+      name: editingProduct.name,
+      description: editingProduct.description,
+      price: Number(editingProduct.price),
+      category: editingProduct.category,
+      stock: Number(editingProduct.stock),
+      colors: editingProduct.colors || [],
+      features: editingProduct.features || [],
+      mainImage: editingProduct.mainImage,
+      images: editingProduct.images || [],
+    };
+    await handleUpdateProduct(editingProduct._id, productData);
+    setEditingProduct(null);
+  };
+
   // Log render state
   console.log("AdminContent rendering, isClient:", isClient);
 
@@ -227,7 +247,7 @@ export default function AdminContent() {
               </div>
               <form
                 onSubmit={
-                  editingProduct ? handleUpdateProduct : handleCreateProduct
+                  editingProduct ? handleEditFormSubmit : handleCreateProduct
                 }
                 className="p-6 space-y-6"
               >
@@ -260,7 +280,7 @@ export default function AdminContent() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Price ($)
+                      Price (₦)
                     </label>
                     <input
                       type="number"
@@ -588,7 +608,7 @@ export default function AdminContent() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">
-                              ${product.price.toFixed(2)}
+                              ₦{product.price.toLocaleString()}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">

@@ -292,4 +292,30 @@ export const adminApi = {
       throw error;
     }
   },
+
+  // Create new user (admin)
+  createUser: async (userData) => {
+    try {
+      const url = `${BACKEND_URL}/api/admin/users`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
+        body: JSON.stringify(userData),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to create user");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

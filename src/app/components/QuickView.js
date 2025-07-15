@@ -85,54 +85,41 @@ export default function QuickView({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
               {/* Image Section */}
-              <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden flex flex-col items-center justify-center">
-                {images.length > 0 && (
-                  <div className="relative w-full h-full flex flex-col items-center">
-                    <img
-                      src={images[carouselIndex]}
-                      alt={product.name}
-                      className="w-full h-80 object-contain rounded-lg transition-all duration-300"
-                      style={{ backgroundColor: "#f8f8f8", padding: "1rem" }}
-                    />
-                    {images.length > 1 && (
-                      <>
-                        <button
-                          onClick={handlePrev}
-                          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10"
-                          aria-label="Previous image"
-                        >
-                          &#8592;
-                        </button>
-                        <button
-                          onClick={handleNext}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white z-10"
-                          aria-label="Next image"
-                        >
-                          &#8594;
-                        </button>
-                      </>
-                    )}
-                    {/* Thumbnails */}
-                    {images.length > 1 && (
-                      <div className="flex gap-2 mt-4 justify-center">
-                        {images.map((img, idx) => (
-                          <img
-                            key={idx}
-                            src={img}
-                            alt={`Thumbnail ${idx + 1}`}
-                            className={`w-12 h-12 object-cover rounded border cursor-pointer transition-all duration-200 ${
-                              carouselIndex === idx
-                                ? "ring-2 ring-blue-500"
-                                : "opacity-70"
-                            }`}
-                            style={{ backgroundColor: "#f8f8f8" }}
-                            onClick={() => setCarouselIndex(idx)}
-                          />
-                        ))}
-                      </div>
-                    )}
+              <div className="flex flex-row gap-4 items-start w-full">
+                {/* Thumbnails */}
+                {images.length > 1 && (
+                  <div
+                    className="flex flex-col gap-2 overflow-y-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300"
+                    style={{
+                      WebkitOverflowScrolling: "touch",
+                      maxHeight: "400px",
+                    }}
+                  >
+                    {images.map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={img}
+                        alt={`Thumbnail ${idx + 1}`}
+                        className={`w-16 h-16 object-cover rounded border cursor-pointer transition-all duration-200 mx-1 md:mx-0 md:my-1 ${
+                          carouselIndex === idx
+                            ? "ring-2 ring-blue-500"
+                            : "opacity-70"
+                        }`}
+                        style={{ backgroundColor: "#f8f8f8" }}
+                        onClick={() => setCarouselIndex(idx)}
+                      />
+                    ))}
                   </div>
                 )}
+                {/* Main Image */}
+                <div className="flex-1 flex items-center justify-center aspect-square bg-gray-50 rounded-lg overflow-hidden">
+                  <img
+                    src={images[carouselIndex]}
+                    alt={product.name}
+                    className="w-full h-80 object-contain rounded-lg transition-all duration-100"
+                    style={{ backgroundColor: "#f8f8f8", padding: "1rem" }}
+                  />
+                </div>
               </div>
 
               {/* Details Section */}
@@ -142,24 +129,8 @@ export default function QuickView({
                     {product.name}
                   </h2>
                   <p className="text-lg font-semibold text-black">
-                    ${product.price}
+                    ₦{product.price.toLocaleString()}
                   </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar
-                      key={i}
-                      className={`w-5 h-5 ${
-                        i < Math.floor(product.rating)
-                          ? "text-yellow-400"
-                          : "text-gray-300"
-                      }`}
-                    />
-                  ))}
-                  <span className="text-sm text-black">
-                    ({product.reviews} reviews)
-                  </span>
                 </div>
 
                 <p className="text-black">{product.description}</p>

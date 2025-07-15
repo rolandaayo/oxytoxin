@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { adminApi } from "../../services/api";
+import { format } from "date-fns";
 
 export default function CustomersPage() {
   const [search, setSearch] = useState("");
@@ -9,8 +10,7 @@ export default function CustomersPage() {
   const [newCustomer, setNewCustomer] = useState({
     name: "",
     email: "",
-    avatar: "",
-    status: "Active",
+    password: "",
   });
   const [editModal, setEditModal] = useState({ open: false, customer: null });
   const [deleteConfirm, setDeleteConfirm] = useState({
@@ -32,6 +32,8 @@ export default function CustomersPage() {
               u.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
             status: "Active",
             joined: u.createdAt ? u.createdAt.slice(0, 10) : "",
+            lastLogin: u.lastLogin,
+            loginHistory: u.loginHistory,
           }))
         );
       } catch (err) {
@@ -47,18 +49,20 @@ export default function CustomersPage() {
       c.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleAddCustomer = (e) => {
+  const handleAddCustomer = async (e) => {
     e.preventDefault();
-    setCustomers([
-      ...customers,
-      {
-        ...newCustomer,
-        id: Date.now(),
-        joined: new Date().toISOString().slice(0, 10),
-      },
-    ]);
-    setShowModal(false);
-    setNewCustomer({ name: "", email: "", avatar: "", status: "Active" });
+    try {
+      await adminApi.createUser({
+        name: newCustomer.name,
+        email: newCustomer.email,
+        password: newCustomer.password,
+      });
+      await refreshUsers();
+      setShowModal(false);
+      setNewCustomer({ name: "", email: "", password: "" });
+    } catch (err) {
+      alert("Failed to add user");
+    }
   };
 
   // Add a function to refresh users from the backend
@@ -118,7 +122,7 @@ export default function CustomersPage() {
     <div className="max-w-4xl mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold mb-2 text-gray-900">Customers</h1>
       <p className="mb-6 text-gray-600 text-lg">
-        Manage your store's customers
+        Manage your store&apos;s customers
       </p>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
         <input
@@ -147,6 +151,12 @@ export default function CustomersPage() {
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Last Login
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Logins
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Joined
@@ -191,6 +201,17 @@ export default function CustomersPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                    {customer.lastLogin
+                      ? format(
+                          new Date(customer.lastLogin),
+                          "MMM dd, yyyy HH:mm"
+                        )
+                      : "Never"}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                    {customer.loginHistory ? customer.loginHistory.length : 0}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-500">
                     {customer.joined}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap flex gap-2">
@@ -223,7 +244,9 @@ export default function CustomersPage() {
             >
               &times;
             </button>
-            <h2 className="text-xl font-bold mb-4">Add New Customer</h2>
+            <h2 className="text-xl font-bold mb-4 text-black">
+              Add New Customer
+            </h2>
             <form onSubmit={handleAddCustomer} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -255,32 +278,17 @@ export default function CustomersPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Avatar URL
+                  Password
                 </label>
                 <input
-                  type="url"
-                  value={newCustomer.avatar}
+                  type="password"
+                  value={newCustomer.password}
                   onChange={(e) =>
-                    setNewCustomer({ ...newCustomer, avatar: e.target.value })
+                    setNewCustomer({ ...newCustomer, password: e.target.value })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
-                  placeholder="https://..."
+                  required
                 />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Status
-                </label>
-                <select
-                  value={newCustomer.status}
-                  onChange={(e) =>
-                    setNewCustomer({ ...newCustomer, status: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
-                >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
               </div>
               <div className="flex justify-end">
                 <button

@@ -13,7 +13,7 @@ export default function Body() {
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000000 });
   const [selectedSize, setSelectedSize] = useState({});
   const [itemQuantities, setItemQuantities] = useState({});
   const [loading, setLoading] = useState(false);
@@ -89,7 +89,11 @@ export default function Body() {
         };
         // Add cache-busting parameter
         const data = await publicApi.getProducts(filters, refreshTrigger);
-        setProducts(Array.isArray(data) ? data : []);
+        const mapped = Array.isArray(data)
+          ? data.map((p) => ({ ...p, id: p._id || p.id }))
+          : [];
+        setProducts(mapped);
+        console.log("Fetched products:", mapped);
       } catch (error) {
         console.error("Error fetching products:", error);
         setError("Failed to fetch products");
@@ -243,6 +247,30 @@ export default function Body() {
   };
 
   const initializePayment = async () => {
+    // Block payment if not logged in
+    const authToken =
+      typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+    if (!authToken) {
+      toast(
+        (t) => (
+          <span>
+            You need to sign in to proceed to payment.
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                setShowCart(false);
+                window.location.href = "/login";
+              }}
+              className="ml-3 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Sign In
+            </button>
+          </span>
+        ),
+        { icon: "🔒", duration: 8000 }
+      );
+      return;
+    }
     if (!paystackLoaded) {
       toast.error("Payment system is not ready. Please try again in a moment.");
       return;
@@ -257,7 +285,7 @@ export default function Body() {
 
       const handler = PaystackPop.setup({
         key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35",
-        email: "customer@email.com",
+        email: localStorage.getItem("userEmail") || "customer@email.com",
         amount: totalAmount * 100,
         currency: "NGN",
         ref: reference,
@@ -312,6 +340,11 @@ export default function Body() {
     }
     return 0;
   });
+
+  // Before rendering, log filtered and sorted items
+  console.log("All products:", products);
+  console.log("Filtered items:", filteredItems);
+  console.log("Sorted items:", sortedItems);
 
   return (
     <PageTransition>
@@ -416,7 +449,7 @@ export default function Body() {
           )}
           {(priceRange.min > 0 || priceRange.max < 1000) && (
             <span className="px-3 py-1 bg-black/10 text-black rounded-full text-sm flex items-center gap-2">
-              Price: ${priceRange.min} - ${priceRange.max}
+              Price: ₦{priceRange.min} - ₦{priceRange.max}
               <button
                 onClick={() => setPriceRange({ min: 0, max: 1000 })}
                 className="hover:text-black"
@@ -488,7 +521,7 @@ export default function Body() {
                     </p>
                     <div className="flex justify-between pt-2 items-center mb-3">
                       <span className="text-lg md:text-xl font-bold text-black">
-                        ${item.price}
+                        ₦{item.price.toLocaleString()}
                       </span>
                     </div>
                     <div className="mt-3"></div>
@@ -536,9 +569,10 @@ export default function Body() {
                         <div className="w-24 h-24 bg-gray-50 rounded overflow-hidden">
                           <Image
                             src={
-                              Array.isArray(item.image)
-                                ? item.image[0]
-                                : item.image
+                              item.mainImage ||
+                              (Array.isArray(item.images)
+                                ? item.images[0]
+                                : undefined)
                             }
                             alt={item.name}
                             width={96}
@@ -558,7 +592,10 @@ export default function Body() {
                             Quantity: {item.quantity || 1}
                           </p>
                           <p className="font-bold text-black">
-                            ${item.price * (item.quantity || 1)}
+                            ₦
+                            {(
+                              item.price * (item.quantity || 1)
+                            ).toLocaleString()}
                           </p>
                         </div>
                         <button
@@ -573,7 +610,7 @@ export default function Body() {
                       <div className="flex justify-between mb-4">
                         <span className="font-bold text-black">Total:</span>
                         <span className="font-bold text-black">
-                          ${totalAmount}
+                          ₦{totalAmount.toLocaleString()}
                         </span>
                       </div>
                       <button
