@@ -44,16 +44,12 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="flex flex-col items-center">
               <FaTruck className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-black mb-2">
-                Free Shipping
-              </h4>
+              <h4 className="font-semibold text-black mb-2">Free Shipping</h4>
               <p className="text-sm text-black">On orders over $100</p>
             </div>
             <div className="flex flex-col items-center">
               <FaCreditCard className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-black mb-2">
-                Secure Payment
-              </h4>
+              <h4 className="font-semibold text-black mb-2">Secure Payment</h4>
               <p className="text-sm text-black ">100% secure payments</p>
             </div>
             <div className="flex flex-col items-center">
@@ -92,23 +88,29 @@ export default function Footer() {
 
           <div className="mt-12 pt-8 border-t border-[#3a5d28] text-left md:text-center">
             <p className="text-gray-400 text-sm">
-              © {currentYear} Oxtoyin. All rights reserved.
+              © {currentYear} Oxytoxin. All rights reserved.
             </p>
             <div className="mt-4 flex justify-center space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white text-sm">
+              <a href="#" className="text-gray-400 hover:text-black text-sm">
                 Terms & Conditions
               </a>
               <span className="text-gray-600">•</span>
-              <a href="#" className="text-gray-400 hover:text-white text-sm">
+              <a href="#" className="text-gray-400 hover:text-black text-sm">
                 Privacy Policy
               </a>
               <span className="text-gray-600">•</span>
-              <a href="#" className="text-gray-400 hover:text-white text-sm">
+              <a href="#" className="text-gray-400 hover:text-black text-sm">
                 Sitemap
               </a>
             </div>
             <div className="text-gray-400 text-sm pt-4 text-center">
-              <h2>website built by <a href="https://rolandayo.vercel.app" target="_blank">@rolandaayo</a> with ❤️</h2>
+              <h2>
+                website built by{" "}
+                <a href="https://rolandayo.vercel.app" target="_blank">
+                  @rolandaayo
+                </a>{" "}
+                with ❤️
+              </h2>
             </div>
           </div>
         </div>
