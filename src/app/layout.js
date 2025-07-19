@@ -5,7 +5,7 @@ import ClientLayout from "./components/ClientLayout";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Oxtoyin - Clothing Store",
+  title: "Oxytoxin - Clothing Store",
   description:
     "Oxtoyin is a clothing store that sells a wide range of products for men, women, and children.",
 };
