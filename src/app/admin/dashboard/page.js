@@ -1,30 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { adminApi } from "../../services/api";
 import { format } from "date-fns";
 
-const demoStats = [
-  { label: "Total Users", value: 5, icon: "👥" },
-  { label: "Total Transactions", value: 0, icon: "💰" },
-  { label: "Total Products", value: 0, icon: "📦" },
-  { label: "Total Orders", value: 1, icon: "🧾" },
-];
-
-const demoUsers = [
-  { id: 1, name: "Roland Aayo", type: "Vendor", date: "28 Jun, 2025" },
-  { id: 2, name: "John Doe", type: "Customer", date: "26 Jun, 2025" },
-  { id: 3, name: "Ayo Vendor", type: "Vendor", date: "24 Jun, 2025" },
-  { id: 4, name: "Tomiwa Roland", type: "Vendor", date: "21 Jun, 2025" },
-];
-
 export default function DashboardPage() {
-  // For the donut chart: 80% vendors, 20% customers
-  const vendorPercent = 80;
-  const customerPercent = 20;
-  const donutCirc = 2 * Math.PI * 40;
-
+  const router = useRouter();
   const [users, setUsers] = useState([]);
   useEffect(() => {
+    // Check authentication (localStorage for demo)
+    if (typeof window !== "undefined") {
+      const isAuthed = localStorage.getItem("admin_authenticated");
+      if (!isAuthed) {
+        router.replace("/admin");
+        return;
+      }
+    }
     async function fetchUsers() {
       try {
         const users = await adminApi.getUsers();
@@ -34,11 +25,12 @@ export default function DashboardPage() {
       }
     }
     fetchUsers();
-  }, []);
+  }, [router]);
 
   const today = format(new Date(), "MMM dd, yyyy");
-
-  // Remove demoStats and use a dynamic value for Total Users
+  const vendorPercent = 80;
+  const customerPercent = 20;
+  const donutCirc = 2 * Math.PI * 40;
   const stats = [
     { label: "Total Users", value: users.length, icon: "👥" },
     { label: "Total Transactions", value: 0, icon: "💰" },

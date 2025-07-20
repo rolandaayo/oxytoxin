@@ -51,7 +51,14 @@ export const publicApi = {
   },
 };
 
-// Admin API calls
+// Helper to get auth token
+function getAdminToken() {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("authToken");
+  }
+  return null;
+}
+
 export const adminApi = {
   // Get all products
   getProducts: async () => {
@@ -59,12 +66,14 @@ export const adminApi = {
       const url = `${BACKEND_URL}/api/admin/products`;
       console.log("Admin fetching products from:", url);
 
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "GET",
         headers: {
           "Cache-Control": "no-cache, no-store, must-revalidate",
           Pragma: "no-cache",
           Expires: "0",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         cache: "no-store",
       });
@@ -93,11 +102,13 @@ export const adminApi = {
       const url = `${BACKEND_URL}/api/admin/products`;
       console.log("Creating product:", productData);
 
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(productData),
       });
@@ -126,11 +137,13 @@ export const adminApi = {
       const url = `${BACKEND_URL}/api/admin/products/${id}`;
       console.log("Updating product:", { id, productData });
 
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(productData),
       });
@@ -159,10 +172,12 @@ export const adminApi = {
       const url = `${BACKEND_URL}/api/admin/products/${id}`;
       console.log("Deleting product:", id);
 
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
           "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       });
 
@@ -190,11 +205,13 @@ export const adminApi = {
       const url = `${BACKEND_URL}/api/admin/upload`;
       console.log("Uploading image");
 
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "POST",
         body: formData,
         headers: {
           "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       });
 
@@ -220,12 +237,14 @@ export const adminApi = {
   getUsers: async () => {
     try {
       const url = `${BACKEND_URL}/api/admin/users`;
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "GET",
         headers: {
           "Cache-Control": "no-cache, no-store, must-revalidate",
           Pragma: "no-cache",
           Expires: "0",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         cache: "no-store",
       });
@@ -247,11 +266,13 @@ export const adminApi = {
   updateUser: async (id, updates) => {
     try {
       const url = `${BACKEND_URL}/api/admin/users/${id}`;
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(updates),
       });
@@ -273,10 +294,12 @@ export const adminApi = {
   deleteUser: async (id) => {
     try {
       const url = `${BACKEND_URL}/api/admin/users/${id}`;
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
           "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       });
       if (!response.ok) {
@@ -297,11 +320,13 @@ export const adminApi = {
   createUser: async (userData) => {
     try {
       const url = `${BACKEND_URL}/api/admin/users`;
+      const token = getAdminToken();
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(userData),
       });

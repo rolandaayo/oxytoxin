@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -175,6 +175,27 @@ function Sidebar({ open, setOpen }) {
 }
 
 function AdminNavbar({ setSidebarOpen }) {
+  // Get admin info from localStorage
+  const [adminName, setAdminName] = useState("");
+  const router = useRouter();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user =
+        localStorage.getItem("userName") ||
+        localStorage.getItem("userEmail") ||
+        "Admin";
+      setAdminName(user);
+    }
+  }, []);
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("admin_authenticated");
+      router.replace("/admin");
+    }
+  };
   return (
     <div className="sticky top-0 z-30 w-full bg-white flex items-center justify-between px-4 md:px-8 py-4 shadow rounded-b-xl">
       {/* Hamburger for mobile */}
@@ -218,9 +239,9 @@ function AdminNavbar({ setSidebarOpen }) {
             />
           </svg>
         </button>
-        {/* Super Admin box */}
+        {/* Super Admin box with name/email and logout */}
         <div className="hidden sm:flex items-center bg-orange-50 border border-orange-200 rounded-lg px-4 py-2 gap-3">
-          <span className="font-medium text-gray-800">Admin</span>
+          <span className="font-medium text-gray-800">{adminName}</span>
           <span className="w-8 h-8 rounded-full bg-orange-200 flex items-center justify-center">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
               <circle cx="12" cy="8" r="4" fill="#F59E42" />
@@ -230,6 +251,12 @@ function AdminNavbar({ setSidebarOpen }) {
               />
             </svg>
           </span>
+          <button
+            onClick={handleLogout}
+            className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>
@@ -238,6 +265,10 @@ function AdminNavbar({ setSidebarOpen }) {
 
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Remove router and pathname logic
+
+  // Remove useEffect and auth check
+
   return (
     <div className={`min-h-screen ${poppins.className} bg-gray-50`}>
       <AdminNavbar setSidebarOpen={setSidebarOpen} />
