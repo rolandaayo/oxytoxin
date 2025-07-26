@@ -348,7 +348,7 @@ export default function Body() {
 
   return (
     <PageTransition>
-      <div className="container mx-auto px-4 py-8 mt-16">
+      <div className="container mx-auto px-4 mt-6">
         <div className="relative h-[300px] md:h-[400px] object-cover rounded-2xl overflow-hidden mb-8">
           <div
             className="absolute h-[1100] inset-0 bg-cover bg-center"
@@ -494,7 +494,7 @@ export default function Body() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="bg-white/95 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                  className="rounded-lg overflow-hidden group"
                 >
                   <div className="relative h-[200px] md:h-[400px] overflow-hidden flex flex-col items-center justify-center">
                     <Image
@@ -502,8 +502,7 @@ export default function Body() {
                       alt={item.name}
                       width={500}
                       height={500}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 p-2 md:p-4"
-                      style={{ backgroundColor: "#f8f8f8" }}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                     <button
                       onClick={() => setQuickViewProduct(item)}

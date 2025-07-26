@@ -91,7 +91,7 @@ export default function AdminContent() {
       toast.error("Please select a main image");
       return;
     }
-    setLoading(true);
+      setLoading(true);
     try {
       // Upload main image
       const mainFormData = new FormData();
@@ -399,26 +399,26 @@ export default function AdminContent() {
                       Main Image
                     </label>
                     <div className="mt-1 flex flex-col items-center">
-                      <input
+                            <input
                         id="main-image-upload"
                         name="main-image-upload"
-                        type="file"
-                        accept="image/*"
+                              type="file"
+                              accept="image/*"
                         onChange={handleMainImageUpload}
                         className="mb-2"
-                        disabled={loading}
-                      />
+                              disabled={loading}
+                            />
                       {mainImagePreview && (
                         <div className="mb-4">
-                          <Image
+                        <Image
                             src={mainImagePreview}
                             alt="Main Image Preview"
-                            width={200}
-                            height={200}
-                            className="rounded-lg shadow-sm"
-                          />
-                        </div>
-                      )}
+                          width={200}
+                          height={200}
+                          className="rounded-lg shadow-sm"
+                        />
+                      </div>
+                    )}
                     </div>
                   </div>
 
@@ -585,17 +585,17 @@ export default function AdminContent() {
                             <div className="flex items-center">
                               {product.mainImage &&
                                 product.mainImage.length > 0 && (
-                                  <div className="flex-shrink-0 h-10 w-10">
-                                    <Image
+                                <div className="flex-shrink-0 h-10 w-10">
+                                  <Image
                                       src={product.mainImage}
-                                      alt={product.name}
-                                      width={40}
-                                      height={40}
-                                      className="rounded-full object-cover"
-                                      unoptimized
-                                    />
-                                  </div>
-                                )}
+                                    alt={product.name}
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full object-cover"
+                                    unoptimized
+                                  />
+                                </div>
+                              )}
                               <div className="ml-4">
                                 <div className="text-sm font-medium text-gray-900">
                                   {product.name}

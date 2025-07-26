@@ -251,12 +251,14 @@ function AdminNavbar({ setSidebarOpen }) {
               />
             </svg>
           </span>
+          {/*
           <button
             onClick={handleLogout}
             className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
           >
             Logout
           </button>
+          */}
         </div>
       </div>
     </div>

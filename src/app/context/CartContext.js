@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { publicApi, adminApi } from "../services/api";
 
 const CartContext = createContext();
 
@@ -115,18 +116,40 @@ export function CartProvider({ children }) {
       return;
     }
     setLoading(true);
+    let createdOrder = null;
     try {
+      // Create pending order in backend
+      const userEmail = localStorage.getItem("userEmail") || "";
+      createdOrder = await publicApi.createOrder({
+        userEmail,
+        items: cartItems.map((item) => ({
+          productId: item.id,
+          name: item.name,
+          image: item.mainImage || item.image,
+          price: item.price,
+          quantity: item.quantity || 1,
+        })),
+        totalAmount,
+      });
       const handler = PaystackPop.setup({
         key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35",
-        // email: "customer@email.com",
+        email: userEmail,
         amount: totalAmount * 100,
         currency: "NGN",
         ref: "" + Math.floor(Math.random() * 1000000000 + 1),
-        callback: function (response) {
+        callback: async function (response) {
           toast.success(`Payment complete! Reference: ${response.reference}`, {
             icon: "✅",
             duration: 3000,
           });
+          // Mark order as successful in backend
+          if (createdOrder && createdOrder._id) {
+            await adminApi.updateOrderStatus(
+              createdOrder._id,
+              "successful",
+              response.reference
+            );
+          }
           clearStoredData(response.reference);
         },
         onClose: function () {

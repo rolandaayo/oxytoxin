@@ -7,6 +7,7 @@ import { format } from "date-fns";
 export default function DashboardPage() {
   const router = useRouter();
   const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
     // Check authentication (localStorage for demo)
     if (typeof window !== "undefined") {
@@ -24,7 +25,14 @@ export default function DashboardPage() {
         // Optionally show a toast or fallback
       }
     }
+    async function fetchOrders() {
+      try {
+        const orders = await adminApi.getOrders();
+        setOrders(orders);
+      } catch (err) {}
+    }
     fetchUsers();
+    fetchOrders();
   }, [router]);
 
   const today = format(new Date(), "MMM dd, yyyy");
@@ -35,7 +43,7 @@ export default function DashboardPage() {
     { label: "Total Users", value: users.length, icon: "👥" },
     { label: "Total Transactions", value: 0, icon: "💰" },
     { label: "Total Products", value: 0, icon: "📦" },
-    { label: "Total Orders", value: 1, icon: "🧾" },
+    { label: "Total Orders", value: orders.length, icon: "🧾" },
   ];
   return (
     <div className="space-y-8">

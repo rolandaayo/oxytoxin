@@ -49,6 +49,28 @@ export const publicApi = {
       throw error;
     }
   },
+
+  createOrder: async (orderData) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/orders`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to create order");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 // Helper to get auth token
@@ -337,6 +359,49 @@ export const adminApi = {
       const result = await response.json();
       if (result.status === "error") {
         throw new Error(result.message || "Failed to create user");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  updateOrderStatus: async (orderId, status, paymentRef) => {
+    try {
+      const url = `${BACKEND_URL}/api/admin/orders/${orderId}`;
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status, paymentRef }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to update order");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getOrders: async () => {
+    try {
+      const url = `${BACKEND_URL}/api/admin/orders`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to fetch orders");
       }
       return result.data;
     } catch (error) {

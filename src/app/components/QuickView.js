@@ -105,19 +105,17 @@ export default function QuickView({
                             ? "ring-2 ring-blue-500"
                             : "opacity-70"
                         }`}
-                        style={{ backgroundColor: "#f8f8f8" }}
                         onClick={() => setCarouselIndex(idx)}
                       />
                     ))}
                   </div>
                 )}
                 {/* Main Image */}
-                <div className="flex-1 flex items-center justify-center aspect-square bg-gray-50 rounded-lg overflow-hidden">
+                <div className="flex-1 flex items-center justify-center aspect-square overflow-hidden">
                   <img
                     src={images[carouselIndex]}
                     alt={product.name}
-                    className="w-full h-80 object-contain rounded-lg transition-all duration-100"
-                    style={{ backgroundColor: "#f8f8f8", padding: "1rem" }}
+                    className="w-full h-80 object-contain transition-all duration-100"
                   />
                 </div>
               </div>
