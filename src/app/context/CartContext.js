@@ -10,44 +10,105 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
-  // Handle client-side mounting
+  // Handle client-side mounting and check login status
   useEffect(() => {
     setMounted(true);
     try {
-      const savedCart = localStorage.getItem("cartItems");
-      if (savedCart) {
-        setCartItems(JSON.parse(savedCart));
+      const token = localStorage.getItem("authToken");
+      const email = localStorage.getItem("userEmail");
+
+      if (token && email) {
+        setIsLoggedIn(true);
+        setUserEmail(email);
+      } else {
+        setIsLoggedIn(false);
+        setUserEmail("");
       }
     } catch (error) {
-      console.error("Error loading cart:", error);
+      console.error("Error checking login status:", error);
     }
   }, []);
 
-  // Save cart to localStorage only after mounting
+  // Load cart items on mount (only for logged-in users)
   useEffect(() => {
-    if (!mounted) return;
-    try {
-      if (cartItems.length > 0) {
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-      } else {
-        localStorage.removeItem("cartItems");
+    if (!mounted || !isLoggedIn || !userEmail) return;
+
+    const loadCart = async () => {
+      try {
+        const dbCart = await publicApi.getCart(userEmail);
+        setCartItems(dbCart || []);
+      } catch (error) {
+        console.error("Error loading cart:", error);
+        toast.error("Failed to load cart items");
       }
-    } catch (error) {
-      console.error("Error saving cart:", error);
-    }
-  }, [cartItems, mounted]);
+    };
+
+    loadCart();
+  }, [mounted, isLoggedIn, userEmail]);
+
+  // Save cart to database (only for logged-in users)
+  useEffect(() => {
+    if (!mounted || !isLoggedIn || !userEmail) return;
+
+    const saveCart = async () => {
+      try {
+        await publicApi.updateCart(userEmail, cartItems);
+      } catch (error) {
+        console.error("Error saving cart:", error);
+        toast.error("Failed to save cart items");
+      }
+    };
+
+    saveCart();
+  }, [cartItems, mounted, isLoggedIn, userEmail]);
+
+  // Listen for login/logout changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const token = localStorage.getItem("authToken");
+      const email = localStorage.getItem("userEmail");
+
+      if (token && email) {
+        setIsLoggedIn(true);
+        setUserEmail(email);
+      } else {
+        setIsLoggedIn(false);
+        setUserEmail("");
+        setCartItems([]); // Clear cart when logged out
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   const addToCart = (item) => {
     if (!mounted) return;
+
+    if (!isLoggedIn) {
+      // Store current page URL to redirect back after login
+      const currentPath = window.location.pathname + window.location.search;
+      localStorage.setItem("redirectAfterLogin", currentPath);
+
+      toast.error("Please log in to add items to cart", {
+        duration: 3000,
+      });
+
+      // Redirect to login page
+      window.location.href = "/login";
+      return;
+    }
+
     setCartItems((prev) => {
       const newItems = [...prev, item];
-      try {
-        localStorage.setItem("cartItems", JSON.stringify(newItems));
-      } catch (error) {
-        console.error("Error saving cart:", error);
-      }
       return newItems;
+    });
+
+    toast.success("Item added to cart!", {
+      duration: 2000,
     });
   };
 
@@ -55,22 +116,19 @@ export function CartProvider({ children }) {
     if (!mounted) return;
     setCartItems((prev) => {
       const newItems = prev.filter((item) => item.id !== itemId);
-      try {
-        localStorage.setItem("cartItems", JSON.stringify(newItems));
-      } catch (error) {
-        console.error("Error saving cart:", error);
-      }
       return newItems;
     });
   };
 
-  const clearCart = () => {
-    if (!mounted) return;
-    setCartItems([]);
+  const clearCart = async () => {
+    if (!mounted || !isLoggedIn || !userEmail) return;
+
     try {
-      localStorage.removeItem("cartItems");
+      await publicApi.clearCart(userEmail);
+      setCartItems([]);
     } catch (error) {
       console.error("Error clearing cart:", error);
+      toast.error("Failed to clear cart");
     }
   };
 
@@ -185,6 +243,8 @@ export function CartProvider({ children }) {
         loading,
         setLoading,
         initializePayment,
+        isLoggedIn,
+        userEmail,
       }}
     >
       {children}

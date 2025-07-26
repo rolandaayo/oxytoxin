@@ -42,7 +42,15 @@ export default function SignupPage() {
       const data = await res.json();
       if (data.status === "success") {
         toast.success("Account created! Please log in.");
-        router.push("/login");
+
+        // Check if there's a redirect URL stored
+        const redirectUrl = localStorage.getItem("redirectAfterLogin");
+        if (redirectUrl) {
+          // Keep the redirect URL for after login
+          router.push("/login");
+        } else {
+          router.push("/login");
+        }
       } else {
         toast.error(data.message || "Sign up failed");
       }

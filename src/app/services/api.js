@@ -71,6 +71,77 @@ export const publicApi = {
       throw error;
     }
   },
+
+  // Get user's cart from database
+  getCart: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/cart?userEmail=${encodeURIComponent(
+        userEmail
+      )}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to fetch cart");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Update user's cart in database
+  updateCart: async (userEmail, cartItems) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/cart`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail, cartItems }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to update cart");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Clear user's cart in database
+  clearCart: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/cart?userEmail=${encodeURIComponent(
+        userEmail
+      )}`;
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to clear cart");
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 // Helper to get auth token

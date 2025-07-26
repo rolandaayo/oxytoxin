@@ -40,7 +40,15 @@ export default function LoginPage() {
           localStorage.setItem("userEmail", data.user.email);
         }
         toast.success("Login successful!");
-        router.push("/");
+        
+        // Check if there's a redirect URL stored
+        const redirectUrl = localStorage.getItem("redirectAfterLogin");
+        if (redirectUrl) {
+          localStorage.removeItem("redirectAfterLogin"); // Clear the stored URL
+          router.push(redirectUrl);
+        } else {
+          router.push("/");
+        }
       } else {
         toast.error(data.message || "Login failed");
       }

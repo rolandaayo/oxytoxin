@@ -49,11 +49,9 @@ export default function Body() {
     try {
       const savedSizes = localStorage.getItem("selectedSizes");
       const savedQuantities = localStorage.getItem("itemQuantities");
-      const savedCart = localStorage.getItem("cartItems");
 
       if (savedSizes) setSelectedSize(JSON.parse(savedSizes));
       if (savedQuantities) setItemQuantities(JSON.parse(savedQuantities));
-      if (savedCart) setCartItems(JSON.parse(savedCart));
     } catch (error) {
       console.error("Error loading saved data:", error);
     }
@@ -140,15 +138,6 @@ export default function Body() {
     }
   }, [itemQuantities, mounted]);
 
-  useEffect(() => {
-    if (!mounted) return;
-    try {
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    } catch (error) {
-      console.error("Error saving cart:", error);
-    }
-  }, [cartItems, mounted]);
-
   if (!mounted) {
     return (
       <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)]">
@@ -201,7 +190,6 @@ export default function Body() {
       (item) => item.cartItemId !== cartItemId
     );
     setCartItems(newCartItems);
-    localStorage.setItem("cartItems", JSON.stringify(newCartItems));
     if (itemToRemove) {
       toast.success(`${itemToRemove.name} removed from cart`, {
         icon: "🗑️",
@@ -236,7 +224,6 @@ export default function Body() {
     setCartItems([]);
     setSelectedSize({});
     setItemQuantities({});
-    localStorage.removeItem("cartItems");
     localStorage.removeItem("selectedSizes");
     localStorage.removeItem("itemQuantities");
     setShowCart(false);
