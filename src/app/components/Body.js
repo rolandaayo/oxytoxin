@@ -16,19 +16,23 @@ export default function Body() {
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000000 });
   const [selectedSize, setSelectedSize] = useState({});
   const [itemQuantities, setItemQuantities] = useState({});
-  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [sortBy, setSortBy] = useState("default");
   const [sortOrder, setSortOrder] = useState("asc");
   const [paystackLoaded, setPaystackLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     cartItems,
     setCartItems,
     showCart,
     setShowCart,
     addToCart: contextAddToCart,
+    removeFromCart: contextRemoveFromCart,
+    totalAmount,
+    loading: cartLoading,
+    initializePayment,
   } = useCart();
 
   // Add a refresh trigger
@@ -164,10 +168,10 @@ export default function Body() {
       return;
     }
     const quantity = itemQuantities[item.id] || 1;
-    // Generate a unique cartItemId based on product id, size, and color (if present)
+    // Generate a unique cartItemId based on product id, size, color, and timestamp
     const cartItemId = `${item.id}-${selectedSize[item.id]}${
       item.color ? `-${item.color}` : ""
-    }`;
+    }-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const itemWithDetails = {
       ...item,
       size: selectedSize[item.id],
@@ -180,22 +184,6 @@ export default function Body() {
       delete newSizes[item.id];
       return newSizes;
     });
-  };
-
-  const removeFromCart = (cartItemId) => {
-    const itemToRemove = cartItems.find(
-      (item) => item.cartItemId === cartItemId
-    );
-    const newCartItems = cartItems.filter(
-      (item) => item.cartItemId !== cartItemId
-    );
-    setCartItems(newCartItems);
-    if (itemToRemove) {
-      toast.success(`${itemToRemove.name} removed from cart`, {
-        icon: "🗑️",
-        duration: 2000,
-      });
-    }
   };
 
   const updateQuantity = (itemId, value) => {
@@ -232,80 +220,6 @@ export default function Body() {
       duration: 3000,
     });
   };
-
-  const initializePayment = async () => {
-    // Block payment if not logged in
-    const authToken =
-      typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
-    if (!authToken) {
-      toast(
-        (t) => (
-          <span>
-            You need to sign in to proceed to payment.
-            <button
-              onClick={() => {
-                toast.dismiss(t.id);
-                setShowCart(false);
-                window.location.href = "/login";
-              }}
-              className="ml-3 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-            >
-              Sign In
-            </button>
-          </span>
-        ),
-        { icon: "🔒", duration: 8000 }
-      );
-      return;
-    }
-    if (!paystackLoaded) {
-      toast.error("Payment system is not ready. Please try again in a moment.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const timestamp = new Date().getTime();
-      const reference = `PAY-${timestamp}-${Math.abs(
-        cartItems.reduce((acc, item) => acc + item.id, 0)
-      )}`;
-
-      const handler = PaystackPop.setup({
-        key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35",
-        email: localStorage.getItem("userEmail") || "customer@email.com",
-        amount: totalAmount * 100,
-        currency: "NGN",
-        ref: reference,
-        callback: function (response) {
-          toast.success(`Payment complete! Reference: ${response.reference}`, {
-            icon: "✅",
-            duration: 3000,
-          });
-          clearStoredData(response.reference);
-        },
-        onClose: function () {
-          toast.error("Transaction was not completed", {
-            icon: "❌",
-            duration: 3000,
-          });
-        },
-      });
-      handler.openIframe();
-    } catch (error) {
-      console.error("Payment initialization failed:", error);
-      toast.error("Payment initialization failed. Please try again.", {
-        icon: "⚠️",
-        duration: 3000,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const totalAmount = cartItems.reduce(
-    (total, item) => total + item.price * (item.quantity || 1),
-    0
-  );
 
   const filteredItems = Array.isArray(products)
     ? products.filter((item) => {
@@ -469,11 +383,12 @@ export default function Body() {
             </div>
           ) : (
             sortedItems.map((item, index) => {
-              // Robust image handling
+              // Robust image handling with fallback
               const mainImg =
                 item.mainImage ||
                 (Array.isArray(item.image) ? item.image[0] : item.image) ||
-                (item.images && item.images[0]);
+                (item.images && item.images[0]) ||
+                "/images/logo.png"; // Fallback image
               return (
                 <motion.div
                   key={item.id}
@@ -558,7 +473,8 @@ export default function Body() {
                               item.mainImage ||
                               (Array.isArray(item.images)
                                 ? item.images[0]
-                                : undefined)
+                                : undefined) ||
+                              "/images/logo.png" // Fallback image
                             }
                             alt={item.name}
                             width={96}
@@ -585,7 +501,7 @@ export default function Body() {
                           </p>
                         </div>
                         <button
-                          onClick={() => removeFromCart(item.cartItemId)}
+                          onClick={() => contextRemoveFromCart(item.cartItemId)}
                           className="text-black hover:text-gray-700"
                         >
                           Remove
@@ -601,14 +517,14 @@ export default function Body() {
                       </div>
                       <button
                         onClick={initializePayment}
-                        disabled={loading}
+                        disabled={cartLoading}
                         className={`w-full py-3 rounded-lg transition-colors duration-300 ${
-                          loading
+                          cartLoading
                             ? "opacity-50 cursor-not-allowed bg-gray-400"
                             : "bg-green-600 hover:bg-green-700"
                         } text-white`}
                       >
-                        {loading ? "Processing..." : "Proceed to Payment"}
+                        {cartLoading ? "Processing..." : "Proceed to Payment"}
                       </button>
                     </div>
                   </>

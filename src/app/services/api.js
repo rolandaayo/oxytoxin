@@ -1,4 +1,5 @@
-const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
+// const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
+const BACKEND_URL = "http://localhost:4000";
 
 // Public API calls
 export const publicApi = {
@@ -53,16 +54,20 @@ export const publicApi = {
   createOrder: async (orderData) => {
     try {
       const url = `${BACKEND_URL}/api/public/orders`;
+
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
       });
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
       const result = await response.json();
+
       if (result.status === "error") {
         throw new Error(result.message || "Failed to create order");
       }
@@ -113,8 +118,72 @@ export const publicApi = {
       if (result.status === "error") {
         throw new Error(result.message || "Failed to update cart");
       }
-      return result.data;
+      return result;
     } catch (error) {
+      throw error;
+    }
+  },
+
+  // Update specific item in user's cart
+  updateCartItem: async (userEmail, cartItemId, quantity) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/cart/${cartItemId}?userEmail=${encodeURIComponent(
+        userEmail
+      )}`;
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to update item in cart");
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Remove specific item from user's cart
+  removeCartItem: async (userEmail, cartItemId) => {
+    try {
+      console.log("=== REMOVE CART ITEM API CALL ===");
+      console.log("userEmail:", userEmail);
+      console.log("cartItemId:", cartItemId);
+
+      const url = `${BACKEND_URL}/api/public/cart/${encodeURIComponent(
+        cartItemId
+      )}?userEmail=${encodeURIComponent(userEmail)}`;
+      console.log("API URL:", url);
+
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("Response status:", response.status);
+      console.log("Response ok:", response.ok);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response text:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("API result:", result);
+
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to remove item from cart");
+      }
+      return result;
+    } catch (error) {
+      console.error("API error:", error);
       throw error;
     }
   },

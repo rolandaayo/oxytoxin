@@ -10,6 +10,7 @@ export default function CustomersPage() {
   const [newCustomer, setNewCustomer] = useState({
     name: "",
     email: "",
+    address: "",
     password: "",
   });
   const [editModal, setEditModal] = useState({ open: false, customer: null });
@@ -28,6 +29,7 @@ export default function CustomersPage() {
             id: u._id,
             name: u.name,
             email: u.email,
+            address: u.address || "No address provided",
             avatar:
               u.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
             status: "Active",
@@ -55,11 +57,12 @@ export default function CustomersPage() {
       await adminApi.createUser({
         name: newCustomer.name,
         email: newCustomer.email,
+        address: newCustomer.address,
         password: newCustomer.password,
       });
       await refreshUsers();
       setShowModal(false);
-      setNewCustomer({ name: "", email: "", password: "" });
+      setNewCustomer({ name: "", email: "", address: "", password: "" });
     } catch (err) {
       alert("Failed to add user");
     }
@@ -74,6 +77,7 @@ export default function CustomersPage() {
           id: u._id,
           name: u.name,
           email: u.email,
+          address: u.address || "No address provided",
           avatar: u.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
           status: "Active",
           joined: u.createdAt ? u.createdAt.slice(0, 10) : "",
@@ -110,6 +114,7 @@ export default function CustomersPage() {
       await adminApi.updateUser(customer.id, {
         name: customer.name,
         email: customer.email,
+        address: customer.address,
       });
       await refreshUsers();
       setEditModal({ open: false, customer: null });
@@ -150,6 +155,9 @@ export default function CustomersPage() {
                 Email
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Address
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -188,6 +196,12 @@ export default function CustomersPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">
                     {customer.email}
+                  </td>
+                  <td
+                    className="px-6 py-4 text-gray-700 max-w-xs truncate"
+                    title={customer.address}
+                  >
+                    {customer.address}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
@@ -278,6 +292,21 @@ export default function CustomersPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Address
+                </label>
+                <textarea
+                  value={newCustomer.address}
+                  onChange={(e) =>
+                    setNewCustomer({ ...newCustomer, address: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 resize-none"
+                  placeholder="Enter customer address"
+                  rows="3"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Password
                 </label>
                 <input
@@ -348,6 +377,27 @@ export default function CustomersPage() {
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-black"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Address
+                </label>
+                <textarea
+                  value={editModal.customer.address || ""}
+                  onChange={(e) =>
+                    setEditModal({
+                      ...editModal,
+                      customer: {
+                        ...editModal.customer,
+                        address: e.target.value,
+                      },
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-black resize-none"
+                  placeholder="Enter customer address"
+                  rows="3"
                   required
                 />
               </div>

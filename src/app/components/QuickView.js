@@ -15,11 +15,12 @@ export default function QuickView({
   updateQuantity,
 }) {
   const sizes = ["S", "M", "L", "XL"];
-  // Robust image handling
+  // Robust image handling with fallback
   const mainImg =
     product.mainImage ||
     (Array.isArray(product.image) ? product.image[0] : product.image) ||
-    (product.images && product.images[0]);
+    (product.images && product.images[0]) ||
+    "/images/logo.png"; // Fallback image
   const otherImgs =
     product.images && Array.isArray(product.images)
       ? product.images
@@ -28,7 +29,7 @@ export default function QuickView({
       : [];
   const images = [
     mainImg,
-    ...otherImgs.filter((img) => img !== mainImg),
+    ...otherImgs.filter((img) => img !== mainImg && img), // Ensure img exists
   ].filter(Boolean);
   const [carouselIndex, setCarouselIndex] = useState(0);
 
@@ -114,9 +115,9 @@ export default function QuickView({
                 <div className="flex-1 flex items-center justify-center aspect-square overflow-hidden">
                   <img
                     src={images[carouselIndex]}
-                    alt={product.name}
+                  alt={product.name}
                     className="w-full h-80 object-contain transition-all duration-100"
-                  />
+                />
                 </div>
               </div>
 

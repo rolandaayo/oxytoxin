@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
+import { useCart } from "../context/CartContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,6 +19,15 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { loadUserCart } = useCart();
+
+  // Load cart if user is already logged in
+  useEffect(() => {
+    const userEmail = localStorage.getItem("userEmail");
+    if (userEmail) {
+      loadUserCart(userEmail);
+    }
+  }, [loadUserCart]);
 
   const BACKEND_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL ||
@@ -40,14 +50,19 @@ export default function LoginPage() {
           localStorage.setItem("userEmail", data.user.email);
         }
         toast.success("Login successful!");
-        
+
+        // Load user's cart immediately after login
+        if (data.user && data.user.email) {
+          await loadUserCart(data.user.email);
+        }
+
         // Check if there's a redirect URL stored
         const redirectUrl = localStorage.getItem("redirectAfterLogin");
         if (redirectUrl) {
           localStorage.removeItem("redirectAfterLogin"); // Clear the stored URL
           router.push(redirectUrl);
         } else {
-          router.push("/");
+        router.push("/");
         }
       } else {
         toast.error(data.message || "Login failed");

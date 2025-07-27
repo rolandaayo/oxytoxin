@@ -52,6 +52,8 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
     setIsAuthenticated(false);
     setShowUserMenu(false);
     // Optionally, refresh the page or redirect
@@ -310,7 +312,12 @@ export default function Navbar() {
                         </p>
                       </div>
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => {
+                          console.log("=== REMOVE BUTTON CLICKED ===");
+                          console.log("item.cartItemId:", item.cartItemId);
+                          console.log("item:", item);
+                          removeFromCart(item.cartItemId);
+                        }}
                         className="text-black hover:text-gray-700"
                       >
                         Remove
