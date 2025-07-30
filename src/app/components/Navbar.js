@@ -77,18 +77,18 @@ export default function Navbar() {
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-4">
                 <a
-                  href="tel:+1234567890"
+                  href="tel:+2348169408260"
                   className="flex items-center hover:text-blue-500 transition-colors"
                 >
                   <FaPhone className="w-3 h-3 mr-2" />
-                  <span className="text-white">+1234567890</span>
+                  <span className="text-white">+2348169408260</span>
                 </a>
                 <a
-                  href="mailto:info@oxtoyin.com"
+                  href="mailto:oxytoxinapparel@gmail.com"
                   className="flex items-center hover:text-blue-500 transition-colors"
                 >
                   <FaEnvelope className="w-3 h-3 mr-2" />
-                  <span className="text-white">info@oxtoyin.com</span>
+                  <span className="text-white">oxytoxinapparel@gmail.com</span>
                 </a>
               </div>
               <div className="flex items-center space-x-4 text-sm">
@@ -288,9 +288,11 @@ export default function Navbar() {
                       <div className="w-24 h-24 bg-gray-50 rounded overflow-hidden">
                         <Image
                           src={
-                            Array.isArray(item.image)
+                            item.mainImage ||
+                            (Array.isArray(item.image)
                               ? item.image[0]
-                              : item.image
+                              : item.image) ||
+                            "/images/logo.png"
                           }
                           alt={item.name}
                           width={96}
@@ -308,7 +310,8 @@ export default function Navbar() {
                           Quantity: {item.quantity || 1}
                         </p>
                         <p className="font-bold text-black">
-                          ${item.price * (item.quantity || 1)}
+                          ₦
+                          {(item.price * (item.quantity || 1)).toLocaleString()}
                         </p>
                       </div>
                       <button
@@ -328,7 +331,7 @@ export default function Navbar() {
                     <div className="flex justify-between mb-4">
                       <span className="font-bold text-black">Total:</span>
                       <span className="font-bold text-black">
-                        ${totalAmount}
+                        ₦{totalAmount.toLocaleString()}
                       </span>
                     </div>
                     <button
