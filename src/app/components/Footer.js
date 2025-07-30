@@ -41,23 +41,28 @@ export default function Footer() {
       {/* Trust Badges Section */}
       <div className="border-b border-[#3a5d28]">
         <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-center">
+            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
               <FaTruck className="w-8 h-8 mb-3 text-blue-500" />
               <h4 className="font-semibold text-black mb-2">Free Shipping</h4>
               <p className="text-sm text-black">On orders over $100</p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
               <FaCreditCard className="w-8 h-8 mb-3 text-blue-500" />
               <h4 className="font-semibold text-black mb-2">Secure Payment</h4>
-              <p className="text-sm text-black ">100% secure payments</p>
+              <p className="text-sm text-black">100% secure payments</p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
               <FaLock className="w-8 h-8 mb-3 text-blue-500" />
               <h4 className="font-semibold text-black mb-2">
                 Shop with Confidence
               </h4>
               <p className="text-sm text-black">30 days free returns</p>
+            </div>
+            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
+              <FaEnvelope className="w-8 h-8 mb-3 text-blue-500" />
+              <h4 className="font-semibold text-black mb-2">Customer Support</h4>
+              <p className="text-sm text-black">24/7 help available</p>
             </div>
           </div>
         </div>

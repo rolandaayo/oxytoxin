@@ -27,9 +27,9 @@ export default function Categories() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)] bg-white">
+      <div className="min-h-screen bg-white">
         {/* Hero Section */}
-        <div className="relative h-[300px] md:h-[400px]">
+        <div className="relative h-[300px] md:h-[300px]">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{

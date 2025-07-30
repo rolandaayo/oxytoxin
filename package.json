@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@paystack/inline-js": "^2.22.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.18.2",

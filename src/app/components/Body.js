@@ -260,10 +260,10 @@ export default function Body() {
             <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="relative h-full flex flex-col justify-center items-center text-center px-4">
-            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 font-sans">
+            <h1 className="text-2xl md:text-4xl font-bold text-white mb-4 font-sans">
               Discover Your Style
             </h1>
-            <p className="text-lg md:text-xl text-white mb-8 max-w-2xl">
+            <p className="text-base md:text-lg text-white mb-8 max-w-2xl">
               Explore our collection of premium clothing designed for comfort
               and style
             </p>
@@ -414,14 +414,11 @@ export default function Body() {
                     </button>
                   </div>
                   <div className="p-3 md:p-4">
-                    <h3 className="text-sm md:text-lg font-semibold text-black truncate">
+                    <h3 className="text-xs md:text-sm font-medium text-black truncate">
                       {item.name}
                     </h3>
-                    <p className="text-xs md:text-sm text-black mt-1 line-clamp-2">
-                      {item.description}
-                    </p>
                     <div className="flex justify-between pt-2 items-center mb-3">
-                      <span className="text-lg md:text-xl font-bold text-black">
+                      <span className="text-base md:text-lg font-bold text-black">
                         ₦{item.price.toLocaleString()}
                       </span>
                     </div>
