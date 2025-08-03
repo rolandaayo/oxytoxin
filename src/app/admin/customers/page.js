@@ -18,6 +18,8 @@ export default function CustomersPage() {
     open: false,
     customer: null,
   });
+  const [isAddingCustomer, setIsAddingCustomer] = useState(false);
+  const [isDeletingCustomer, setIsDeletingCustomer] = useState(false);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -53,6 +55,7 @@ export default function CustomersPage() {
 
   const handleAddCustomer = async (e) => {
     e.preventDefault();
+    setIsAddingCustomer(true);
     try {
       await adminApi.createUser({
         name: newCustomer.name,
@@ -65,6 +68,8 @@ export default function CustomersPage() {
       setNewCustomer({ name: "", email: "", address: "", password: "" });
     } catch (err) {
       alert("Failed to add user");
+    } finally {
+      setIsAddingCustomer(false);
     }
   };
 
@@ -93,12 +98,15 @@ export default function CustomersPage() {
 
   const confirmDelete = async () => {
     if (!deleteConfirm.customer) return;
+    setIsDeletingCustomer(true);
     try {
       await adminApi.deleteUser(deleteConfirm.customer.id);
       await refreshUsers();
       setDeleteConfirm({ open: false, customer: null });
     } catch (err) {
       alert("Failed to delete user");
+    } finally {
+      setIsDeletingCustomer(false);
     }
   };
 
@@ -322,9 +330,14 @@ export default function CustomersPage() {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition"
+                  disabled={isAddingCustomer}
+                  className={`px-4 py-2 rounded-lg font-semibold shadow transition ${
+                    isAddingCustomer
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-blue-600 text-white hover:bg-blue-700"
+                  }`}
                 >
-                  Add Customer
+                  {isAddingCustomer ? "Adding..." : "Add Customer"}
                 </button>
               </div>
             </form>
@@ -435,7 +448,12 @@ export default function CustomersPage() {
             </p>
             <div className="flex justify-end gap-2">
               <button
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold shadow hover:bg-gray-300 transition"
+                disabled={isDeletingCustomer}
+                className={`px-4 py-2 rounded-lg font-semibold shadow transition ${
+                  isDeletingCustomer
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
                 onClick={() =>
                   setDeleteConfirm({ open: false, customer: null })
                 }
@@ -443,10 +461,15 @@ export default function CustomersPage() {
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold shadow hover:bg-red-700 transition"
+                disabled={isDeletingCustomer}
+                className={`px-4 py-2 rounded-lg font-semibold shadow transition ${
+                  isDeletingCustomer
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-red-600 text-white hover:bg-red-700"
+                }`}
                 onClick={confirmDelete}
               >
-                Yes, Remove
+                {isDeletingCustomer ? "Removing..." : "Yes, Remove"}
               </button>
             </div>
           </div>

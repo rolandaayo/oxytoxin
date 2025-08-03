@@ -13,7 +13,6 @@ export function CartProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [isUpdatingCart, setIsUpdatingCart] = useState(false);
 
   // Handle client-side mounting and check login status
   useEffect(() => {
@@ -36,7 +35,7 @@ export function CartProvider({ children }) {
 
   // Load cart items on mount (only for logged-in users)
   useEffect(() => {
-    if (!mounted || !isLoggedIn || !userEmail || isUpdatingCart) return;
+    if (!mounted || !isLoggedIn || !userEmail) return;
 
     const loadCart = async () => {
       try {
@@ -62,7 +61,7 @@ export function CartProvider({ children }) {
     };
 
     loadCart();
-  }, [mounted, isLoggedIn, userEmail, isUpdatingCart]);
+  }, [mounted, isLoggedIn, userEmail]);
 
   // Save cart to database (only for logged-in users)
 
@@ -132,6 +131,8 @@ export function CartProvider({ children }) {
 
     try {
       console.log("Adding item to cart:", item);
+      console.log("Current user email:", userEmail);
+      console.log("Current cart items:", cartItems);
 
       // Get current cart items and add new item
       const updatedCart = [...cartItems, item];
@@ -143,7 +144,10 @@ export function CartProvider({ children }) {
       if (result.status === "success") {
         // Then update frontend state
         setCartItems(updatedCart);
+        toast.success("Item added to cart!", { duration: 2000 });
+        console.log("Cart updated successfully in frontend");
       } else {
+        console.error("Backend returned error:", result);
         toast.error("Failed to add item to cart");
       }
     } catch (error) {
@@ -153,53 +157,32 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = async (cartItemId) => {
-    console.log("=== REMOVE FROM CART CALLED ===");
-    console.log("cartItemId:", cartItemId);
-    console.log("userEmail:", userEmail);
-    console.log("isLoggedIn:", isLoggedIn);
-    console.log("mounted:", mounted);
-
-    if (!mounted || !isLoggedIn || !userEmail) {
-      console.log("Early return - conditions not met");
-      return;
-    }
-
-    // Set updating flag to prevent cart reload
-    setIsUpdatingCart(true);
+    if (!mounted || !isLoggedIn || !userEmail) return;
 
     // Optimistically remove from frontend for snappy UI
     const prevCart = [...cartItems];
     const updatedCart = cartItems.filter(
       (item) => item.cartItemId !== cartItemId
     );
-    console.log("Previous cart items:", prevCart.length);
-    console.log("Updated cart items:", updatedCart.length);
     setCartItems(updatedCart);
 
     try {
-      console.log("Calling publicApi.removeCartItem...");
-      // Call the dedicated DELETE endpoint to remove the specific item
-      const result = await publicApi.removeCartItem(userEmail, cartItemId);
-      console.log("API result:", result);
+      // Save updated cart to database (hard delete)
+      const result = await publicApi.updateCart(userEmail, updatedCart);
 
       if (result.status === "success") {
-        // Confirm frontend state with the updated cart from backend
-        setCartItems(result.data || []);
-        console.log("Item removed successfully from database");
+        // Confirm frontend state
+        setCartItems(updatedCart);
         toast.success("Item removed from cart!");
       } else {
         // Restore previous cart if backend fails
         setCartItems(prevCart);
-        console.log("Backend failed, restoring previous cart");
         toast.error("Failed to remove item from cart");
       }
     } catch (error) {
       setCartItems(prevCart);
       console.error("Error removing item from cart:", error);
       toast.error("Failed to remove item from cart");
-    } finally {
-      // Reset updating flag after operation completes
-      setIsUpdatingCart(false);
     }
   };
 
@@ -286,7 +269,9 @@ export function CartProvider({ children }) {
     if (!email) return;
 
     try {
+      console.log("Manually loading cart for:", email);
       const dbCart = await publicApi.getCart(email);
+      console.log("Manually loaded cart from database:", dbCart);
 
       // Deduplicate cart items by cartItemId
       const uniqueCartItems = dbCart
@@ -296,10 +281,22 @@ export function CartProvider({ children }) {
           )
         : [];
 
+      console.log("Setting cart items to:", uniqueCartItems);
       setCartItems(uniqueCartItems);
     } catch (error) {
       console.error("Error manually loading cart:", error);
     }
+  };
+
+  // Function to refresh cart (useful after login/signup)
+  const refreshCart = async () => {
+    if (!userEmail) {
+      console.log("No user email available for cart refresh");
+      return;
+    }
+
+    console.log("Refreshing cart for:", userEmail);
+    await loadUserCart(userEmail);
   };
 
   const totalAmount = cartItems.reduce(
@@ -323,17 +320,13 @@ export function CartProvider({ children }) {
     const updatedOrders = [...existingOrders, orderData];
     localStorage.setItem("orders", JSON.stringify(updatedOrders));
 
-    // Clear cart data from database and frontend
-    console.log("Clearing cart after successful payment");
+    // Clear cart data
     clearCart();
     setShowCart(false);
 
-    toast.success(
-      "Payment completed successfully! Your cart has been cleared.",
-      {
-        duration: 3000,
-      }
-    );
+    toast.success("Payment completed successfully!", {
+      duration: 3000,
+    });
   };
 
   const initializePayment = async () => {
@@ -360,24 +353,47 @@ export function CartProvider({ children }) {
     setLoading(true);
     let createdOrder = null;
     try {
-      // Create pending order in backend
+      // For now, skip backend order creation to test payment
       const userEmail = localStorage.getItem("userEmail") || "";
 
-      createdOrder = await publicApi.createOrder({
+      console.log("Proceeding with payment for:", {
         userEmail,
-        items: cartItems.map((item) => ({
-          productId: item.id,
-          name: item.name,
-          image: item.mainImage || item.image,
-          price: item.price,
-          quantity: item.quantity || 1,
-        })),
+        items: cartItems,
         totalAmount,
       });
 
+      // Comment out backend order creation for now
+      // createdOrder = await publicApi.createOrder({
+      //   userEmail,
+      //   items: cartItems.map((item) => ({
+      //     productId: item.id,
+      //     name: item.name,
+      //     image: item.mainImage || item.image,
+      //     price: item.price,
+      //     quantity: item.quantity || 1,
+      //   })),
+      //   totalAmount,
+      // });
+
+      console.log("Payment proceeding without backend order creation");
+
+      // Validate email before proceeding
+      if (!userEmail || !userEmail.includes("@")) {
+        toast.error(
+          "Please log in with a valid email address to proceed with payment.",
+          {
+            icon: "⚠️",
+            duration: 3000,
+          }
+        );
+        return;
+      }
+
+      console.log("Setting up Paystack with email:", userEmail);
+
       const handler = window.PaystackPop.setup({
         key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35",
-        email: userEmail,
+        email: userEmail || "customer@oxytoxin.com", // Fallback email
         amount: totalAmount * 100,
         currency: "NGN",
         ref: "" + Math.floor(Math.random() * 1000000000 + 1),
@@ -433,6 +449,7 @@ export function CartProvider({ children }) {
         forceClearCart,
         updateCartItemQuantity,
         loadUserCart,
+        refreshCart,
         totalAmount,
         loading,
         setLoading,

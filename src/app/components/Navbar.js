@@ -34,6 +34,9 @@ export default function Navbar() {
     totalAmount,
     loading,
     initializePayment,
+    refreshCart,
+    userEmail,
+    isLoggedIn,
   } = useCart();
 
   useEffect(() => {
@@ -179,12 +182,27 @@ export default function Navbar() {
                   {showUserMenu && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
                       {isAuthenticated ? (
-                        <button
-                          onClick={handleLogout}
-                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                        >
-                          Logout
-                        </button>
+                        <>
+                          <div className="px-4 py-2 text-xs text-gray-500 border-b">
+                            Logged in as: {userEmail}
+                          </div>
+                          <button
+                            onClick={() => {
+                              console.log("Refreshing cart...");
+                              refreshCart();
+                              setShowUserMenu(false);
+                            }}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                          >
+                            Refresh Cart
+                          </button>
+                          <button
+                            onClick={handleLogout}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                          >
+                            Logout
+                          </button>
+                        </>
                       ) : (
                         <Link
                           href="/login"
