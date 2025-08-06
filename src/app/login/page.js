@@ -65,7 +65,13 @@ export default function LoginPage() {
         router.push("/");
         }
       } else {
-        toast.error(data.message || "Login failed");
+        // Handle email verification error
+        if (data.needsVerification) {
+          toast.error(data.message, { duration: 6000 });
+          // You could show a modal or redirect to a verification page here
+        } else {
+          toast.error(data.message || "Login failed");
+        }
       }
     } catch (err) {
       toast.error("Login failed. Please try again.");
@@ -133,6 +139,11 @@ export default function LoginPage() {
                   {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
+            </div>
+            <div className="text-right">
+              <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                Forgot Password?
+              </Link>
             </div>
             <button
               type="submit"

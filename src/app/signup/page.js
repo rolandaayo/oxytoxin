@@ -38,20 +38,26 @@ export default function SignupPage() {
       const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, address, password, confirmPassword }),
+        body: JSON.stringify({
+          name,
+          email,
+          address,
+          password,
+          confirmPassword,
+        }),
       });
       const data = await res.json();
       if (data.status === "success") {
-        toast.success("Account created! Please log in.");
+        toast.success(
+          data.message ||
+            "Registration successful! Please check your email for the verification code to complete your registration."
+        );
 
-        // Check if there's a redirect URL stored
-        const redirectUrl = localStorage.getItem("redirectAfterLogin");
-        if (redirectUrl) {
-          // Keep the redirect URL for after login
-          router.push("/login");
-        } else {
-          router.push("/login");
-        }
+        // Store email for verification page
+        localStorage.setItem("pendingVerificationEmail", email);
+
+        // Redirect to verification page
+        router.push(`/verify-code?email=${email}`);
       } else {
         toast.error(data.message || "Sign up failed");
       }
