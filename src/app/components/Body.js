@@ -8,6 +8,13 @@ import { useCart } from "../context/CartContext";
 import { motion } from "framer-motion";
 import PageTransition from "./PageTransition";
 import { publicApi } from "../services/api";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 export default function Body() {
   const [mounted, setMounted] = useState(false);
@@ -249,7 +256,7 @@ export default function Body() {
 
   return (
     <PageTransition>
-      <div className="container mx-auto px-4 mt-6">
+      <div className={`container mx-auto px-4 mt-6 ${poppins.className}`}>
         <div className="relative h-[300px] md:h-[400px] object-cover rounded-2xl overflow-hidden mb-8">
           <div
             className="absolute h-[1100] inset-0 bg-cover bg-center"
@@ -409,7 +416,7 @@ export default function Body() {
                     />
                   </div>
                   <div className="p-3 md:p-4">
-                    <h3 className="text-xs md:text-sm font-medium text-black truncate">
+                    <h3 className="text-xs md:text-sm font-semibold text-black truncate">
                       {item.name}
                     </h3>
                     <div className="flex justify-between pt-2 items-center mb-3">

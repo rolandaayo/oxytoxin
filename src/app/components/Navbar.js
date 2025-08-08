@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const goldman = Goldman({
   weight: ["400", "700"],
@@ -26,6 +27,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
+  const pathname = usePathname();
   const {
     cartItems,
     showCart,
@@ -76,31 +78,41 @@ export default function Navbar() {
       {/* Fixed Navbar Wrapper */}
       <div className="fixed w-full top-0 left-0 z-50">
         {/* Top Bar */}
-        <div className="bg-black text-white text-sm py-2 hidden md:block">
-          <div className="container mx-auto px-4">
+        <div className="bg-gradient-to-r from-gray-900 to-black text-white text-sm py-3 hidden md:block border-b border-gray-800">
+          <div className="container mx-auto px-6">
             <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-6">
                 <a
                   href="tel:+2348169408260"
-                  className="flex items-center hover:text-blue-500 transition-colors"
+                  className="flex items-center hover:text-blue-400 transition-all duration-300 group"
                 >
-                  <FaPhone className="w-3 h-3 mr-2" />
-                  <span className="text-white">+2348169408260</span>
+                  <FaPhone className="w-3 h-3 mr-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-gray-300 group-hover:text-white">
+                    +2348169408260
+                  </span>
                 </a>
                 <a
                   href="mailto:oxytoxinapparel@gmail.com"
-                  className="flex items-center hover:text-blue-500 transition-colors"
+                  className="flex items-center hover:text-blue-400 transition-all duration-300 group"
                 >
-                  <FaEnvelope className="w-3 h-3 mr-2" />
-                  <span className="text-white">oxytoxinapparel@gmail.com</span>
+                  <FaEnvelope className="w-3 h-3 mr-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-gray-300 group-hover:text-white">
+                    oxytoxinapparel@gmail.com
+                  </span>
                 </a>
               </div>
-              <div className="flex items-center space-x-4 text-sm">
-                <a href="#" className="hover:text-blue-500 transition-colors">
+              <div className="flex items-center space-x-6 text-sm">
+                <a
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-all duration-300 font-medium"
+                >
                   Track Order
                 </a>
                 <span className="text-gray-600">|</span>
-                <a href="#" className="hover:text-blue-500 transition-colors">
+                <a
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-all duration-300 font-medium"
+                >
                   Help
                 </a>
               </div>
@@ -110,17 +122,17 @@ export default function Navbar() {
 
         {/* Main Navigation */}
         <nav
-          className={`bg-white/95 backdrop-blur-sm shadow-sm w-full transition-all duration-300 ${
-            isScrolled ? "shadow-md" : ""
+          className={`bg-white/98 backdrop-blur-md shadow-lg w-full transition-all duration-500 ${
+            isScrolled ? "shadow-xl" : ""
           }`}
         >
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center h-16">
+          <div className="container mx-auto px-6">
+            <div className="flex justify-between items-center h-20">
               {/* Logo */}
               <div className="flex items-center">
                 <Link
                   href="/"
-                  className={`text-2xl font-bold text-black tracking-tight ${goldman.className}`}
+                  className={`text-3xl font-bold bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent tracking-tight hover:from-blue-600 hover:to-purple-600 transition-all duration-500 ${goldman.className}`}
                 >
                   Oxytoxin
                 </Link>
@@ -132,34 +144,49 @@ export default function Navbar() {
                   <input
                     type="text"
                     placeholder="Search for products..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-full focus:outline-none focus:border-blue-500 text-sm"
+                    className="w-full pl-12 pr-6 py-3 border-2 border-gray-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 text-sm font-medium transition-all duration-300 hover:border-gray-300"
                   />
-                  <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
               </div>
 
               {/* Desktop Menu */}
               <div className="hidden md:flex items-center space-x-8">
-                {menuItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-300 text-sm font-medium"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {menuItems.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 group ${
+                        isActive
+                          ? "text-blue-600"
+                          : "text-gray-700 hover:text-blue-600"
+                      }`}
+                    >
+                      {item.name}
+                      {isActive && (
+                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-100 transition-transform duration-300"></span>
+                      )}
+                      <span
+                        className={`absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${
+                          isActive ? "hidden" : ""
+                        }`}
+                      ></span>
+                    </Link>
+                  );
+                })}
               </div>
 
               {/* Icons */}
               <div className="flex items-center space-x-4">
                 <button
-                  className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="relative p-3 hover:bg-gray-100 rounded-full transition-all duration-300 group"
                   onClick={() => setShowCart(true)}
                 >
-                  <FaShoppingCart className="text-gray-600 w-5 h-5" />
+                  <FaShoppingCart className="text-gray-700 w-5 h-5 group-hover:scale-110 transition-transform" />
                   {cartItems.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg">
                       {cartItems.length}
                     </span>
                   )}
@@ -167,29 +194,29 @@ export default function Navbar() {
 
                 <div className="relative">
                   <button
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    className="p-3 hover:bg-gray-100 rounded-full transition-all duration-300 group"
                     onClick={() => setShowUserMenu(!showUserMenu)}
                   >
                     {isAuthenticated && userName ? (
-                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-lg uppercase">
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg uppercase shadow-lg group-hover:scale-110 transition-transform">
                         {userName.slice(0, 2)}
                       </span>
                     ) : (
-                      <FaUser className="text-gray-600 w-5 h-5" />
+                      <FaUser className="text-gray-700 w-5 h-5 group-hover:scale-110 transition-transform" />
                     )}
                   </button>
 
                   {/* User Dropdown */}
                   {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
+                    <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-2xl py-3 border border-gray-100 backdrop-blur-sm">
                       {isAuthenticated ? (
                         <>
-                          <div className="px-4 py-2 text-xs text-gray-500 border-b">
+                          <div className="px-4 py-3 text-xs text-gray-500 border-b border-gray-100 font-medium">
                             Logged in as: {userEmail}
                           </div>
                           <Link
                             href="/profile"
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
                             onClick={() => setShowUserMenu(false)}
                           >
                             Profile Settings
@@ -200,13 +227,13 @@ export default function Navbar() {
                               refreshCart();
                               setShowUserMenu(false);
                             }}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
                           >
                             Refresh Cart
                           </button>
                           <button
                             onClick={handleLogout}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200 font-medium"
                           >
                             Logout
                           </button>
@@ -214,7 +241,7 @@ export default function Navbar() {
                       ) : (
                         <Link
                           href="/login"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                          className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
                           onClick={() => setShowUserMenu(false)}
                         >
                           Login
@@ -245,7 +272,7 @@ export default function Navbar() {
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-full focus:outline-none focus:border-blue-500 text-sm"
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 text-sm font-medium transition-all duration-300"
                   />
                   <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
@@ -254,24 +281,31 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             {showMenu && (
-              <div className="md:hidden fixed top-0 right-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
-                <div className="p-4">
+              <div className="md:hidden fixed top-0 right-0 h-screen w-72 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+                <div className="p-6">
                   <button
-                    className="mb-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    className="mb-6 p-3 hover:bg-gray-100 rounded-full transition-all duration-300"
                     onClick={() => setShowMenu(false)}
                   >
                     <FaTimes className="w-5 h-5 text-gray-600" />
                   </button>
-                  {menuItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
-                      onClick={() => setShowMenu(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
+                  {menuItems.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={`block py-3 px-4 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 rounded-lg font-medium ${
+                          isActive
+                            ? "text-blue-600 bg-blue-50 border-l-4 border-blue-600"
+                            : ""
+                        }`}
+                        onClick={() => setShowMenu(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -280,7 +314,7 @@ export default function Navbar() {
       </div>
 
       {/* Spacer for fixed navbar */}
-      <div className="h-16 md:h-[calc(4rem+40px)]"></div>
+      <div className="h-20 md:h-[calc(5rem+40px)]"></div>
 
       {/* Cart Modal */}
       {showCart && (
