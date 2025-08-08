@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { adminApi } from "../../services/api";
 import { format } from "date-fns";
+import Image from "next/image";
 
 export default function CustomersPage() {
   const [search, setSearch] = useState("");
@@ -193,7 +194,7 @@ export default function CustomersPage() {
               filtered.map((customer) => (
                 <tr key={customer.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap flex items-center gap-3">
-                    <img
+                    <Image
                       src={customer.avatar}
                       alt={customer.name}
                       className="w-10 h-10 rounded-full object-cover border"
