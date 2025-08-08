@@ -289,7 +289,7 @@ export default function Body() {
         <div className="mb-8 bg-white p-4 rounded-lg shadow-sm">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <FaSearch className="absolute left-3 top-1/2 border-black transform -translate-y-1/2 text-black" />
               <input
                 type="text"
                 placeholder="Search products..."
@@ -312,11 +312,11 @@ export default function Body() {
                 ))}
               </select>
 
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <input
                   type="number"
                   placeholder="Min"
-                  className="w-20 px-2 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-20 px-2 py-2 border text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   value={priceRange.min}
                   onChange={(e) =>
                     setPriceRange({
@@ -329,7 +329,7 @@ export default function Body() {
                 <input
                   type="number"
                   placeholder="Max"
-                  className="w-20 px-2 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                  className="w-20 px-2 py-2 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   value={priceRange.max}
                   onChange={(e) =>
                     setPriceRange({
@@ -338,7 +338,8 @@ export default function Body() {
                     })
                   }
                 />
-              </div>
+              </div> */}
+
             </div>
           </div>
         </div>

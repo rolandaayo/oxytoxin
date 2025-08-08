@@ -69,7 +69,7 @@ export default function Footer() {
 
         <div className="container mx-auto px-4 py-12">
           {/* Newsletter (Optional) */}
-          <div className="mt-12 border-t border-[#3a5d28] pt-8">
+          <div className="border-t border-[#3a5d28] pt-8">
             <div className="max-w-md mx-auto text-left md:text-center">
               <h3 className="text-lg font-semibold mb-4">
                 Subscribe to Our Newsletter
