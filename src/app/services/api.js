@@ -549,3 +549,146 @@ export const adminApi = {
     }
   },
 };
+
+// User profile API calls
+export const userApi = {
+  // Get user profile
+  getUserProfile: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/profile?userEmail=${encodeURIComponent(
+        userEmail
+      )}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to fetch user profile");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Update user profile
+  updateUserProfile: async (userEmail, profileData) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/profile`;
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail, ...profileData }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to update user profile");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Change password
+  changePassword: async (userEmail, passwordData) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/change-password`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail, ...passwordData }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to change password");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Upload profile picture
+  uploadProfilePicture: async (userEmail, formData) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/profile-picture`;
+      formData.append("userEmail", userEmail);
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to upload profile picture");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Delete account
+  deleteAccount: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/delete-account`;
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to delete account");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Get user orders
+  getUserOrders: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/user-orders?userEmail=${encodeURIComponent(
+        userEmail
+      )}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to fetch user orders");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+};

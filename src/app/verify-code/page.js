@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaSpinner, FaArrowLeft } from "react-icons/fa";
@@ -12,7 +12,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export default function VerifyCode() {
+function VerifyCodeContent() {
   const [code, setCode] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -261,5 +261,19 @@ export default function VerifyCode() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyCode() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        </div>
+      }
+    >
+      <VerifyCodeContent />
+    </Suspense>
   );
 }

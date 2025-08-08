@@ -66,6 +66,7 @@ export default function Navbar() {
   const menuItems = [
     { name: "Home", href: "/" },
     { name: "Categories", href: "/categories" },
+    { name: "Gallery", href: "/gallery" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
@@ -186,6 +187,13 @@ export default function Navbar() {
                           <div className="px-4 py-2 text-xs text-gray-500 border-b">
                             Logged in as: {userEmail}
                           </div>
+                          <Link
+                            href="/profile"
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            onClick={() => setShowUserMenu(false)}
+                          >
+                            Profile Settings
+                          </Link>
                           <button
                             onClick={() => {
                               console.log("Refreshing cart...");

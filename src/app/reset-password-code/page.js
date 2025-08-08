@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash, FaSpinner, FaArrowLeft } from "react-icons/fa";
@@ -12,7 +12,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export default function ResetPasswordCode() {
+function ResetPasswordCodeContent() {
   const [formData, setFormData] = useState({
     code: "",
     newPassword: "",
@@ -117,7 +117,9 @@ export default function ResetPasswordCode() {
 
   if (!email) {
     return (
-      <div className={`min-h-screen flex items-center justify-center bg-gray-50 px-2 ${poppins.className}`}>
+      <div
+        className={`min-h-screen flex items-center justify-center bg-gray-50 px-2 ${poppins.className}`}
+      >
         <div className="flex flex-col md:flex-row shadow-lg overflow-hidden w-full max-w-3xl items-stretch">
           <div className="md:w-1/2 w-full p-6 md:p-8 flex flex-col justify-center items-center bg-white min-h-[400px]">
             <div className="text-center">
@@ -141,7 +143,9 @@ export default function ResetPasswordCode() {
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-gray-50 px-2 ${poppins.className}`}>
+    <div
+      className={`min-h-screen flex items-center justify-center bg-gray-50 px-2 ${poppins.className}`}
+    >
       <div className="flex flex-col md:flex-row shadow-lg overflow-hidden w-full max-w-3xl items-stretch">
         {/* Image Section */}
         <div className="hidden md:flex md:w-1/2 w-full flex-shrink-0 items-stretch">
@@ -160,14 +164,19 @@ export default function ResetPasswordCode() {
           <h2 className="text-xl md:text-2xl font-bold text-center text-blue-700 mb-2">
             Welcome to Oxytoxin
           </h2>
-          <h1 className="text-2xl font-bold mb-6 text-gray-900">Reset Your Password</h1>
+          <h1 className="text-2xl font-bold mb-6 text-gray-900">
+            Reset Your Password
+          </h1>
           <p className="text-gray-600 mb-6 text-center">
             Enter the 6-digit code sent to <strong>{email}</strong>
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5 w-full">
             <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="code"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Verification Code
               </label>
               <input
@@ -185,7 +194,10 @@ export default function ResetPasswordCode() {
             </div>
 
             <div>
-              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="newPassword"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 New Password
               </label>
               <div className="relative">
@@ -212,7 +224,10 @@ export default function ResetPasswordCode() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Confirm New Password
               </label>
               <div className="relative">
@@ -266,5 +281,19 @@ export default function ResetPasswordCode() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordCode() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        </div>
+      }
+    >
+      <ResetPasswordCodeContent />
+    </Suspense>
   );
 }

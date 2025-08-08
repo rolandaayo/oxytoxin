@@ -396,7 +396,8 @@ export default function Body() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="rounded-lg overflow-hidden group"
+                  className="rounded-lg overflow-hidden group cursor-pointer bg-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => setQuickViewProduct(item)}
                 >
                   <div className="relative h-[200px] md:h-[400px] overflow-hidden flex flex-col items-center justify-center">
                     <Image
@@ -406,12 +407,6 @@ export default function Body() {
                       height={500}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
-                    <button
-                      onClick={() => setQuickViewProduct(item)}
-                      className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm text-black px-2 md:px-4 py-1 md:py-2 rounded-full shadow-md hover:bg-white transition-all duration-300 text-xs md:text-sm w-[calc(100%-1rem)] md:w-auto mx-2"
-                    >
-                      Quick View
-                    </button>
                   </div>
                   <div className="p-3 md:p-4">
                     <h3 className="text-xs md:text-sm font-medium text-black truncate">
@@ -422,13 +417,6 @@ export default function Body() {
                         ₦{item.price.toLocaleString()}
                       </span>
                     </div>
-                    <div className="mt-3"></div>
-                    <button
-                      onClick={() => addToCart(item)}
-                      className="w-full mt-3 px-4 py-2 rounded-full text-sm bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300"
-                    >
-                      Add to Cart
-                    </button>
                   </div>
                 </motion.div>
               );

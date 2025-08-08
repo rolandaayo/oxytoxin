@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FaCheckCircle, FaTimesCircle, FaSpinner } from "react-icons/fa";
 
-export default function VerifyEmail() {
+function VerifyEmailContent() {
   const [status, setStatus] = useState("loading"); // loading, success, error
   const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
@@ -124,5 +124,19 @@ export default function VerifyEmail() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmail() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        </div>
+      }
+    >
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
