@@ -29,40 +29,78 @@ export default function SignupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation
+    if (!name.trim()) {
+      toast.error("Name is required");
+      return;
+    }
+    if (!email.trim()) {
+      toast.error("Email is required");
+      return;
+    }
+    if (!address.trim()) {
+      toast.error("Address is required");
+      return;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
+
     setLoading(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          address,
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          address: address.trim(),
           password,
           confirmPassword,
         }),
       });
+
       const data = await res.json();
+
+      console.log("Signup response:", data); // Debug log
+
       if (data.status === "success") {
-        toast.success(
-          data.message ||
-            "Registration successful! Please check your email for the verification code to complete your registration."
-        );
+        // Show different messages based on email sending status
+        if (data.emailSent === false) {
+          toast.error(
+            "Account created but email failed to send. Please contact support or try the resend option.",
+            { duration: 8000 }
+          );
+        } else {
+          toast.success(
+            data.message ||
+              "Registration successful! Please check your email for the verification code to complete your registration.",
+            { duration: 5000 }
+          );
+        }
 
         // Store email for verification page
-        localStorage.setItem("pendingVerificationEmail", email);
+        localStorage.setItem(
+          "pendingVerificationEmail",
+          email.trim().toLowerCase()
+        );
 
         // Redirect to verification page
-        router.push(`/verify-code?email=${email}`);
+        router.push(
+          `/verify-code?email=${encodeURIComponent(email.trim().toLowerCase())}`
+        );
       } else {
-        toast.error(data.message || "Sign up failed");
+        toast.error(data.message || "Sign up failed", { duration: 5000 });
       }
     } catch (err) {
-      toast.error("Sign up failed. Please try again.");
+      console.error("Signup error:", err);
+      toast.error("Sign up failed. Please try again.", { duration: 5000 });
     } finally {
       setLoading(false);
     }

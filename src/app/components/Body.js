@@ -261,7 +261,7 @@ export default function Body() {
           <div
             className="absolute h-[1100] inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: 'url("/images/image2.jpeg")',
+              backgroundImage: 'url("/images/bgh.jpeg")',
             }}
           >
             <div className="absolute inset-0 bg-black/60" />

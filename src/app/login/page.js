@@ -35,46 +35,91 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation
+    if (!email.trim()) {
+      toast.error("Email is required");
+      return;
+    }
+    if (!password) {
+      toast.error("Password is required");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          password,
+        }),
       });
+
       const data = await res.json();
+
       if (data.status === "success" && data.token) {
         localStorage.setItem("authToken", data.token);
         if (data.user) {
           localStorage.setItem("userName", data.user.name);
           localStorage.setItem("userEmail", data.user.email);
         }
-        toast.success("Login successful!");
+        toast.success("Login successful!", { duration: 3000 });
 
         // Load user's cart immediately after login
         if (data.user && data.user.email) {
-          await loadUserCart(data.user.email);
+          try {
+            await loadUserCart(data.user.email);
+          } catch (cartError) {
+            console.error("Error loading cart:", cartError);
+            // Don't block login for cart errors
+          }
         }
 
         // Check if there's a redirect URL stored
         const redirectUrl = localStorage.getItem("redirectAfterLogin");
         if (redirectUrl) {
-          localStorage.removeItem("redirectAfterLogin"); // Clear the stored URL
+          localStorage.removeItem("redirectAfterLogin");
           router.push(redirectUrl);
         } else {
-        router.push("/");
+          router.push("/");
         }
       } else {
         // Handle email verification error
         if (data.needsVerification) {
-          toast.error(data.message, { duration: 6000 });
-          // You could show a modal or redirect to a verification page here
+          toast.error(data.message, { duration: 8000 });
+          // Offer to resend verification
+          setTimeout(() => {
+            toast(
+              (t) => (
+                <div className="flex flex-col space-y-2">
+                  <span>Need to verify your email?</span>
+                  <button
+                    onClick={() => {
+                      router.push(
+                        `/verify-code?email=${encodeURIComponent(
+                          email.trim().toLowerCase()
+                        )}`
+                      );
+                      toast.dismiss(t.id);
+                    }}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+                  >
+                    Verify Now
+                  </button>
+                </div>
+              ),
+              { duration: 10000 }
+            );
+          }, 1000);
         } else {
-          toast.error(data.message || "Login failed");
+          toast.error(data.message || "Login failed", { duration: 5000 });
         }
       }
     } catch (err) {
-      toast.error("Login failed. Please try again.");
+      console.error("Login error:", err);
+      toast.error("Login failed. Please try again.", { duration: 5000 });
     } finally {
       setLoading(false);
     }
@@ -141,7 +186,10 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="text-right">
-              <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-blue-600 hover:underline"
+              >
                 Forgot Password?
               </Link>
             </div>

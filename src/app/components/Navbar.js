@@ -10,6 +10,11 @@ import {
   FaSearch,
   FaPhone,
   FaEnvelope,
+  FaHeart,
+  FaSync,
+  FaSignOutAlt,
+  FaSignInAlt,
+  FaUserPlus,
 } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
@@ -122,7 +127,7 @@ export default function Navbar() {
 
         {/* Main Navigation */}
         <nav
-          className={`bg-white/98 backdrop-blur-md shadow-lg w-full transition-all duration-500 ${
+          className={`bg-white shadow-lg w-full transition-all duration-500 ${
             isScrolled ? "shadow-xl" : ""
           }`}
         >
@@ -176,6 +181,18 @@ export default function Navbar() {
                     </Link>
                   );
                 })}
+
+                {/* Quick Logout Button for Desktop */}
+                {isAuthenticated && (
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-red-600 transition-all duration-300 flex items-center space-x-2"
+                    title="Logout"
+                  >
+                    <FaSignOutAlt className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                )}
               </div>
 
               {/* Icons */}
@@ -208,44 +225,98 @@ export default function Navbar() {
 
                   {/* User Dropdown */}
                   {showUserMenu && (
-                    <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-2xl py-3 border border-gray-100 backdrop-blur-sm">
+                    <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-2xl py-2 border border-gray-100 backdrop-blur-sm z-50">
                       {isAuthenticated ? (
                         <>
-                          <div className="px-4 py-3 text-xs text-gray-500 border-b border-gray-100 font-medium">
-                            Logged in as: {userEmail}
+                          {/* User Info Header */}
+                          <div className="px-4 py-3 border-b border-gray-100">
+                            <div className="flex items-center space-x-3">
+                              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-sm uppercase shadow-lg">
+                                {userName.slice(0, 2)}
+                              </span>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-semibold text-gray-900 truncate">
+                                  {userName}
+                                </p>
+                                <p className="text-xs text-gray-500 truncate">
+                                  {userEmail}
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                          <Link
-                            href="/profile"
-                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
-                            onClick={() => setShowUserMenu(false)}
-                          >
-                            Profile Settings
-                          </Link>
-                          <button
-                            onClick={() => {
-                              console.log("Refreshing cart...");
-                              refreshCart();
-                              setShowUserMenu(false);
-                            }}
-                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
-                          >
-                            Refresh Cart
-                          </button>
-                          <button
-                            onClick={handleLogout}
-                            className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200 font-medium"
-                          >
-                            Logout
-                          </button>
+
+                          {/* Menu Items */}
+                          <div className="py-2">
+                            <Link
+                              href="/profile"
+                              className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                              onClick={() => setShowUserMenu(false)}
+                            >
+                              <FaUser className="w-4 h-4 mr-3 text-gray-400" />
+                              Profile Settings
+                            </Link>
+
+                            <Link
+                              href="/orders"
+                              className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                              onClick={() => setShowUserMenu(false)}
+                            >
+                              <FaShoppingCart className="w-4 h-4 mr-3 text-gray-400" />
+                              My Orders
+                            </Link>
+
+                            <Link
+                              href="/wishlist"
+                              className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                              onClick={() => setShowUserMenu(false)}
+                            >
+                              <FaHeart className="w-4 h-4 mr-3 text-gray-400" />
+                              Wishlist
+                            </Link>
+
+                            <button
+                              onClick={() => {
+                                console.log("Refreshing cart...");
+                                refreshCart();
+                                setShowUserMenu(false);
+                              }}
+                              className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                            >
+                              <FaSync className="w-4 h-4 mr-3 text-gray-400" />
+                              Refresh Cart
+                            </button>
+                          </div>
+
+                          {/* Logout Section */}
+                          <div className="border-t border-gray-100 pt-2">
+                            <button
+                              onClick={handleLogout}
+                              className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200 font-medium"
+                            >
+                              <FaSignOutAlt className="w-4 h-4 mr-3 text-gray-400" />
+                              Logout
+                            </button>
+                          </div>
                         </>
                       ) : (
-                        <Link
-                          href="/login"
-                          className="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
-                          onClick={() => setShowUserMenu(false)}
-                        >
-                          Login
-                        </Link>
+                        <div className="py-2">
+                          <Link
+                            href="/login"
+                            className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                            onClick={() => setShowUserMenu(false)}
+                          >
+                            <FaSignInAlt className="w-4 h-4 mr-3 text-gray-400" />
+                            Login
+                          </Link>
+                          <Link
+                            href="/signup"
+                            className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                            onClick={() => setShowUserMenu(false)}
+                          >
+                            <FaUserPlus className="w-4 h-4 mr-3 text-gray-400" />
+                            Sign Up
+                          </Link>
+                        </div>
                       )}
                     </div>
                   )}

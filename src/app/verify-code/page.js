@@ -64,17 +64,27 @@ function VerifyCodeContent() {
       return;
     }
 
+    if (!/^\d{6}$/.test(code)) {
+      toast.error("Verification code must contain only numbers");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
+      const BACKEND_URL =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
       const response = await fetch(
-        "https://oxytoxin-backend.vercel.app/api/auth/verify-email-code",
+        `${BACKEND_URL}/api/auth/verify-email-code`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, code }),
+          body: JSON.stringify({
+            email: email.toLowerCase(),
+            code: code.trim(),
+          }),
         }
       );
 
@@ -87,11 +97,42 @@ function VerifyCodeContent() {
           { duration: 5000 }
         );
         localStorage.removeItem("pendingVerificationEmail");
-        router.push("/login");
+
+        // Show success message and redirect after a short delay
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
       } else {
         toast.error(result.message || "Verification failed", {
           duration: 5000,
         });
+
+        // If code is invalid/expired, offer to resend
+        if (
+          result.message &&
+          (result.message.includes("Invalid") ||
+            result.message.includes("expired"))
+        ) {
+          setTimeout(() => {
+            toast(
+              (t) => (
+                <div className="flex flex-col space-y-2">
+                  <span>Code expired or invalid?</span>
+                  <button
+                    onClick={() => {
+                      handleResendCode();
+                      toast.dismiss(t.id);
+                    }}
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+                  >
+                    Resend Code
+                  </button>
+                </div>
+              ),
+              { duration: 8000 }
+            );
+          }, 1000);
+        }
       }
     } catch (error) {
       console.error("Verification error:", error);
@@ -111,8 +152,10 @@ function VerifyCodeContent() {
     setIsResending(true);
 
     try {
+      const BACKEND_URL =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
       const response = await fetch(
-        "https://oxytoxin-backend.vercel.app/api/auth/resend-verification-code",
+        `${BACKEND_URL}/api/auth/resend-verification-code`,
         {
           method: "POST",
           headers: {
