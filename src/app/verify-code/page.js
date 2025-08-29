@@ -73,7 +73,7 @@ function VerifyCodeContent() {
 
     try {
       const BACKEND_URL =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+        process.env.NEXT_PUBLIC_BACKEND_URL || "https://oxytoxin-backend.vercel.app";
       const response = await fetch(
         `${BACKEND_URL}/api/auth/verify-email-code`,
         {
@@ -98,10 +98,22 @@ function VerifyCodeContent() {
         );
         localStorage.removeItem("pendingVerificationEmail");
 
-        // Show success message and redirect after a short delay
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
+        // If we get a token, store it and the user data (auto-login)
+        if (result.token && result.user) {
+          localStorage.setItem("authToken", result.token);
+          localStorage.setItem("userEmail", result.user.email);
+          localStorage.setItem("userName", result.user.name);
+
+          // Show success message and redirect to home page
+          setTimeout(() => {
+            router.push("/");
+          }, 2000);
+        } else {
+          // Fallback to login page if no token provided
+          setTimeout(() => {
+            router.push("/login");
+          }, 2000);
+        }
       } else {
         toast.error(result.message || "Verification failed", {
           duration: 5000,

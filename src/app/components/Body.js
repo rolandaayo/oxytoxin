@@ -58,10 +58,14 @@ export default function Body() {
   useEffect(() => {
     setMounted(true);
     try {
-      const savedSizes = localStorage.getItem("selectedSizes");
+      // Don't restore selected sizes - users should select size fresh each time
+      // const savedSizes = localStorage.getItem("selectedSizes");
       const savedQuantities = localStorage.getItem("itemQuantities");
 
-      if (savedSizes) setSelectedSize(JSON.parse(savedSizes));
+      // Clear any previously saved sizes to prevent auto-selection
+      localStorage.removeItem("selectedSizes");
+      setSelectedSize({}); // Start with no sizes selected
+
       if (savedQuantities) setItemQuantities(JSON.parse(savedQuantities));
     } catch (error) {
       console.error("Error loading saved data:", error);
@@ -131,14 +135,8 @@ export default function Body() {
     return () => clearInterval(intervalId);
   }, [mounted]);
 
-  useEffect(() => {
-    if (!mounted) return;
-    try {
-      localStorage.setItem("selectedSizes", JSON.stringify(selectedSize));
-    } catch (error) {
-      console.error("Error saving sizes:", error);
-    }
-  }, [selectedSize, mounted]);
+  // Removed: No longer saving selected sizes to localStorage
+  // Users should select size fresh each time to avoid auto-selection
 
   useEffect(() => {
     if (!mounted) return;
@@ -219,7 +217,6 @@ export default function Body() {
     setCartItems([]);
     setSelectedSize({});
     setItemQuantities({});
-    localStorage.removeItem("selectedSizes");
     localStorage.removeItem("itemQuantities");
     setShowCart(false);
 

@@ -1,8 +1,44 @@
-const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
-// const BACKEND_URL = "http://localhost:4000";
+// const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
+const BACKEND_URL =
+  // process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://oxytoxin-backend.vercel.app";
 
 // Public API calls
 export const publicApi = {
+  // Get all categories
+  getCategories: async () => {
+    try {
+      const url = `${BACKEND_URL}/api/public/categories`;
+      console.log("Fetching categories from:", url);
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Unknown error from server");
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      throw error;
+    }
+  },
+
   // Get all products
   getProducts: async (filters = {}, refreshTrigger = 0) => {
     try {
@@ -687,6 +723,89 @@ export const userApi = {
         throw new Error(result.message || "Failed to fetch user orders");
       }
       return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+};
+
+// Auth API calls
+export const authApi = {
+  // Test email endpoint
+  testEmail: async (email) => {
+    try {
+      const url = `${BACKEND_URL}/api/auth/test-email`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Signup
+  signup: async (userData) => {
+    try {
+      const url = `${BACKEND_URL}/api/auth/signup`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Login
+  login: async (credentials) => {
+    try {
+      const url = `${BACKEND_URL}/api/auth/login`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Verify code
+  verifyCode: async (email, code) => {
+    try {
+      const url = `${BACKEND_URL}/api/auth/verify-code`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code }),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      return result;
     } catch (error) {
       throw error;
     }

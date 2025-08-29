@@ -105,21 +105,75 @@ export default function ProfilePage() {
 
   const handleProfileUpdate = async () => {
     try {
+      // Frontend validation
+      if (!profileForm.name || profileForm.name.trim().length < 2) {
+        toast.error("Name must be at least 2 characters long");
+        return;
+      }
+
+      if (profileForm.name.trim().length > 50) {
+        toast.error("Name must be less than 50 characters");
+        return;
+      }
+
+      if (
+        profileForm.phone &&
+        profileForm.phone.trim() &&
+        !/^[\+]?[0-9\s\-\(\)]{7,15}$/.test(profileForm.phone.trim())
+      ) {
+        toast.error("Please enter a valid phone number");
+        return;
+      }
+
+      if (!profileForm.address || profileForm.address.trim().length < 10) {
+        toast.error("Address must be at least 10 characters long");
+        return;
+      }
+
+      if (profileForm.address.trim().length > 500) {
+        toast.error("Address must be less than 500 characters");
+        return;
+      }
+
       setLoading(true);
       const userEmail = localStorage.getItem("userEmail");
-      await userApi.updateUserProfile(userEmail, profileForm);
+
+      // Prepare clean data
+      const updateData = {
+        name: profileForm.name.trim(),
+        phone: profileForm.phone?.trim() || null,
+        address: profileForm.address.trim(),
+      };
+
+      await userApi.updateUserProfile(userEmail, updateData);
       toast.success("Profile updated successfully");
       setIsEditingProfile(false);
       await loadUserData();
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.error("Failed to update profile");
+      toast.error(error.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
   };
 
   const handlePasswordChange = async () => {
+    // Frontend validation
+    if (!passwordForm.currentPassword) {
+      toast.error("Current password is required");
+      return;
+    }
+
+    if (!passwordForm.newPassword) {
+      toast.error("New password is required");
+      return;
+    }
+
+    if (!passwordForm.confirmPassword) {
+      toast.error("Please confirm your new password");
+      return;
+    }
+
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       toast.error("New passwords do not match");
       return;
@@ -128,6 +182,28 @@ export default function ProfilePage() {
     if (passwordForm.newPassword.length < 6) {
       toast.error("Password must be at least 6 characters long");
       return;
+    }
+
+    if (passwordForm.newPassword.length > 128) {
+      toast.error("Password must be less than 128 characters");
+      return;
+    }
+
+    if (passwordForm.currentPassword === passwordForm.newPassword) {
+      toast.error("New password must be different from current password");
+      return;
+    }
+
+    // Basic password strength check
+    const hasUpperCase = /[A-Z]/.test(passwordForm.newPassword);
+    const hasLowerCase = /[a-z]/.test(passwordForm.newPassword);
+    const hasNumbers = /\d/.test(passwordForm.newPassword);
+
+    if (!hasUpperCase && !hasLowerCase && !hasNumbers) {
+      toast.error(
+        "Password should contain letters and/or numbers for better security"
+      );
+      // Don't return here - just warn user
     }
 
     try {
@@ -142,6 +218,12 @@ export default function ProfilePage() {
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
+      });
+      // Reset password visibility
+      setShowPasswords({
+        current: false,
+        new: false,
+        confirm: false,
       });
     } catch (error) {
       console.error("Error changing password:", error);
@@ -340,7 +422,7 @@ export default function ProfilePage() {
                   {/* Profile Form */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-black mb-2">
                         Full Name
                       </label>
                       <input
@@ -353,24 +435,24 @@ export default function ProfilePage() {
                           })
                         }
                         disabled={!isEditingProfile}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
+                        className="w-full px-4 py-3 border border-gray-300 text-black rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-black mb-2">
                         Email
                       </label>
                       <input
                         type="email"
                         value={profileForm.email}
                         disabled
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100"
+                        className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg bg-gray-100"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-black mb-2">
                         Phone Number
                       </label>
                       <input
@@ -383,7 +465,7 @@ export default function ProfilePage() {
                           })
                         }
                         disabled={!isEditingProfile}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
+                        className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
                       />
                     </div>
 
@@ -401,7 +483,7 @@ export default function ProfilePage() {
                         }
                         disabled={!isEditingProfile}
                         rows={3}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
+                        className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
                       />
                     </div>
                   </div>
@@ -448,7 +530,7 @@ export default function ProfilePage() {
                               currentPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
+                          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
                         />
                         <button
                           type="button"
@@ -479,7 +561,7 @@ export default function ProfilePage() {
                               newPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
+                          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
                         />
                         <button
                           type="button"
@@ -510,7 +592,7 @@ export default function ProfilePage() {
                               confirmPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
+                          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
                         />
                         <button
                           type="button"
