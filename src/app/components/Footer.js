@@ -39,30 +39,67 @@ export default function Footer() {
   return (
     <footer className="bg-white text-black">
       {/* Trust Badges Section */}
-      <div className="border-b border-[#3a5d28]">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-center">
-            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
-              <FaTruck className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-black mb-2">Free Shipping</h4>
-              <p className="text-sm text-black">On orders over $100</p>
+      <div className="border-b border-[#3a5d28] bg-gradient-to-b from-white to-gray-50/60">
+        <div className="container mx-auto px-4 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {/* Card 1 */}
+            <div className="group rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 p-4 md:p-5 flex items-center md:flex-col gap-3 md:gap-4 text-left md:text-center">
+              <div className="shrink-0 rounded-full bg-black/90 text-white w-10 h-10 md:w-12 md:h-12 flex items-center justify-center ring-1 ring-black/10 group-hover:ring-black/20 transition">
+                <FaTruck className="w-5 h-5 md:w-6 md:h-6" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-black leading-tight">
+                  Free Shipping
+                </h4>
+                <p className="text-xs md:text-sm text-gray-600">
+                  On orders over $100
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
-              <FaCreditCard className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-black mb-2">Secure Payment</h4>
-              <p className="text-sm text-black">100% secure payments</p>
+
+            {/* Card 2 */}
+            <div className="group rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 p-4 md:p-5 flex items-center md:flex-col gap-3 md:gap-4 text-left md:text-center">
+              <div className="shrink-0 rounded-full bg-black/90 text-white w-10 h-10 md:w-12 md:h-12 flex items-center justify-center ring-1 ring-black/10 group-hover:ring-black/20 transition">
+                <FaCreditCard className="w-5 h-5 md:w-6 md:h-6" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-black leading-tight">
+                  Secure Payment
+                </h4>
+                <p className="text-xs md:text-sm text-gray-600">
+                  100% secure payments
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
-              <FaLock className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-black mb-2">
-                Shop with Confidence
-              </h4>
-              <p className="text-sm text-black">30 days free returns</p>
+
+            {/* Card 3 */}
+            <div className="group rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 p-4 md:p-5 flex items-center md:flex-col gap-3 md:gap-4 text-left md:text-center">
+              <div className="shrink-0 rounded-full bg-black/90 text-white w-10 h-10 md:w-12 md:h-12 flex items-center justify-center ring-1 ring-black/10 group-hover:ring-black/20 transition">
+                <FaLock className="w-5 h-5 md:w-6 md:h-6" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-black leading-tight">
+                  Shop with Confidence
+                </h4>
+                <p className="text-xs md:text-sm text-gray-600">
+                  30 days free returns
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col items-center w-[calc(50%-1.5rem)] md:w-[calc(25%-2rem)]">
-              <FaEnvelope className="w-8 h-8 mb-3 text-blue-500" />
-              <h4 className="font-semibold text-black mb-2">Customer Support</h4>
-              <p className="text-sm text-black">24/7 help available</p>
+
+            {/* Card 4 */}
+            <div className="group rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 p-4 md:p-5 flex items-center md:flex-col gap-3 md:gap-4 text-left md:text-center">
+              <div className="shrink-0 rounded-full bg-black/90 text-white w-10 h-10 md:w-12 md:h-12 flex items-center justify-center ring-1 ring-black/10 group-hover:ring-black/20 transition">
+                <FaEnvelope className="w-5 h-5 md:w-6 md:h-6" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-black leading-tight">
+                  Customer Support
+                </h4>
+                <p className="text-xs md:text-sm text-gray-600">
+                  24/7 help available
+                </p>
+              </div>
             </div>
           </div>
         </div>
