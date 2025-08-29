@@ -311,8 +311,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pb-16 md:pb-8 pt-6">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
@@ -321,10 +321,10 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
           {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow p-6">
+          <div className="lg:col-span-1 hidden lg:block">
+            <div className="bg-white rounded-lg shadow p-5">
               <nav className="space-y-2">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
@@ -358,14 +358,14 @@ export default function ProfilePage() {
             >
               {/* Profile Tab */}
               {activeTab === "profile" && (
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <h2 className="text-xl md:text-2xl font-bold text-gray-900">
                       Profile Information
                     </h2>
                     <button
                       onClick={() => setIsEditingProfile(!isEditingProfile)}
-                      className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                      className="flex items-center space-x-2 bg-black text-white px-4 py-2 md:py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
                     >
                       <FaEdit className="w-4 h-4" />
                       <span>{isEditingProfile ? "Cancel" : "Edit"}</span>
@@ -373,7 +373,7 @@ export default function ProfilePage() {
                   </div>
 
                   {/* Profile Picture Section */}
-                  <div className="mb-8">
+                  <div className="mb-6 md:mb-8">
                     <div className="flex items-center space-x-6">
                       <div className="relative">
                         <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200">
@@ -400,7 +400,7 @@ export default function ProfilePage() {
                         </label>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-base md:text-lg font-semibold text-gray-900">
                           Profile Picture
                         </h3>
                         <p className="text-gray-600 text-sm mb-2">
@@ -410,7 +410,7 @@ export default function ProfilePage() {
                           <button
                             onClick={uploadProfilePicture}
                             disabled={uploadingPicture}
-                            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                            className="bg-green-600 text-white px-4 py-2 md:py-2.5 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
                           >
                             {uploadingPicture ? "Uploading..." : "Save Picture"}
                           </button>
@@ -420,9 +420,9 @@ export default function ProfilePage() {
                   </div>
 
                   {/* Profile Form */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-black mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         Full Name
                       </label>
                       <input
@@ -435,24 +435,24 @@ export default function ProfilePage() {
                           })
                         }
                         disabled={!isEditingProfile}
-                        className="w-full px-4 py-3 border border-gray-300 text-black rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
+                        className="w-full px-3 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100 text-black"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-black mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         Email
                       </label>
                       <input
                         type="email"
                         value={profileForm.email}
                         disabled
-                        className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg bg-gray-100"
+                        className="w-full px-3 py-2 md:py-3 border border-gray-300 rounded-lg bg-gray-100 text-black"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-black mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         Phone Number
                       </label>
                       <input
@@ -465,7 +465,7 @@ export default function ProfilePage() {
                           })
                         }
                         disabled={!isEditingProfile}
-                        className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
+                        className="w-full px-3 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100 text-black"
                       />
                     </div>
 
@@ -483,7 +483,7 @@ export default function ProfilePage() {
                         }
                         disabled={!isEditingProfile}
                         rows={3}
-                        className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100"
+                        className="w-full px-3 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent disabled:bg-gray-100 text-black"
                       />
                     </div>
                   </div>
@@ -493,13 +493,13 @@ export default function ProfilePage() {
                       <button
                         onClick={handleProfileUpdate}
                         disabled={loading}
-                        className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+                        className="bg-black text-white px-6 py-2.5 md:py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                       >
                         {loading ? "Saving..." : "Save Changes"}
                       </button>
                       <button
                         onClick={() => setIsEditingProfile(false)}
-                        className="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors"
+                        className="bg-gray-300 text-gray-700 px-6 py-2.5 md:py-3 rounded-lg hover:bg-gray-400 transition-colors"
                       >
                         Cancel
                       </button>
@@ -510,7 +510,7 @@ export default function ProfilePage() {
 
               {/* Security Tab */}
               {activeTab === "security" && (
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Security Settings
                   </h2>
@@ -530,7 +530,7 @@ export default function ProfilePage() {
                               currentPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
+                          className="w-full px-3 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
                         />
                         <button
                           type="button"
@@ -561,7 +561,7 @@ export default function ProfilePage() {
                               newPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
+                          className="w-full px-3 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
                         />
                         <button
                           type="button"
@@ -592,7 +592,7 @@ export default function ProfilePage() {
                               confirmPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
+                          className="w-full px-3 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent pr-12"
                         />
                         <button
                           type="button"
@@ -617,7 +617,7 @@ export default function ProfilePage() {
                         !passwordForm.newPassword ||
                         !passwordForm.confirmPassword
                       }
-                      className="w-full bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+                      className="w-full bg-black text-white px-6 py-2.5 md:py-3 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                     >
                       {loading ? "Changing Password..." : "Change Password"}
                     </button>
@@ -627,7 +627,7 @@ export default function ProfilePage() {
 
               {/* Orders Tab */}
               {activeTab === "orders" && (
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Order History
                   </h2>
@@ -643,7 +643,7 @@ export default function ProfilePage() {
                       </p>
                       <button
                         onClick={() => router.push("/")}
-                        className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+                        className="bg-black text-white px-6 py-2.5 md:py-3 rounded-lg hover:bg-gray-800 transition-colors"
                       >
                         Start Shopping
                       </button>
@@ -724,14 +724,14 @@ export default function ProfilePage() {
 
               {/* Account Tab */}
               {activeTab === "account" && (
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Account Management
                   </h2>
 
                   <div className="space-y-8">
                     {/* Logout Section */}
-                    <div className="border border-gray-200 rounded-lg p-6">
+                    <div className="border border-gray-200 rounded-lg p-4 md:p-6">
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900">
@@ -743,7 +743,7 @@ export default function ProfilePage() {
                         </div>
                         <button
                           onClick={handleLogout}
-                          className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                          className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2.5 md:py-3 rounded-lg hover:bg-red-700 transition-colors"
                         >
                           <FaSignOutAlt className="w-4 h-4" />
                           <span>Logout</span>
@@ -752,7 +752,7 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Delete Account Section */}
-                    <div className="border border-red-200 rounded-lg p-6 bg-red-50">
+                    <div className="border border-red-200 rounded-lg p-4 md:p-6 bg-red-50">
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="text-lg font-semibold text-red-900">
@@ -765,7 +765,7 @@ export default function ProfilePage() {
                         </div>
                         <button
                           onClick={() => setShowDeleteModal(true)}
-                          className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                          className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2.5 md:py-3 rounded-lg hover:bg-red-700 transition-colors"
                         >
                           <FaTrash className="w-4 h-4" />
                           <span>Delete Account</span>
@@ -777,6 +777,32 @@ export default function ProfilePage() {
               )}
             </motion.div>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile bottom tab bar */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 bg-white border-t shadow-sm z-40">
+        <div className="max-w-6xl mx-auto px-2">
+          <nav className="grid grid-cols-4">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex flex-col items-center justify-center py-2.5 text-xs ${
+                    isActive ? "text-black" : "text-gray-500"
+                  }`}
+                >
+                  <Icon
+                    className={`w-5 h-5 mb-1 ${isActive ? "" : "opacity-70"}`}
+                  />
+                  <span className="font-medium">{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
         </div>
       </div>
 
