@@ -73,7 +73,8 @@ function VerifyCodeContent() {
 
     try {
       const BACKEND_URL =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "https://oxytoxin-backend.vercel.app";
+        process.env.NEXT_PUBLIC_BACKEND_URL ||
+        "https://oxytoxin-backend.vercel.app";
       const response = await fetch(
         `${BACKEND_URL}/api/auth/verify-email-code`,
         {
