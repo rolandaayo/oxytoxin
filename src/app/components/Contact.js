@@ -8,6 +8,9 @@ import {
   FaFacebook,
   FaTwitter,
   FaInstagram,
+  FaTiktok,
+  FaYoutube,
+  FaLinkedin,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
 import emailjs from "@emailjs/browser";
@@ -130,24 +133,60 @@ export default function Contact() {
             {/* Social Media */}
             <div className="mt-8">
               <h3 className="font-semibold text-black mb-4">Follow Us</h3>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <a
-                  href="#"
+                  href="https://facebook.com/oxytoxinapparel"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-black hover:text-blue-600 transition-colors"
+                  aria-label="Follow us on Facebook"
                 >
                   <FaFacebook className="w-6 h-6" />
                 </a>
                 <a
-                  href="#"
+                  href="https://twitter.com/oxytoxinapparel"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-black hover:text-blue-400 transition-colors"
+                  aria-label="Follow us on Twitter"
                 >
                   <FaTwitter className="w-6 h-6" />
                 </a>
                 <a
-                  href="#"
+                  href="https://instagram.com/oxytoxinapparel"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-black hover:text-pink-600 transition-colors"
+                  aria-label="Follow us on Instagram"
                 >
                   <FaInstagram className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://tiktok.com/@oxytoxinapparel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black hover:text-black transition-colors"
+                  aria-label="Follow us on TikTok"
+                >
+                  <FaTiktok className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://youtube.com/@oxytoxinapparel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black hover:text-red-600 transition-colors"
+                  aria-label="Subscribe to our YouTube channel"
+                >
+                  <FaYoutube className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://linkedin.com/company/oxytoxinapparel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black hover:text-blue-700 transition-colors"
+                  aria-label="Connect with us on LinkedIn"
+                >
+                  <FaLinkedin className="w-6 h-6" />
                 </a>
               </div>
             </div>
