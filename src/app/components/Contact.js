@@ -144,7 +144,7 @@ export default function Contact() {
                   <FaFacebook className="w-6 h-6" />
                 </a>
                 <a
-                  href="https://twitter.com/oxytoxinapparel"
+                  href="https://x.com/oxytoxinapparel?s=21"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-black hover:text-blue-400 transition-colors"
@@ -161,7 +161,7 @@ export default function Contact() {
                 >
                   <FaInstagram className="w-6 h-6" />
                 </a>
-                <a
+                {/* <a
                   href="https://tiktok.com/@oxytoxinapparel"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -169,8 +169,8 @@ export default function Contact() {
                   aria-label="Follow us on TikTok"
                 >
                   <FaTiktok className="w-6 h-6" />
-                </a>
-                <a
+                </a> */}
+                {/* <a
                   href="https://youtube.com/@oxytoxinapparel"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -178,8 +178,8 @@ export default function Contact() {
                   aria-label="Subscribe to our YouTube channel"
                 >
                   <FaYoutube className="w-6 h-6" />
-                </a>
-                <a
+                </a> */}
+                {/* <a
                   href="https://linkedin.com/company/oxytoxinapparel"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -187,7 +187,7 @@ export default function Contact() {
                   aria-label="Connect with us on LinkedIn"
                 >
                   <FaLinkedin className="w-6 h-6" />
-                </a>
+                </a> */}
               </div>
             </div>
           </div>
