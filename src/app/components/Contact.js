@@ -11,6 +11,7 @@ import {
   FaTiktok,
   FaYoutube,
   FaLinkedin,
+  FaWhatsapp,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
 import emailjs from "@emailjs/browser";
@@ -134,6 +135,15 @@ export default function Contact() {
             <div className="mt-8">
               <h3 className="font-semibold text-black mb-4">Follow Us</h3>
               <div className="flex flex-wrap gap-4">
+                <a
+                  href="https://wa.me/2348104490513"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black hover:text-green-600 transition-colors"
+                  aria-label="Contact us on WhatsApp"
+                >
+                  <FaWhatsapp className="w-6 h-6" />
+                </a>
                 <a
                   href="https://facebook.com/oxytoxinapparel"
                   target="_blank"
