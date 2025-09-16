@@ -31,3 +31,15 @@ p, span {
   padding: 20px !important;
   border: 3px solid blue !important;
 }
+
+/* Prevent scrolling when cart is open */
+body.cart-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+html.cart-open {
+  overflow: hidden !important;
+}

@@ -33,6 +33,33 @@ export function CartProvider({ children }) {
     }
   }, []);
 
+  // Prevent body scrolling when cart is open
+  useEffect(() => {
+    if (showCart) {
+      // Store current scroll position
+      const scrollY = window.scrollY;
+      
+      // Simply fix the body in place
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        // Restore everything
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.overflow = "";
+        
+        // Restore scroll position
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [showCart]);
+
   // Load cart items on mount (only for logged-in users)
   useEffect(() => {
     if (!mounted || !isLoggedIn || !userEmail) return;
