@@ -159,7 +159,7 @@ export default function AdminPage() {
               {vendorPercent}%
             </text>
           </svg>
-          <div className="flex flex-col items-center mt-4 text-sm">
+          {/* <div className="flex flex-col items-center mt-4 text-sm">
             <div className="flex items-center gap-2 mb-1">
               <span className="inline-block w-3 h-3 rounded-full bg-orange-400"></span>
               <span className="text-black">Vendors ({vendorPercent}%)</span>
@@ -168,7 +168,7 @@ export default function AdminPage() {
               <span className="inline-block w-3 h-3 rounded-full bg-gray-300"></span>
               <span className="text-black">Customers ({customerPercent}%)</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

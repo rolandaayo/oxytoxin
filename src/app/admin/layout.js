@@ -240,13 +240,21 @@ function AdminNavbar({ setSidebarOpen }) {
       </div>
       <div className="flex items-center gap-4 md:gap-6 ml-2 md:ml-8">
         {/* Settings icon */}
-        <button className="p-2 rounded-full hover:bg-gray-100">
+        {/* <button className="p-2 rounded-full hover:bg-gray-100">
           <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
             <path
               d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.007 7.007 0 0 0-1.62-.94l-.36-2.53A.486.486 0 0 0 14 2h-4a.486.486 0 0 0-.5.41l-.36 2.53c-.59.22-1.14.52-1.62.94l-2.39-.96a.5.5 0 0 0-.61.22l-1.92 3.32a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.14.24.44.32.68.22l2.39-.96c.48.42 1.03.77 1.62.94l.36 2.53c.05.29.29.41.5.41h4c.21 0 .45-.12.5-.41l.36-2.53c.59-.17 1.14-.52 1.62-.94l2.39.96c.24.1.54.02.68-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"
               fill="#9CA3AF"
             />
           </svg>
+        </button> */}
+        {/* Mobile Logout button */}
+        <button
+          onClick={handleLogout}
+          className="sm:hidden px-3 py-2 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+          title="Logout"
+        >
+          Logout
         </button>
         {/* Notification icon */}
         <button className="p-2 rounded-full hover:bg-gray-100">
