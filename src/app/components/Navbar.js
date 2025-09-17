@@ -19,6 +19,7 @@ import {
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Checkout from "./Checkout";
 
 const goldman = Goldman({
   weight: ["400", "700"],
@@ -29,6 +30,7 @@ const goldman = Goldman({
 export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
@@ -466,15 +468,13 @@ export default function Navbar() {
                       </span>
                     </div>
                     <button
-                      onClick={initializePayment}
-                      disabled={loading}
-                      className={`w-full py-3 rounded-lg transition-colors duration-300 ${
-                        loading
-                          ? "opacity-50 cursor-not-allowed bg-gray-400"
-                          : "bg-green-600 hover:bg-green-700"
-                      } text-white`}
+                      onClick={() => {
+                        setShowCart(false);
+                        setShowCheckout(true);
+                      }}
+                      className="w-full py-3 rounded-lg transition-colors duration-300 bg-green-600 hover:bg-green-700 text-white"
                     >
-                      {loading ? "Processing..." : "Proceed to Payment"}
+                      Proceed to Checkout
                     </button>
                   </div>
                 </>
@@ -482,6 +482,14 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Checkout Modal */}
+      {showCheckout && (
+        <Checkout
+          onClose={() => setShowCheckout(false)}
+          onProceedToPayment={() => setShowCheckout(false)}
+        />
       )}
     </>
   );

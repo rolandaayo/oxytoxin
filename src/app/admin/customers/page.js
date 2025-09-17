@@ -3,11 +3,16 @@ import { useState, useEffect } from "react";
 import { adminApi } from "../../services/api";
 import { format } from "date-fns";
 import Image from "next/image";
+import CustomerDeliveryModal from "../../components/CustomerDeliveryModal";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { useAdminAuth } from "../../context/AdminAuthContext";
+import AdminLogin from "../../components/AdminLogin";
 
 export default function CustomersPage() {
   const [search, setSearch] = useState("");
   const [customers, setCustomers] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const { isAdminAuthenticated, loginAdmin } = useAdminAuth();
   const [newCustomer, setNewCustomer] = useState({
     name: "",
     email: "",
@@ -21,6 +26,8 @@ export default function CustomersPage() {
   });
   const [isAddingCustomer, setIsAddingCustomer] = useState(false);
   const [isDeletingCustomer, setIsDeletingCustomer] = useState(false);
+  const [showDeliveryModal, setShowDeliveryModal] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -116,6 +123,12 @@ export default function CustomersPage() {
     setEditModal({ open: true, customer });
   };
 
+  // Show delivery modal
+  const handleViewDelivery = (customer) => {
+    setSelectedCustomer(customer);
+    setShowDeliveryModal(true);
+  };
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     const { customer } = editModal;
@@ -131,6 +144,11 @@ export default function CustomersPage() {
       alert("Failed to update user");
     }
   };
+
+  // Show login form if not authenticated
+  if (!isAdminAuthenticated) {
+    return <AdminLogin onLogin={loginAdmin} />;
+  }
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
@@ -197,6 +215,8 @@ export default function CustomersPage() {
                     <Image
                       src={customer.avatar}
                       alt={customer.name}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-full object-cover border"
                     />
                     <span className="font-medium text-gray-900">
@@ -243,6 +263,13 @@ export default function CustomersPage() {
                       onClick={() => handleEditCustomer(customer)}
                     >
                       Edit
+                    </button>
+                    <button
+                      className="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-xs font-medium flex items-center gap-1"
+                      onClick={() => handleViewDelivery(customer)}
+                    >
+                      <FaMapMarkerAlt className="w-3 h-3" />
+                      Delivery
                     </button>
                     <button
                       className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs font-medium"
@@ -475,6 +502,18 @@ export default function CustomersPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Delivery Information Modal */}
+      {showDeliveryModal && (
+        <CustomerDeliveryModal
+          customer={selectedCustomer}
+          onClose={() => {
+            setShowDeliveryModal(false);
+            setSelectedCustomer(null);
+          }}
+          onUpdate={refreshUsers}
+        />
       )}
     </div>
   );

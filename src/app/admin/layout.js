@@ -5,6 +5,8 @@ import { Toaster } from "react-hot-toast";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { useRouter, usePathname } from "next/navigation";
+import { AdminAuthProvider, useAdminAuth } from "../context/AdminAuthContext";
+import AdminLogin from "../components/AdminLogin";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -196,6 +198,8 @@ function AdminNavbar({ setSidebarOpen }) {
   // Get admin info from localStorage
   const [adminName, setAdminName] = useState("");
   const router = useRouter();
+  const { logoutAdmin } = useAdminAuth();
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user =
@@ -205,14 +209,10 @@ function AdminNavbar({ setSidebarOpen }) {
       setAdminName(user);
     }
   }, []);
+
   const handleLogout = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("admin_authenticated");
-      router.replace("/admin");
-    }
+    logoutAdmin();
+    router.replace("/admin");
   };
   return (
     <div className="sticky top-0 z-30 w-full bg-white flex items-center justify-between px-4 md:px-8 py-4 shadow rounded-b-xl">
@@ -269,26 +269,46 @@ function AdminNavbar({ setSidebarOpen }) {
               />
             </svg>
           </span>
-          {/*
           <button
             onClick={handleLogout}
             className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
           >
             Logout
           </button>
-          */}
         </div>
       </div>
     </div>
   );
 }
 
-export default function AdminLayout({ children }) {
+function AdminLayoutContent({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // Remove router and pathname logic
+  const { isAdminAuthenticated, isLoading } = useAdminAuth();
 
-  // Remove useEffect and auth check
+  // Show loading spinner while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-black to-gray-800 rounded-full mb-4 border-2 border-gray-700">
+            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-white text-lg">Loading Admin Panel...</p>
+        </div>
+      </div>
+    );
+  }
 
+  // Show login page if not authenticated
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
+        {children}
+      </div>
+    );
+  }
+
+  // Show full admin interface only when authenticated
   return (
     <div className={`min-h-screen ${poppins.className} bg-gray-50`}>
       <AdminNavbar setSidebarOpen={setSidebarOpen} />
@@ -322,5 +342,13 @@ export default function AdminLayout({ children }) {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function AdminLayout({ children }) {
+  return (
+    <AdminAuthProvider>
+      <AdminLayoutContent>{children}</AdminLayoutContent>
+    </AdminAuthProvider>
   );
 }

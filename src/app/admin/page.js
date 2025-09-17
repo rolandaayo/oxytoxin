@@ -4,10 +4,13 @@ import { useState, useEffect } from "react";
 import { adminApi } from "../services/api";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
+import { useAdminAuth } from "../context/AdminAuthContext";
+import AdminLogin from "../components/AdminLogin";
 
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
+  const { isAdminAuthenticated, isLoading, loginAdmin } = useAdminAuth();
 
   useEffect(() => {
     async function fetchUsers() {
@@ -38,7 +41,12 @@ export default function AdminPage() {
     { label: "Total Orders", value: 1, icon: "🧾" },
   ];
 
-    return (
+  // Show login form if not authenticated
+  if (!isAdminAuthenticated) {
+    return <AdminLogin onLogin={loginAdmin} />;
+  }
+
+  return (
     <div className="space-y-8">
       {/* Welcome Card */}
       <div className="bg-gradient-to-r from-gray-800 to-gray-700 text-white rounded-xl p-6 sm:p-10 lg:p-20 flex flex-col sm:flex-row items-center sm:items-center justify-between shadow gap-4 sm:gap-0 text-center sm:text-left">
@@ -163,6 +171,6 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
-      </div>
-    );
+    </div>
+  );
 }
