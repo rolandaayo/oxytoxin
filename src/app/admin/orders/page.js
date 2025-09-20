@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { adminApi } from "../../services/api";
+import toast from "react-hot-toast";
 import { format } from "date-fns";
 import { FaMapMarkerAlt, FaEye, FaTruck } from "react-icons/fa";
 import { useAdminAuth } from "../../context/AdminAuthContext";
@@ -13,6 +14,15 @@ export default function OrdersPage() {
   const [showDeliveryModal, setShowDeliveryModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const { isAdminAuthenticated, loginAdmin } = useAdminAuth();
+
+  const statusOptions = [
+    "pending",
+    "processing",
+    "shipped",
+    "delivered",
+    "successful",
+    "cancelled",
+  ];
 
   useEffect(() => {
     fetchOrders();
@@ -40,6 +50,49 @@ export default function OrdersPage() {
   const handleViewDelivery = (order) => {
     setSelectedOrder(order);
     setShowDeliveryModal(true);
+  };
+
+  const handleChangeStatus = async (order, newStatus) => {
+    const prevStatus = order.status;
+    // Optimistic update
+    setOrders((prev) =>
+      prev.map((o) => (o._id === order._id ? { ...o, status: newStatus } : o))
+    );
+    try {
+      await adminApi.updateOrderStatus(order._id, newStatus, order.paymentRef);
+      toast.success("Order status updated");
+    } catch (error) {
+      // Revert on failure
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === order._id ? { ...o, status: prevStatus } : o
+        )
+      );
+      toast.error(error.message || "Failed to update status");
+    }
+  };
+
+  const handleDeleteOrder = async (order) => {
+    if (!confirm("Are you sure you want to delete this order?")) return;
+    try {
+      await adminApi.deleteOrder(order._id);
+      toast.success("Order deleted");
+      setOrders((prev) => prev.filter((o) => o._id !== order._id));
+    } catch (error) {
+      console.error("Error deleting order:", error);
+      // Fallback: if delete API is unavailable on server, mark as cancelled
+      try {
+        await adminApi.updateOrderStatus(
+          order._id,
+          "cancelled",
+          order.paymentRef
+        );
+        toast.success("Order marked as cancelled (delete unavailable)");
+        setOrders((prev) => prev.filter((o) => o._id !== order._id));
+      } catch (e) {
+        toast.error(error.message || "Failed to delete order");
+      }
+    }
   };
 
   const getStatusColor = (status) => {
@@ -155,13 +208,21 @@ export default function OrdersPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-semibold ${getStatusColor(
+                    <select
+                      value={order.status || "pending"}
+                      onChange={(e) =>
+                        handleChangeStatus(order, e.target.value)
+                      }
+                      className={`px-2 py-1 rounded text-xs font-semibold border ${getStatusColor(
                         order.status
                       )}`}
                     >
-                      {order.status || "pending"}
-                    </span>
+                      {statusOptions.map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {order.createdAt
@@ -176,6 +237,12 @@ export default function OrdersPage() {
                       >
                         <FaMapMarkerAlt className="w-3 h-3" />
                         Delivery
+                      </button>
+                      <button
+                        className="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs font-medium"
+                        onClick={() => handleDeleteOrder(order)}
+                      >
+                        Delete
                       </button>
                     </div>
                   </td>
@@ -303,7 +370,7 @@ export default function OrdersPage() {
                     </h3>
                   </div>
                   <p className="text-yellow-700 text-sm mt-1">
-                    This order doesn't have delivery information. This might be
+                    This order does not have delivery information. This might be
                     an older order.
                   </p>
                 </div>
@@ -322,10 +389,13 @@ export default function OrdersPage() {
                   </span>
                   <span className="text-sm text-gray-500">
                     {selectedOrder.createdAt
-                      ? format(
+                      ? `${format(
                           new Date(selectedOrder.createdAt),
-                          "MMM dd, yyyy 'at' HH:mm"
-                        )
+                          "MMM dd, yyyy"
+                        )} at ${format(
+                          new Date(selectedOrder.createdAt),
+                          "HH:mm"
+                        )}`
                       : "N/A"}
                   </span>
                 </div>

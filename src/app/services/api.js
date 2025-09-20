@@ -584,6 +584,32 @@ export const adminApi = {
       throw error;
     }
   },
+  // Delete order (admin)
+  deleteOrder: async (orderId) => {
+    try {
+      const url = `${BACKEND_URL}/api/admin/orders/${orderId}`;
+      const token = getAdminToken();
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Cache-Control": "no-cache",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to delete order");
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 // User profile API calls
