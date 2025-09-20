@@ -62,7 +62,7 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        `https://oxytoxin-backend.vercel.app/api/delivery/admin/user/${customer._id}`,
+        `http://localhost:4000/api/delivery/admin/user/${customer._id}`,
         {
           method: "PUT",
           headers: {

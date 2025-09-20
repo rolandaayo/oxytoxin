@@ -32,9 +32,9 @@ export default function AdminGalleryPage() {
   const fetchGalleryImages = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://oxytoxin-backend.vercel.app/api/admin/gallery");
+      const response = await fetch("http://localhost:4000/api/admin/gallery");
       const result = await response.json();
-      
+
       if (result.status === "success") {
         setGalleryImages(result.data);
       } else {
@@ -56,7 +56,12 @@ export default function AdminGalleryPage() {
         return;
       }
 
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+      ];
       if (!allowedTypes.includes(file.type)) {
         toast.error("Please upload a valid image file (JPEG, PNG, WebP)");
         return;
@@ -69,7 +74,7 @@ export default function AdminGalleryPage() {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    
+
     if (!uploadForm.image) {
       toast.error("Please select an image to upload");
       return;
@@ -82,7 +87,7 @@ export default function AdminGalleryPage() {
       formData.append("title", uploadForm.title);
       formData.append("description", uploadForm.description);
 
-      const response = await fetch("https://oxytoxin-backend.vercel.app/api/admin/gallery", {
+      const response = await fetch("http://localhost:4000/api/admin/gallery", {
         method: "POST",
         body: formData,
       });
@@ -112,9 +117,12 @@ export default function AdminGalleryPage() {
     }
 
     try {
-      const response = await fetch(`https://oxytoxin-backend.vercel.app/api/admin/gallery/${imageId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://localhost:4000/api/admin/gallery/${imageId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       const result = await response.json();
 
@@ -132,7 +140,9 @@ export default function AdminGalleryPage() {
 
   if (loading) {
     return (
-      <div className={`min-h-screen bg-gray-50 flex items-center justify-center ${poppins.className}`}>
+      <div
+        className={`min-h-screen bg-gray-50 flex items-center justify-center ${poppins.className}`}
+      >
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-black"></div>
       </div>
     );
@@ -145,8 +155,12 @@ export default function AdminGalleryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Gallery Management</h1>
-              <p className="text-gray-600 mt-2">Upload and manage gallery images</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Gallery Management
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Upload and manage gallery images
+              </p>
             </div>
             <button
               onClick={() => setShowUploadModal(true)}
@@ -164,8 +178,12 @@ export default function AdminGalleryPage() {
         {galleryImages.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 text-6xl mb-4">📸</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No gallery images yet</h3>
-            <p className="text-gray-600 mb-6">Start by uploading your first image</p>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No gallery images yet
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Start by uploading your first image
+            </p>
             <button
               onClick={() => setShowUploadModal(true)}
               className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2 mx-auto"
@@ -224,7 +242,9 @@ export default function AdminGalleryPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg w-full max-w-md">
             <div className="flex justify-between items-center p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">Upload Gallery Image</h2>
+              <h2 className="text-xl font-bold text-gray-900">
+                Upload Gallery Image
+              </h2>
               <button
                 onClick={() => setShowUploadModal(false)}
                 className="text-gray-400 hover:text-gray-600"
@@ -262,7 +282,9 @@ export default function AdminGalleryPage() {
                   ) : (
                     <div>
                       <FaUpload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-600">Click to select image</p>
+                      <p className="text-sm text-gray-600">
+                        Click to select image
+                      </p>
                       <input
                         type="file"
                         accept="image/*"
@@ -288,7 +310,9 @@ export default function AdminGalleryPage() {
                 <input
                   type="text"
                   value={uploadForm.title}
-                  onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
+                  onChange={(e) =>
+                    setUploadForm({ ...uploadForm, title: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                   placeholder="Enter image title"
                 />
@@ -300,7 +324,12 @@ export default function AdminGalleryPage() {
                 </label>
                 <textarea
                   value={uploadForm.description}
-                  onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
+                  onChange={(e) =>
+                    setUploadForm({
+                      ...uploadForm,
+                      description: e.target.value,
+                    })
+                  }
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                   placeholder="Enter image description"
@@ -329,4 +358,4 @@ export default function AdminGalleryPage() {
       )}
     </div>
   );
-} 
+}

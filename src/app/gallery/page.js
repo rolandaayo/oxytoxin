@@ -28,7 +28,7 @@ export default function GalleryPage() {
       setLoading(true);
       const response = await fetch("https://oxytoxin-backend.vercel.app/api/public/gallery");
       const result = await response.json();
-      
+
       if (result.status === "success") {
         setGalleryImages(result.data);
       } else {
@@ -42,9 +42,10 @@ export default function GalleryPage() {
     }
   };
 
-  const filteredImages = galleryImages.filter(image =>
-    image.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    image.description?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredImages = galleryImages.filter(
+    (image) =>
+      image.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      image.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const openImageModal = (image) => {
@@ -57,7 +58,9 @@ export default function GalleryPage() {
 
   if (loading) {
     return (
-      <div className={`min-h-screen bg-gray-50 flex items-center justify-center ${poppins.className}`}>
+      <div
+        className={`min-h-screen bg-gray-50 flex items-center justify-center ${poppins.className}`}
+      >
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-black"></div>
       </div>
     );
@@ -102,10 +105,9 @@ export default function GalleryPage() {
               {searchQuery ? "No images found" : "Gallery is empty"}
             </h3>
             <p className="text-gray-600">
-              {searchQuery 
-                ? "Try adjusting your search terms" 
-                : "Check back soon for new additions to our gallery"
-              }
+              {searchQuery
+                ? "Try adjusting your search terms"
+                : "Check back soon for new additions to our gallery"}
             </p>
           </div>
         ) : (
@@ -160,7 +162,7 @@ export default function GalleryPage() {
             >
               <FaTimes className="w-5 h-5" />
             </button>
-            
+
             <div className="flex flex-col md:flex-row">
               <div className="flex-1 relative aspect-square md:aspect-auto">
                 <Image
@@ -170,7 +172,7 @@ export default function GalleryPage() {
                   className="object-contain"
                 />
               </div>
-              
+
               {(selectedImage.title || selectedImage.description) && (
                 <div className="w-full md:w-80 p-6 bg-white">
                   {selectedImage.title && (
@@ -185,7 +187,8 @@ export default function GalleryPage() {
                   )}
                   {selectedImage.createdAt && (
                     <p className="text-sm text-gray-500 mt-4">
-                      Added: {new Date(selectedImage.createdAt).toLocaleDateString()}
+                      Added:{" "}
+                      {new Date(selectedImage.createdAt).toLocaleDateString()}
                     </p>
                   )}
                 </div>
@@ -196,4 +199,4 @@ export default function GalleryPage() {
       )}
     </div>
   );
-} 
+}

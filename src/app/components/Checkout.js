@@ -130,14 +130,8 @@ export default function Checkout({ onClose, onProceedToPayment }) {
 
     setIsLoading(true);
     try {
-      // Add delivery info to the payment data
-      const paymentData = {
-        ...deliveryInfo,
-        items: cartItems,
-        totalAmount: totalAmount,
-      };
-
-      await initializePayment(paymentData);
+      // Pass delivery info to payment initialization
+      await initializePayment(deliveryInfo);
       onClose(); // Close checkout modal
     } catch (error) {
       console.error("Payment initialization error:", error);
@@ -226,20 +220,11 @@ export default function Checkout({ onClose, onProceedToPayment }) {
 
           {/* Delivery Information */}
           <div className="bg-white border rounded-lg p-4">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <h3 className="font-semibold text-black flex items-center gap-2">
                 <FaMapMarkerAlt className="w-4 h-4" />
                 Delivery Information
               </h3>
-              {!isEditing && (
-                <button
-                  onClick={handleEdit}
-                  className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm"
-                >
-                  <FaEdit className="w-3 h-3" />
-                  Edit
-                </button>
-              )}
             </div>
 
             {isEditing ? (
@@ -359,30 +344,49 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                 </button>
               </div>
             ) : (
-              <div className="space-y-2 text-sm">
-                <p>
-                  <strong>Name:</strong> {deliveryInfo.fullName}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {deliveryInfo.phoneNumber}
-                </p>
-                <p>
-                  <strong>Address:</strong> {deliveryInfo.address}
-                </p>
-                <p>
-                  <strong>City:</strong> {deliveryInfo.city},{" "}
-                  {deliveryInfo.state}
-                </p>
-                {deliveryInfo.postalCode && (
-                  <p>
-                    <strong>Postal Code:</strong> {deliveryInfo.postalCode}
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-semibold text-gray-900">
+                    Delivery Details Preview
+                  </h4>
+                  <button
+                    onClick={handleEdit}
+                    className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-sm font-medium"
+                  >
+                    <FaEdit className="w-3 h-3" />
+                    Edit Details
+                  </button>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                  <p className="text-gray-900">
+                    <strong className="text-gray-700">Name:</strong>{" "}
+                    {deliveryInfo.fullName}
                   </p>
-                )}
-                {deliveryInfo.landmark && (
-                  <p>
-                    <strong>Landmark:</strong> {deliveryInfo.landmark}
+                  <p className="text-gray-900">
+                    <strong className="text-gray-700">Phone:</strong>{" "}
+                    {deliveryInfo.phoneNumber}
                   </p>
-                )}
+                  <p className="text-gray-900">
+                    <strong className="text-gray-700">Address:</strong>{" "}
+                    {deliveryInfo.address}
+                  </p>
+                  <p className="text-gray-900">
+                    <strong className="text-gray-700">City:</strong>{" "}
+                    {deliveryInfo.city}, {deliveryInfo.state}
+                  </p>
+                  {deliveryInfo.postalCode && (
+                    <p className="text-gray-900">
+                      <strong className="text-gray-700">Postal Code:</strong>{" "}
+                      {deliveryInfo.postalCode}
+                    </p>
+                  )}
+                  {deliveryInfo.landmark && (
+                    <p className="text-gray-900">
+                      <strong className="text-gray-700">Landmark:</strong>{" "}
+                      {deliveryInfo.landmark}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </div>

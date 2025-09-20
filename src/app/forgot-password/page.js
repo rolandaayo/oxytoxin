@@ -118,16 +118,20 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-gray-50 px-2 ${poppins.className}`}>
+    <div
+      className={`min-h-screen flex items-center justify-center bg-gray-50 px-2 ${poppins.className}`}
+    >
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <h2 className="text-xl md:text-2xl font-bold text-center text-blue-700 mb-2">
             Welcome to Oxytoxin
           </h2>
-          <h1 className="text-2xl font-bold mb-6 text-gray-900">Forgot Password</h1>
+          <h1 className="text-2xl font-bold mb-6 text-gray-900">
+            Forgot Password
+          </h1>
           <p className="text-gray-600 mb-6 text-center">
-            Enter your email address and we&apos;ll send you a 6-digit code to reset
-            your password.
+            Enter your email address and we&apos;ll send you a 6-digit code to
+            reset your password.
           </p>
         </div>
 

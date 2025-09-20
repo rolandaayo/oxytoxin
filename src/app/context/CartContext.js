@@ -38,7 +38,7 @@ export function CartProvider({ children }) {
     if (showCart) {
       // Store current scroll position
       const scrollY = window.scrollY;
-      
+
       // Simply fix the body in place
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
@@ -53,7 +53,7 @@ export function CartProvider({ children }) {
         document.body.style.left = "";
         document.body.style.right = "";
         document.body.style.overflow = "";
-        
+
         // Restore scroll position
         window.scrollTo(0, scrollY);
       };
@@ -356,7 +356,7 @@ export function CartProvider({ children }) {
     });
   };
 
-  const initializePayment = async () => {
+  const initializePayment = async (deliveryInfo = null) => {
     // Check for auth token
     const token =
       typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
@@ -380,29 +380,61 @@ export function CartProvider({ children }) {
     setLoading(true);
     let createdOrder = null;
     try {
-      // For now, skip backend order creation to test payment
       const userEmail = localStorage.getItem("userEmail") || "";
 
       console.log("Proceeding with payment for:", {
         userEmail,
         items: cartItems,
         totalAmount,
+        deliveryInfo,
       });
 
-      // Comment out backend order creation for now
-      // createdOrder = await publicApi.createOrder({
-      //   userEmail,
-      //   items: cartItems.map((item) => ({
-      //     productId: item.id,
-      //     name: item.name,
-      //     image: item.mainImage || item.image,
-      //     price: item.price,
-      //     quantity: item.quantity || 1,
-      //   })),
-      //   totalAmount,
-      // });
+      // Create order with delivery info before payment
+      console.log("Creating order with delivery info:", deliveryInfo);
+      console.log("Cart items for order:", cartItems);
+      console.log("Total amount:", totalAmount);
 
-      console.log("Payment proceeding without backend order creation");
+      if (deliveryInfo) {
+        try {
+          createdOrder = await publicApi.createOrder({
+            userEmail,
+            items: cartItems.map((item) => ({
+              productId: item.id,
+              name: item.name,
+              image: item.mainImage || item.image,
+              price: item.price,
+              quantity: item.quantity || 1,
+            })),
+            totalAmount,
+            deliveryInfo,
+          });
+          console.log("Order created with delivery info:", createdOrder);
+        } catch (error) {
+          console.error("Error creating order with delivery info:", error);
+          createdOrder = null;
+        }
+      } else {
+        console.log(
+          "No delivery info provided, creating order without delivery details"
+        );
+        try {
+          createdOrder = await publicApi.createOrder({
+            userEmail,
+            items: cartItems.map((item) => ({
+              productId: item.id,
+              name: item.name,
+              image: item.mainImage || item.image,
+              price: item.price,
+              quantity: item.quantity || 1,
+            })),
+            totalAmount,
+          });
+          console.log("Order created without delivery info:", createdOrder);
+        } catch (error) {
+          console.error("Error creating order without delivery info:", error);
+          createdOrder = null;
+        }
+      }
 
       // Validate email before proceeding
       if (!userEmail || !userEmail.includes("@")) {
@@ -419,29 +451,45 @@ export function CartProvider({ children }) {
       console.log("Setting up Paystack with email:", userEmail);
 
       const handler = window.PaystackPop.setup({
-        key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35",
+        key: "pk_test_d9443bda19dc2df77bfc470f16b18e57e727697a", // Test key
+        // key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35", // Live key (commented out)
         email: userEmail || "customer@oxytoxin.com", // Fallback email
         amount: totalAmount * 100,
         currency: "NGN",
         ref: "" + Math.floor(Math.random() * 1000000000 + 1),
         callback: function (response) {
+          console.log("Payment successful! Reference:", response.reference);
+          console.log("Created order:", createdOrder);
+
           toast.success(`Payment complete! Reference: ${response.reference}`, {
             icon: "✅",
             duration: 3000,
           });
-          // Mark order as successful in backend
+
+          // Always clear cart after successful payment, regardless of order status
+          console.log("Clearing cart after successful payment");
+          clearCart();
+          setShowCart(false);
+
+          // Mark order as successful in backend (if order was created)
           if (createdOrder && createdOrder._id) {
+            console.log("Updating order status for order:", createdOrder._id);
             adminApi
               .updateOrderStatus(
                 createdOrder._id,
                 "successful",
                 response.reference
               )
+              .then(() => {
+                console.log("Order status updated successfully");
+              })
               .catch((error) => {
                 console.error("Error updating order status:", error);
+                // Cart is already cleared, so we don't need to do anything here
               });
+          } else {
+            console.log("No order was created, but payment was successful");
           }
-          clearStoredData(response.reference);
         },
         onClose: function () {
           toast.error("Transaction was not completed", {
