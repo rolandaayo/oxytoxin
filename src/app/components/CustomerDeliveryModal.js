@@ -148,7 +148,7 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div className="flex items-center gap-2">
-                        <FaUser className="w-4 h-4 text-gray-500" />
+                        <FaUser className="w-4 h-4 text-black" />
                         <div>
                           <span className="font-medium">Name:</span>
                           <p className="text-gray-700">
@@ -158,7 +158,7 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <FaPhone className="w-4 h-4 text-gray-500" />
+                        <FaPhone className="w-4 h-4 text-black" />
                         <div>
                           <span className="font-medium">Phone:</span>
                           <p className="text-gray-700">
