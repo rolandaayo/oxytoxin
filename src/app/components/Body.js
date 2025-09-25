@@ -1,7 +1,15 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { FaTimes, FaSearch, FaFilter, FaStar, FaSort } from "react-icons/fa";
+import {
+  FaTimes,
+  FaSearch,
+  FaFilter,
+  FaStar,
+  FaSort,
+  FaHeart,
+  FaRegHeart,
+} from "react-icons/fa";
 import QuickView from "./QuickView";
 import toast from "react-hot-toast";
 import { useCart } from "../context/CartContext";
@@ -416,10 +424,19 @@ export default function Body() {
                     <h3 className="text-xs md:text-sm font-semibold text-black truncate">
                       {item.name}
                     </h3>
-                    <div className="flex justify-between pt-2 items-center mb-3">
+                    <div className="flex items-center justify-between pt-2 mb-3">
                       <span className="text-base md:text-lg font-bold text-black">
                         ₦{item.price.toLocaleString()}
                       </span>
+
+                      {/* Like button placed to the right of the price. Non-functional visual only. */}
+                      <button
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label="Like"
+                        className="flex items-center justify-center ml-2 text-black hover:text-gray-800"
+                      >
+                        <FaRegHeart className="w-4 h-4 md:w-5 md:h-5" />
+                      </button>
                     </div>
                   </div>
                 </motion.div>
