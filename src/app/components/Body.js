@@ -36,6 +36,9 @@ export default function Body() {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [sortBy, setSortBy] = useState("default");
   const [sortOrder, setSortOrder] = useState("asc");
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   const [paystackLoaded, setPaystackLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
@@ -129,6 +132,11 @@ export default function Body() {
     const timeoutId = setTimeout(fetchProducts, 300);
     return () => clearTimeout(timeoutId);
   }, [selectedCategory, searchQuery, mounted, refreshTrigger]); // Add refreshTrigger to dependencies
+
+  // Reset to first page when filters/search change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, searchQuery]);
 
   // Add a refresh function
   const refreshProducts = () => {
@@ -253,6 +261,13 @@ export default function Body() {
     }
     return 0;
   });
+
+  // Pagination calculations
+  const totalItems = sortedItems.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pagedItems = sortedItems.slice(startIndex, endIndex);
 
   // Before rendering, log filtered and sorted items
   console.log("All products:", products);
@@ -389,12 +404,12 @@ export default function Body() {
           id="products"
           className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6"
         >
-          {sortedItems.length === 0 && !loading && !error ? (
+          {pagedItems.length === 0 && !loading && !error ? (
             <div className="col-span-full text-center py-8 text-gray-500">
               No products found
             </div>
           ) : (
-            sortedItems.map((item, index) => {
+            pagedItems.map((item, index) => {
               // Robust image handling with fallback
               const mainImg =
                 item.mainImage ||
@@ -443,6 +458,50 @@ export default function Body() {
               );
             })
           )}
+        </div>
+
+        {/* Pagination controls */}
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded-md border ${
+              currentPage === 1 ? "text-gray-400 border-gray-200" : "text-black"
+            }`}
+          >
+            Prev
+          </button>
+
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const pageNum = i + 1;
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`px-3 py-1 rounded-md border ${
+                    currentPage === pageNum
+                      ? "bg-black text-white border-black"
+                      : "text-black"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded-md border ${
+              currentPage === totalPages
+                ? "text-gray-400 border-gray-200"
+                : "text-black"
+            }`}
+          >
+            Next
+          </button>
         </div>
 
         {quickViewProduct && (
