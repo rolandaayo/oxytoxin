@@ -133,17 +133,14 @@ export default function Footer() {
               © {currentYear} Oxytoxin. All rights reserved.
             </p>
             <div className="mt-4 flex justify-center space-x-4">
-              <a href="#" className="text-gray-400 hover:text-black text-sm">
+              <a href="/terms-conditions" className="text-gray-400 hover:text-black text-sm">
                 Terms & Conditions
               </a>
               <span className="text-gray-600">•</span>
-              <a href="#" className="text-gray-400 hover:text-black text-sm">
+              <a href="/privacy-policy" className="text-gray-400 hover:text-black text-sm">
                 Privacy Policy
               </a>
-              <span className="text-gray-600">•</span>
-              <a href="#" className="text-gray-400 hover:text-black text-sm">
-                Sitemap
-              </a>
+              
             </div>
             <div className="text-gray-400 text-sm pt-4 text-center">
               <h2>
