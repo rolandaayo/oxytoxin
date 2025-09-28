@@ -150,7 +150,7 @@ export default function Categories() {
             <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
               Categories
             </h1>
             <p className="text-lg md:text-xl text-white max-w-2xl">

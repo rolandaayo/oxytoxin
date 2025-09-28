@@ -14,10 +14,26 @@
   }
 }
 
-body {
+/* Global Goldman Font Application */
+* {
+  font-family: var(--font-goldman), sans-serif !important;
+}
+
+/* Body text - always weight 400 (regular) */
+body, p, span, li, a, input, button, textarea, select, label, div, section, article, main, aside, nav, header, footer {
+  font-weight: 400 !important;
+}
+
+/* Headings and bold elements - always weight 700 (bold) */
+h1, h2, h3, h4, h5, h6, strong, b, .font-bold, [class*="font-bold"] {
+  font-weight: 700 !important;
+}
+
+/* Ensure all text elements use Goldman font */
+html, body {
+  font-family: var(--font-goldman), sans-serif !important;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 p, span {

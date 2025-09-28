@@ -98,7 +98,7 @@ export default function Contact() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
             Contact Us
           </h1>
           <p className="text-lg md:text-xl text-white max-w-2xl">
@@ -303,7 +303,7 @@ export default function Contact() {
         <div className="mt-16">
           <div className="rounded-2xl overflow-hidden h-[400px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30596073366!2d-74.25986652089843!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1647043276541!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.4!2d3.3889!3d6.5244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae682b9b1%3A0x9a8b5c8c8c8c8c8c!2sYaba%2C%20Lagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1647043276541!5m2!1sen!2sng"
               width="100%"
               height="100%"
               style={{ border: 0 }}

@@ -1,28 +1,13 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import {
-  FaTimes,
-  FaSearch,
-  FaFilter,
-  FaStar,
-  FaSort,
-  FaHeart,
-  FaRegHeart,
-} from "react-icons/fa";
+import { FaTimes, FaSearch, FaFilter, FaStar, FaSort } from "react-icons/fa";
 import QuickView from "./QuickView";
 import toast from "react-hot-toast";
 import { useCart } from "../context/CartContext";
 import { motion } from "framer-motion";
 import PageTransition from "./PageTransition";
 import { publicApi } from "../services/api";
-import { Poppins } from "next/font/google";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 export default function Body() {
   const [mounted, setMounted] = useState(false);
@@ -276,7 +261,7 @@ export default function Body() {
 
   return (
     <PageTransition>
-      <div className={`container mx-auto px-4 mt-6 ${poppins.className}`}>
+      <div className="container mx-auto px-4 mt-6">
         <div className="relative h-[300px] md:h-[400px] object-cover rounded-2xl overflow-hidden mb-8">
           <div
             className="absolute h-[1100] inset-0 bg-cover bg-center"
@@ -287,7 +272,7 @@ export default function Body() {
             <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="relative h-full flex flex-col justify-center items-center text-center px-4">
-            <h1 className="text-2xl md:text-4xl font-bold text-white mb-4 font-sans">
+            <h1 className="text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight">
               Discover Your Style
             </h1>
             <p className="text-base md:text-lg text-white mb-8 max-w-2xl">
@@ -443,15 +428,6 @@ export default function Body() {
                       <span className="text-base md:text-lg font-bold text-black">
                         ₦{item.price.toLocaleString()}
                       </span>
-
-                      {/* Like button placed to the right of the price. Non-functional visual only. */}
-                      <button
-                        onClick={(e) => e.stopPropagation()}
-                        aria-label="Like"
-                        className="flex items-center justify-center ml-2 text-black hover:text-gray-800"
-                      >
-                        <FaRegHeart className="w-4 h-4 md:w-5 md:h-5" />
-                      </button>
                     </div>
                   </div>
                 </motion.div>

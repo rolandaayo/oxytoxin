@@ -1,8 +1,13 @@
-import { Inter } from "next/font/google";
+import { Goldman } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./components/ClientLayout";
 
-const inter = Inter({ subsets: ["latin"] });
+const goldman = Goldman({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-goldman",
+});
 
 export const metadata = {
   title: "Oxytoxin - Clothing Store",
@@ -13,7 +18,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${goldman.variable} ${goldman.className}`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
