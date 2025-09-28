@@ -79,6 +79,25 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
         toast.success("Delivery information updated successfully");
         if (onUpdate) onUpdate();
       } else {
+        // Handle authentication errors
+        if (response.status === 401) {
+          try {
+            const errorData = await response.json();
+            if (errorData.code === "SESSION_EXPIRED_INACTIVITY") {
+              toast.error(
+                "Your session has expired due to inactivity. Please log in again."
+              );
+            } else {
+              toast.error("Your session has expired. Please log in again.");
+            }
+          } catch (parseError) {
+            toast.error("Your session has expired. Please log in again.");
+          }
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("userEmail");
+          window.location.href = "/login";
+          return;
+        }
         toast.error("Failed to update delivery information");
       }
     } catch (error) {

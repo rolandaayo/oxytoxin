@@ -32,7 +32,9 @@ export default function AdminGalleryPage() {
   const fetchGalleryImages = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/api/admin/gallery");
+      const response = await fetch(
+        "https://oxytoxin-backend.vercel.app/api/admin/gallery"
+      );
       const result = await response.json();
 
       if (result.status === "success") {
@@ -87,10 +89,13 @@ export default function AdminGalleryPage() {
       formData.append("title", uploadForm.title);
       formData.append("description", uploadForm.description);
 
-      const response = await fetch("http://localhost:4000/api/admin/gallery", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://oxytoxin-backend.vercel.app/api/admin/gallery",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const result = await response.json();
 
@@ -118,7 +123,7 @@ export default function AdminGalleryPage() {
 
     try {
       const response = await fetch(
-        `http://localhost:4000/api/admin/gallery/${imageId}`,
+        `https://oxytoxin-backend.vercel.app/api/admin/gallery/${imageId}`,
         {
           method: "DELETE",
         }

@@ -92,6 +92,16 @@ export default function Checkout({ onClose, onProceedToPayment }) {
 
     try {
       const token = localStorage.getItem("authToken");
+      console.log("=== DELIVERY INFO SAVE DEBUG ===");
+      console.log("Token exists:", !!token);
+      console.log("Token length:", token?.length);
+      console.log(
+        "Token preview:",
+        token ? `${token.substring(0, 20)}...` : "No token"
+      );
+      console.log("User email:", localStorage.getItem("userEmail"));
+      console.log("Delivery info:", deliveryInfo);
+
       if (!token) {
         toast.error("Please log in to save delivery information");
         return;
@@ -109,12 +119,44 @@ export default function Checkout({ onClose, onProceedToPayment }) {
         }
       );
 
+      console.log("Response status:", response.status);
+      console.log("Response ok:", response.ok);
+
       if (response.ok) {
         setIsEditing(false);
         toast.success("Delivery information saved successfully!");
       } else {
-        const error = await response.json();
-        toast.error(error.message || "Failed to save delivery information");
+        const errorText = await response.text();
+        console.log("Error response text:", errorText);
+
+        // Handle authentication errors
+        if (response.status === 401) {
+          try {
+            const errorData = await response.json();
+            if (errorData.code === "SESSION_EXPIRED_INACTIVITY") {
+              toast.error(
+                "Your session has expired due to inactivity. Please log in again."
+              );
+            } else {
+              toast.error("Your session has expired. Please log in again.");
+            }
+          } catch (parseError) {
+            toast.error("Your session has expired. Please log in again.");
+          }
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("userEmail");
+          window.location.href = "/login";
+          return;
+        }
+
+        try {
+          const error = JSON.parse(errorText);
+          console.log("Parsed error:", error);
+          toast.error(error.message || "Failed to save delivery information");
+        } catch (parseError) {
+          console.log("Could not parse error response:", parseError);
+          toast.error(`Server error: ${response.status} - ${errorText}`);
+        }
       }
     } catch (error) {
       console.error("Error saving delivery info:", error);
@@ -240,7 +282,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                       name="fullName"
                       value={deliveryInfo.fullName}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -257,7 +299,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                       name="phoneNumber"
                       value={deliveryInfo.phoneNumber}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -272,7 +314,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                     value={deliveryInfo.address}
                     onChange={handleInputChange}
                     rows="3"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
                     placeholder="Enter your complete delivery address"
                   />
                 </div>
@@ -287,7 +329,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                       name="city"
                       value={deliveryInfo.city}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
                       placeholder="City"
                     />
                   </div>
@@ -300,7 +342,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                       name="state"
                       value={deliveryInfo.state}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
                       placeholder="State"
                     />
                   </div>
@@ -316,7 +358,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                       name="postalCode"
                       value={deliveryInfo.postalCode}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
                       placeholder="Postal code"
                     />
                   </div>
@@ -329,7 +371,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
                       name="landmark"
                       value={deliveryInfo.landmark}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-black"
                       placeholder="Nearby landmark"
                     />
                   </div>

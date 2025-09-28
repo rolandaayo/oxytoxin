@@ -9,7 +9,8 @@ export default function TestEmailPage() {
   const [result, setResult] = useState(null);
 
   const BACKEND_URL =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    "https://oxytoxin-backend.vercel.app";
 
   const testEmail = async (e) => {
     e.preventDefault();
