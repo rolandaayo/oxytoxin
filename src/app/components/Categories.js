@@ -9,11 +9,13 @@ import {
   FaSearch,
   FaTh,
   FaList,
+  FaHeart,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import PageTransition from "./PageTransition";
 import { publicApi } from "../services/api";
 import { useCart } from "../context/CartContext";
+import { addToWishlist, isInWishlist } from "../utils/wishlist";
 
 export default function Categories() {
   const [products, setProducts] = useState([]);
@@ -26,6 +28,7 @@ export default function Categories() {
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
+  const [wishlistStatus, setWishlistStatus] = useState({});
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -122,6 +125,51 @@ export default function Categories() {
       (product) => product.category.toLowerCase() === categoryName.toLowerCase()
     );
   };
+
+  // Wishlist functions
+  const handleWishlistToggle = async (product) => {
+    try {
+      const isInWishlistResult = await isInWishlist(product._id);
+
+      if (isInWishlistResult) {
+        // Item is in wishlist, remove it
+        const { removeFromWishlist } = await import("../utils/wishlist");
+        await removeFromWishlist(product._id);
+        setWishlistStatus((prev) => ({ ...prev, [product._id]: false }));
+      } else {
+        // Item is not in wishlist, add it
+        await addToWishlist(product);
+        setWishlistStatus((prev) => ({ ...prev, [product._id]: true }));
+      }
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+    }
+  };
+
+  // Check wishlist status for all products
+  useEffect(() => {
+    const checkWishlistStatus = async () => {
+      if (products.length === 0) return;
+
+      const statusPromises = products.map(async (product) => {
+        const isInWishlistResult = await isInWishlist(product._id);
+        return { productId: product._id, isInWishlist: isInWishlistResult };
+      });
+
+      try {
+        const results = await Promise.all(statusPromises);
+        const statusMap = {};
+        results.forEach(({ productId, isInWishlist }) => {
+          statusMap[productId] = isInWishlist;
+        });
+        setWishlistStatus(statusMap);
+      } catch (error) {
+        console.error("Error checking wishlist status:", error);
+      }
+    };
+
+    checkWishlistStatus();
+  }, [products]);
 
   if (loading) {
     return (
@@ -388,15 +436,35 @@ export default function Categories() {
                       <span className="text-2xl font-bold text-gray-900">
                         ₦{product.price.toLocaleString()}
                       </span>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          product.instock
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {product.instock ? "In Stock" : "Out of Stock"}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent triggering the card click
+                            handleWishlistToggle(product);
+                          }}
+                          className={`p-2 rounded-full transition-all duration-300 ${
+                            wishlistStatus[product._id]
+                              ? "text-red-500 bg-red-50 hover:bg-red-100"
+                              : "text-gray-400 hover:text-red-500 hover:bg-red-50"
+                          }`}
+                          title={
+                            wishlistStatus[product._id]
+                              ? "Remove from wishlist"
+                              : "Add to wishlist"
+                          }
+                        >
+                          <FaHeart className="w-4 h-4" />
+                        </button>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            product.instock
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {product.instock ? "In Stock" : "Out of Stock"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -1,13 +1,21 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { FaTimes, FaSearch, FaFilter, FaStar, FaSort } from "react-icons/fa";
+import {
+  FaTimes,
+  FaSearch,
+  FaFilter,
+  FaStar,
+  FaSort,
+  FaHeart,
+} from "react-icons/fa";
 import QuickView from "./QuickView";
 import toast from "react-hot-toast";
 import { useCart } from "../context/CartContext";
 import { motion } from "framer-motion";
 import PageTransition from "./PageTransition";
 import { publicApi } from "../services/api";
+import { addToWishlist, isInWishlist } from "../utils/wishlist";
 
 export default function Body() {
   const [mounted, setMounted] = useState(false);
@@ -18,6 +26,7 @@ export default function Body() {
   const [itemQuantities, setItemQuantities] = useState({});
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
+  const [wishlistStatus, setWishlistStatus] = useState({});
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [sortBy, setSortBy] = useState("default");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -127,6 +136,51 @@ export default function Body() {
   const refreshProducts = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
+
+  // Wishlist functions
+  const handleWishlistToggle = async (product) => {
+    try {
+      const isInWishlistResult = await isInWishlist(product._id);
+
+      if (isInWishlistResult) {
+        // Item is in wishlist, remove it
+        const { removeFromWishlist } = await import("../utils/wishlist");
+        await removeFromWishlist(product._id);
+        setWishlistStatus((prev) => ({ ...prev, [product._id]: false }));
+      } else {
+        // Item is not in wishlist, add it
+        await addToWishlist(product);
+        setWishlistStatus((prev) => ({ ...prev, [product._id]: true }));
+      }
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+    }
+  };
+
+  // Check wishlist status for all products
+  useEffect(() => {
+    const checkWishlistStatus = async () => {
+      if (!mounted || products.length === 0) return;
+
+      const statusPromises = products.map(async (product) => {
+        const isInWishlistResult = await isInWishlist(product._id);
+        return { productId: product._id, isInWishlist: isInWishlistResult };
+      });
+
+      try {
+        const results = await Promise.all(statusPromises);
+        const statusMap = {};
+        results.forEach(({ productId, isInWishlist }) => {
+          statusMap[productId] = isInWishlist;
+        });
+        setWishlistStatus(statusMap);
+      } catch (error) {
+        console.error("Error checking wishlist status:", error);
+      }
+    };
+
+    checkWishlistStatus();
+  }, [mounted, products]);
 
   // Set up an interval to refresh products every 30 seconds
   useEffect(() => {
@@ -428,6 +482,24 @@ export default function Body() {
                       <span className="text-base md:text-lg font-bold text-black">
                         ₦{item.price.toLocaleString()}
                       </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering the card click
+                          handleWishlistToggle(item);
+                        }}
+                        className={`p-2 rounded-full transition-all duration-300 ${
+                          wishlistStatus[item._id]
+                            ? "text-red-500 bg-red-50 hover:bg-red-100"
+                            : "text-gray-400 hover:text-red-500 hover:bg-red-50"
+                        }`}
+                        title={
+                          wishlistStatus[item._id]
+                            ? "Remove from wishlist"
+                            : "Add to wishlist"
+                        }
+                      >
+                        <FaHeart className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 </motion.div>

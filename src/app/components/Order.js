@@ -15,41 +15,62 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { publicApi } from "../services/api";
 
 export default function Order() {
   const [mounted, setMounted] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
   const [sortBy, setSortBy] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
 
-  // Handle client-side mounting
+  // Handle client-side mounting and load orders
   useEffect(() => {
     setMounted(true);
+    loadOrders();
+  }, []);
+
+  const loadOrders = async () => {
     try {
-      const savedOrders = localStorage.getItem("orders");
-      if (savedOrders) {
-        setOrders(JSON.parse(savedOrders));
+      setLoading(true);
+      const userEmail = localStorage.getItem("userEmail");
+
+      if (!userEmail) {
+        // If no user email, try to load from localStorage as fallback
+        const savedOrders = localStorage.getItem("orders");
+        if (savedOrders) {
+          setOrders(JSON.parse(savedOrders));
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Load orders from backend
+      const response = await publicApi.getUserOrders(userEmail);
+      if (response.status === "success") {
+        setOrders(response.data || []);
       }
     } catch (error) {
       console.error("Error loading orders:", error);
+      // Fallback to localStorage
+      try {
+        const savedOrders = localStorage.getItem("orders");
+        if (savedOrders) {
+          setOrders(JSON.parse(savedOrders));
+        }
+      } catch (localError) {
+        console.error("Error loading from localStorage:", localError);
+      }
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
 
-  // Save orders to localStorage only after mounting
-  useEffect(() => {
-    if (!mounted) return;
-    try {
-      localStorage.setItem("orders", JSON.stringify(orders));
-    } catch (error) {
-      console.error("Error saving orders:", error);
-    }
-  }, [orders, mounted]);
-
-  // Show loading state during SSR
-  if (!mounted) {
+  // Show loading state during SSR or when loading
+  if (!mounted || loading) {
     return (
       <div className="min-h-screen pt-16 md:pt-[calc(4rem+32px)]">
         <div className="container mx-auto px-4 py-8">
@@ -167,25 +188,31 @@ export default function Order() {
 
   const filteredOrders = orders
     .filter((order) => {
+      const orderId = order._id || order.id;
+      const orderDate = order.createdAt || order.date;
+
       const matchesSearch =
-        order.id.toString().includes(searchQuery) ||
+        orderId.toString().includes(searchQuery) ||
         order.items.some((item) =>
           item.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
       const matchesStatus =
         statusFilter === "all" || order.status === statusFilter;
       const matchesDate =
-        (!dateRange.from || new Date(order.date) >= new Date(dateRange.from)) &&
-        (!dateRange.to || new Date(order.date) <= new Date(dateRange.to));
+        (!dateRange.from || new Date(orderDate) >= new Date(dateRange.from)) &&
+        (!dateRange.to || new Date(orderDate) <= new Date(dateRange.to));
 
       return matchesSearch && matchesStatus && matchesDate;
     })
     .sort((a, b) => {
+      const aDate = a.createdAt || a.date;
+      const bDate = b.createdAt || b.date;
+
       switch (sortBy) {
         case "date":
           return sortOrder === "asc"
-            ? new Date(a.date) - new Date(b.date)
-            : new Date(b.date) - new Date(a.date);
+            ? new Date(aDate) - new Date(bDate)
+            : new Date(bDate) - new Date(aDate);
         case "status":
           return sortOrder === "asc"
             ? a.status.localeCompare(b.status)
@@ -321,14 +348,16 @@ export default function Order() {
         <div className="space-y-6 ">
           {filteredOrders.map((order) => (
             <div
-              key={order.id}
+              key={order._id || order.id}
               className="bg-white/95 backdrop-blur-sm rounded-lg shadow-sm p-6"
             >
               <div className="flex flex-wrap justify-between items-start mb-4 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600">Order ID: {order.id}</p>
                   <p className="text-sm text-gray-600">
-                    Date: {formatDate(order.date)}
+                    Order ID: {order._id || order.id}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Date: {formatDate(order.createdAt || order.date)}
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -369,7 +398,7 @@ export default function Order() {
                       <FaExclamationCircle className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => deleteOrder(order.id)}
+                      onClick={() => deleteOrder(order._id || order.id)}
                       className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"
                       title="Delete Order"
                     >
