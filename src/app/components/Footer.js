@@ -52,7 +52,7 @@ export default function Footer() {
                   Free Shipping
                 </h4>
                 <p className="text-xs md:text-sm text-gray-600">
-                  On orders over $100
+                  On orders over #200,000
                 </p>
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function Footer() {
             <div className="text-gray-400 text-sm pt-4 text-center">
               <h2>
                 website built by{" "}
-                <a href="https://rolandayo.vercel.app" target="_blank">
+                <a href="https://wa.me/2348122447364?text=Hello%20roland%20i%20need%20your%20website%20service" target="_blank">
                   @rolandaayo
                 </a>{" "}
                 with ❤️

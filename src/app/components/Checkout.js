@@ -90,6 +90,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
       return;
     }
 
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
       console.log("=== DELIVERY INFO SAVE DEBUG ===");
@@ -161,6 +162,8 @@ export default function Checkout({ onClose, onProceedToPayment }) {
     } catch (error) {
       console.error("Error saving delivery info:", error);
       toast.error("Failed to save delivery information. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -379,10 +382,24 @@ export default function Checkout({ onClose, onProceedToPayment }) {
 
                 <button
                   onClick={handleSave}
-                  className="w-full bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors font-semibold flex items-center justify-center gap-2"
+                  disabled={isLoading}
+                  className={`w-full py-3 px-4 rounded-lg transition-colors font-semibold flex items-center justify-center gap-2 ${
+                    isLoading
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-black text-white hover:bg-gray-800"
+                  }`}
                 >
-                  <FaSave className="w-4 h-4" />
-                  Save Delivery Information
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <FaSave className="w-4 h-4" />
+                      Save Delivery Information
+                    </>
+                  )}
                 </button>
               </div>
             ) : (

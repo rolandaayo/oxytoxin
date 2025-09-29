@@ -338,7 +338,7 @@ export default function Body() {
                 const productsSection = document.getElementById("products");
                 productsSection.scrollIntoView({ behavior: "smooth" });
               }}
-              className="bg-black text-white px-8 py-3 rounded-full hover:bg-white/90 transition-all duration-300 animate-bounce"
+              className="bg-black text-white px-8 py-3 rounded-full hover:bg-white/90 hover:text-black transition-all duration-300 animate-bounce"
             >
               Shop Now
             </button>

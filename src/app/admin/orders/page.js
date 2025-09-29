@@ -276,7 +276,7 @@ export default function OrdersPage() {
 
             <div className="p-6 space-y-6">
               {/* Order Summary */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-gray-50 text-black rounded-lg p-4">
                 <h3 className="font-semibold text-black mb-3">Order Summary</h3>
                 <div className="space-y-2">
                   {selectedOrder.items?.map((item, index) => (
@@ -306,38 +306,38 @@ export default function OrdersPage() {
                     Delivery Information
                   </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 text-black gap-4 text-sm">
                     <div>
                       <span className="font-medium">Name:</span>
-                      <p className="text-gray-700">
+                      <p className="text-black">
                         {selectedOrder.deliveryInfo.fullName}
                       </p>
                     </div>
 
                     <div>
                       <span className="font-medium">Phone:</span>
-                      <p className="text-gray-700">
+                      <p className="text-black">
                         {selectedOrder.deliveryInfo.phoneNumber}
                       </p>
                     </div>
 
                     <div className="md:col-span-2">
                       <span className="font-medium">Address:</span>
-                      <p className="text-gray-700">
+                      <p className="text-black">
                         {selectedOrder.deliveryInfo.address}
                       </p>
                     </div>
 
                     <div>
                       <span className="font-medium">City:</span>
-                      <p className="text-gray-700">
+                      <p className="text-black">
                         {selectedOrder.deliveryInfo.city}
                       </p>
                     </div>
 
                     <div>
                       <span className="font-medium">State:</span>
-                      <p className="text-gray-700">
+                      <p className="text-black">
                         {selectedOrder.deliveryInfo.state}
                       </p>
                     </div>
@@ -345,7 +345,7 @@ export default function OrdersPage() {
                     {selectedOrder.deliveryInfo.postalCode && (
                       <div>
                         <span className="font-medium">Postal Code:</span>
-                        <p className="text-gray-700">
+                        <p className="text-black">
                           {selectedOrder.deliveryInfo.postalCode}
                         </p>
                       </div>
@@ -354,7 +354,7 @@ export default function OrdersPage() {
                     {selectedOrder.deliveryInfo.landmark && (
                       <div>
                         <span className="font-medium">Landmark:</span>
-                        <p className="text-gray-700">
+                        <p className="text-black">
                           {selectedOrder.deliveryInfo.landmark}
                         </p>
                       </div>

@@ -20,26 +20,22 @@ export const addToWishlist = async (product) => {
         return false;
       }
     } else {
-      // Fallback to localStorage
-      const existingWishlist = JSON.parse(
-        localStorage.getItem("wishlist") || "[]"
-      );
-
-      // Check if item already exists
-      const existingItem = existingWishlist.find(
-        (item) => item._id === product._id
-      );
-
-      if (existingItem) {
-        toast.error("Item already in wishlist");
-        return false;
-      }
-
-      // Add new item
-      const updatedWishlist = [...existingWishlist, product];
-      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-      toast.success("Added to wishlist!");
-      return true;
+      // Show login popup for non-authenticated users
+      toast.error("Please log in to add items to your wishlist", {
+        duration: 4000,
+        action: {
+          label: "Login",
+          onClick: () => {
+            // Store the current page to redirect back after login
+            localStorage.setItem(
+              "redirectAfterLogin",
+              window.location.pathname
+            );
+            window.location.href = "/login";
+          },
+        },
+      });
+      return false;
     }
   } catch (error) {
     console.error("Error adding to wishlist:", error);
@@ -63,7 +59,7 @@ export const removeFromWishlist = async (productId) => {
         return false;
       }
     } else {
-      // Fallback to localStorage
+      // Fallback to localStorage for non-authenticated users
       const existingWishlist = JSON.parse(
         localStorage.getItem("wishlist") || "[]"
       );

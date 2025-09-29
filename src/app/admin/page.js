@@ -10,6 +10,7 @@ import AdminLogin from "../components/AdminLogin";
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   const { isAdminAuthenticated, isLoading, loginAdmin } = useAdminAuth();
 
   useEffect(() => {
@@ -25,8 +26,15 @@ export default function AdminPage() {
         setProducts(products);
       } catch (err) {}
     }
+    async function fetchOrders() {
+      try {
+        const orders = await adminApi.getOrders();
+        setOrders(orders);
+      } catch (err) {}
+    }
     fetchUsers();
     fetchProducts();
+    fetchOrders();
   }, []);
 
   const today = format(new Date(), "MMM dd, yyyy");
@@ -38,7 +46,7 @@ export default function AdminPage() {
     { label: "Total Users", value: users.length, icon: "👥" },
     { label: "Total Transactions", value: 0, icon: "💰" },
     { label: "Total Products", value: products.length, icon: "📦" },
-    { label: "Total Orders", value: 1, icon: "🧾" },
+    { label: "Total Orders", value: orders.length, icon: "🧾" },
   ];
 
   // Show login form if not authenticated

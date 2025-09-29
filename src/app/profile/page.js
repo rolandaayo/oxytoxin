@@ -261,12 +261,26 @@ export default function ProfilePage() {
       formData.append("profilePicture", profilePicture);
 
       const userEmail = localStorage.getItem("userEmail");
-      await userApi.uploadProfilePicture(userEmail, formData);
+      console.log("Uploading profile picture for user:", userEmail);
+      console.log("File details:", {
+        name: profilePicture.name,
+        size: profilePicture.size,
+        type: profilePicture.type,
+      });
+
+      const result = await userApi.uploadProfilePicture(userEmail, formData);
+      console.log("Upload result:", result);
+
       toast.success("Profile picture updated successfully");
+
+      // Clear the selected file and preview
+      setProfilePicture(null);
+      setProfilePicturePreview(null);
+
       await loadUserData();
     } catch (error) {
       console.error("Error uploading profile picture:", error);
-      toast.error("Failed to upload profile picture");
+      toast.error(error.message || "Failed to upload profile picture");
     } finally {
       setUploadingPicture(false);
     }

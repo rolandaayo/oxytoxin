@@ -85,7 +85,7 @@ export default function Navbar() {
       {/* Fixed Navbar Wrapper */}
       <div className="fixed w-full top-0 left-0 z-50">
         {/* Top Bar */}
-        <div className="bg-gradient-to-r from-gray-900 to-black text-white text-sm py-3 hidden md:block border-b border-gray-800">
+        {/* <div className="bg-gradient-to-r from-gray-900 to-black text-white text-sm py-3 hidden md:block border-b border-gray-800">
           <div className="container mx-auto px-6">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-6">
@@ -125,7 +125,7 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Navigation */}
         <nav
@@ -258,14 +258,14 @@ export default function Navbar() {
                               Profile Settings
                             </Link>
 
-                            <Link
+                            {/* <Link
                               href="/orders"
                               className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
                               onClick={() => setShowUserMenu(false)}
                             >
                               <FaShoppingCart className="w-4 h-4 mr-3 text-gray-400" />
                               My Orders
-                            </Link>
+                            </Link> */}
 
                             <Link
                               href="/wishlist"

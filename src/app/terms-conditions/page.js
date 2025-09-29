@@ -81,8 +81,7 @@ export default function TermsConditionsPage() {
                         </p>
                         <p>
                           <strong>Intellectual Property:</strong> All website
-                          content (images, designs, logos) belongs to [Clothing
-                          Brand] and may not be used without permission.
+                          content (images, designs, logos) belongs to oxytoxin and may not be used without permission.
                         </p>
                         <p>
                           <strong>Limitation of Liability:</strong> We are not

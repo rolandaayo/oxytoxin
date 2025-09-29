@@ -221,7 +221,7 @@ export default function About() {
                       Free Shipping
                     </h3>
                     <p className="text-xs sm:text-sm text-gray-300 leading-relaxed text-center">
-                      On orders over $100
+                      On orders over #200,000
                     </p>
                   </motion.div>
 
