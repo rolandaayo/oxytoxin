@@ -119,9 +119,6 @@ export default function Categories() {
       setLoading(false);
     }
   };
-
-  
-
   const getCategoryProducts = (categoryName) => {
     return products.filter(
       (product) => product.category.toLowerCase() === categoryName.toLowerCase()
@@ -192,14 +189,14 @@ export default function Categories() {
         {/* Hero Section */}
         <div className="relative h-[300px] md:h-[300px]">
           <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: 'url("/images/image2.jpeg")',
-              }}
-            >
-              {/* Softer overlay for calmer look */}
-              <div className="absolute inset-0 bg-black/40" />
-            </div>
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url("/images/image2.jpeg")',
+            }}
+          >
+            {/* Softer overlay for calmer look */}
+            <div className="absolute inset-0 bg-black/40" />
+          </div>
           <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
             <h1 className="text-3xl md:text-5xl font-medium text-white mb-4 tracking-tight">
               Categories
@@ -212,20 +209,20 @@ export default function Categories() {
 
         {/* Categories Overview */}
         <div className="container mx-auto px-4 py-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {categories.map((categoryName, index) => {
               const categoryProducts = getCategoryProducts(categoryName);
 
               // Use the first product's image from this category, or a default
               const categoryImage =
                 categoryProducts.length > 0
-                  ?
-                    // Try common image fields used across the app before falling
+                  ? // Try common image fields used across the app before falling
                     // back to the logo placeholder
-                    (categoryProducts[0].mainImage ||
-                      categoryProducts[0].image ||
-                      (categoryProducts[0].images && categoryProducts[0].images[0]) ||
-                      "/images/logo.png")
+                    categoryProducts[0].mainImage ||
+                    categoryProducts[0].image ||
+                    (categoryProducts[0].images &&
+                      categoryProducts[0].images[0]) ||
+                    "/images/logo.png"
                   : "/images/logo.png";
 
               return (
@@ -249,7 +246,9 @@ export default function Categories() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    <h3 className="text-base font-medium mb-1">{categoryName}</h3>
+                    <h3 className="text-base font-medium mb-1">
+                      {categoryName}
+                    </h3>
                     <p className="text-white/70 text-sm mb-2">
                       Discover our {categoryName.toLowerCase()} collection
                     </p>
