@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -35,28 +35,7 @@ export default function Categories() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    filterAndSortProducts();
-  }, [products, selectedCategory, sortBy, sortOrder, priceRange, searchTerm]);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const [productsData, categoriesData] = await Promise.all([
-        publicApi.getProducts(),
-        publicApi.getCategories(),
-      ]);
-
-      setProducts(productsData);
-      setCategories(categoriesData || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterAndSortProducts = () => {
+  const filterAndSortProducts = useCallback(() => {
     let filtered = [...products];
 
     // Filter by category
@@ -118,7 +97,30 @@ export default function Categories() {
     });
 
     setFilteredProducts(filtered);
+  }, [products, selectedCategory, sortBy, sortOrder, priceRange, searchTerm]);
+
+  useEffect(() => {
+    filterAndSortProducts();
+  }, [filterAndSortProducts]);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [productsData, categoriesData] = await Promise.all([
+        publicApi.getProducts(),
+        publicApi.getCategories(),
+      ]);
+
+      setProducts(productsData);
+      setCategories(categoriesData || []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  
 
   const getCategoryProducts = (categoryName) => {
     return products.filter(
@@ -190,18 +192,19 @@ export default function Categories() {
         {/* Hero Section */}
         <div className="relative h-[300px] md:h-[300px]">
           <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: 'url("/images/image2.jpeg")',
-            }}
-          >
-            <div className="absolute inset-0 bg-black/60" />
-          </div>
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: 'url("/images/image2.jpeg")',
+              }}
+            >
+              {/* Softer overlay for calmer look */}
+              <div className="absolute inset-0 bg-black/40" />
+            </div>
           <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            <h1 className="text-3xl md:text-5xl font-medium text-white mb-4 tracking-tight">
               Categories
             </h1>
-            <p className="text-lg md:text-xl text-white max-w-2xl">
+            <p className="text-base md:text-lg text-white/90 max-w-2xl">
               Explore our wide range of fashion categories
             </p>
           </div>
@@ -209,14 +212,20 @@ export default function Categories() {
 
         {/* Categories Overview */}
         <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {categories.map((categoryName, index) => {
               const categoryProducts = getCategoryProducts(categoryName);
 
               // Use the first product's image from this category, or a default
               const categoryImage =
                 categoryProducts.length > 0
-                  ? categoryProducts[0].mainImage || "/images/logo.png"
+                  ?
+                    // Try common image fields used across the app before falling
+                    // back to the logo placeholder
+                    (categoryProducts[0].mainImage ||
+                      categoryProducts[0].image ||
+                      (categoryProducts[0].images && categoryProducts[0].images[0]) ||
+                      "/images/logo.png")
                   : "/images/logo.png";
 
               return (
@@ -226,7 +235,7 @@ export default function Categories() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white cursor-pointer"
+                  className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 bg-white cursor-pointer"
                   onClick={() => setSelectedCategory(categoryName)}
                 >
                   <div className="aspect-[4/3] overflow-hidden">
@@ -237,14 +246,14 @@ export default function Categories() {
                       height={300}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    <h3 className="text-xl font-bold mb-1">{categoryName}</h3>
-                    <p className="text-white/80 text-sm mb-2">
+                    <h3 className="text-base font-medium mb-1">{categoryName}</h3>
+                    <p className="text-white/70 text-sm mb-2">
                       Discover our {categoryName.toLowerCase()} collection
                     </p>
-                    <p className="text-sm font-medium">
+                    <p className="text-sm font-normal text-white/90">
                       {categoryProducts.length} Items
                     </p>
                   </div>
@@ -383,7 +392,7 @@ export default function Categories() {
 
           {/* Results Summary */}
           <div className="flex justify-between items-center mb-6">
-            <p className="text-black font-medium">
+            <p className="text-gray-700">
               Showing {filteredProducts.length} of {products.length} products
               {selectedCategory !== "all" && ` in ${selectedCategory}`}
             </p>
@@ -393,7 +402,7 @@ export default function Categories() {
           <div
             className={`grid gap-6 ${
               viewMode === "grid"
-                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
                 : "grid-cols-1"
             }`}
           >
@@ -403,21 +412,23 @@ export default function Categories() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group ${
+                className={`bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group ${
                   viewMode === "list" ? "flex" : ""
                 }`}
               >
                 <div
                   className={`${
-                    viewMode === "list" ? "w-48 flex-shrink-0" : "aspect-square"
-                  } overflow-hidden`}
+                    viewMode === "list"
+                      ? "w-48 flex-shrink-0"
+                      : "relative overflow-hidden h-40 sm:h-56 md:aspect-square"
+                  }`}
                 >
                   <Image
                     src={product.mainImage || "/images/logo.png"}
                     alt={product.name}
                     width={viewMode === "list" ? 200 : 300}
                     height={viewMode === "list" ? 200 : 300}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"
                   />
                 </div>
 
@@ -429,11 +440,11 @@ export default function Categories() {
                   }`}
                 >
                   <div>
-                    <h3 className="font-bold text-lg mb-2 text-gray-800 group-hover:text-blue-600 transition-colors">
+                    <h3 className="font-medium text-base mb-2 text-gray-700 group-hover:text-blue-600 transition-colors">
                       {product.name}
                     </h3>
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-2xl font-bold text-gray-900">
+                      <span className="text-lg font-semibold text-gray-800">
                         ₦{product.price.toLocaleString()}
                       </span>
                       <div className="flex items-center gap-2">
@@ -458,8 +469,8 @@ export default function Categories() {
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             product.instock
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
+                              ? "bg-green-50 text-green-700"
+                              : "bg-red-50 text-red-700"
                           }`}
                         >
                           {product.instock ? "In Stock" : "Out of Stock"}

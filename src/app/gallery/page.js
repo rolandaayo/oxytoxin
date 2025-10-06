@@ -122,7 +122,7 @@ export default function GalleryPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredImages.map((image, index) => (
               <motion.div
                 key={image._id}
@@ -134,12 +134,13 @@ export default function GalleryPage() {
                 onClick={() => openImageModal(image)}
               >
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-                  <div className="relative aspect-square overflow-hidden">
+                  {/* Mobile: ensure a decent visible height so images don't shrink too small */}
+                  <div className="relative overflow-hidden h-56 sm:h-[55vh] md:h-[45vh] lg:h-[50vh]">
                     <Image
                       src={image.imageUrl}
                       alt={image.title || "Gallery image"}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover object-center md:object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   {(image.title || image.description) && (
