@@ -20,27 +20,19 @@ export default function GalleryPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    fetchGalleryImages();
+    // Use hard-coded placeholders for now. The images should be placed under
+    // /public/images/gallery/1.jpg ... /public/images/gallery/10.jpg
+    const placeholders = Array.from({ length: 10 }).map((_, i) => ({
+      _id: `placeholder-${i + 1}`,
+      title: "",
+      description: "",
+      imageUrl: `./images/oxytoxin/${i + 1}.JPG`,
+      createdAt: new Date().toISOString(),
+    }));
+
+    setGalleryImages(placeholders);
+    setLoading(false);
   }, []);
-
-  const fetchGalleryImages = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("https://oxytoxin-backend.vercel.app/api/public/gallery");
-      const result = await response.json();
-
-      if (result.status === "success") {
-        setGalleryImages(result.data);
-      } else {
-        toast.error("Failed to load gallery images");
-      }
-    } catch (error) {
-      console.error("Error fetching gallery:", error);
-      toast.error("Failed to load gallery images");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredImages = galleryImages.filter(
     (image) =>
@@ -76,14 +68,15 @@ export default function GalleryPage() {
               Our Gallery
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explore our collection of stunning fashion photography and lifestyle images
+              Explore our collection of stunning fashion photography and
+              lifestyle images
             </p>
           </div>
         </div>
       </div>
 
       {/* Search Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="relative max-w-md mx-auto">
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -94,7 +87,7 @@ export default function GalleryPage() {
             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Gallery Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
