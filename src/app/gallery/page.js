@@ -20,13 +20,31 @@ export default function GalleryPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    // Use hard-coded placeholders for now. The images should be placed under
-    // /public/images/gallery/1.jpg ... /public/images/gallery/10.jpg
-    const placeholders = Array.from({ length: 10 }).map((_, i) => ({
-      _id: `placeholder-${i + 1}`,
+    // Build a list of gallery images from the repo's public images folder.
+    // The images folder has been normalized to `public/images/oxytoxin`.
+    const IMAGES_DIR = "/images/oxytoxin/";
+    const filenames = [
+      "0x-6.JPG",
+      "ox-1.JPG",
+      "ox-3.JPG",
+      "ox-4.JPG",
+      "ox-5.JPG",
+      "ox-7.JPG",
+      "ox-8.JPG",
+      "ox-9.JPG",
+      "ox-10.JPG",
+      "ox-11.JPG",
+      "ox-12.JPG",
+      "ox-13.JPG",
+    ];
+
+    // Use up to 12 images (you said you added up to ox-13). Change slice to
+    // 10 if you prefer exactly 10 placeholders.
+    const placeholders = filenames.slice(0, 12).map((name, i) => ({
+      _id: `oxy-${i + 1}`,
       title: "",
       description: "",
-      imageUrl: `./images/oxytoxin/${i + 1}.JPG`,
+      imageUrl: `${IMAGES_DIR}${name}`,
       createdAt: new Date().toISOString(),
     }));
 
