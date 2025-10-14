@@ -171,7 +171,6 @@ export function CartProvider({ children }) {
       if (result.status === "success") {
         // Then update frontend state
         setCartItems(updatedCart);
-        toast.success("Item added to cart!", { duration: 2000 });
         console.log("Cart updated successfully in frontend");
       } else {
         console.error("Backend returned error:", result);
