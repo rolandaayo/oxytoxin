@@ -28,7 +28,7 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        `https://oxytoxin-backend.vercel.app/api/delivery/admin/user/${customer._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/admin/user/${customer._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        `https://oxytoxin-backend.vercel.app/api/delivery/admin/user/${customer._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/admin/user/${customer._id}`,
         {
           method: "PUT",
           headers: {

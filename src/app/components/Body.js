@@ -32,7 +32,10 @@ export default function Body() {
   const [sortOrder, setSortOrder] = useState("asc");
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Responsive items per page: 10 for mobile, 8 for desktop
+  const itemsPerPage = isMobile ? 10 : 8;
   const [paystackLoaded, setPaystackLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
@@ -76,6 +79,27 @@ export default function Body() {
       console.error("Error loading saved data:", error);
     }
   }, []);
+
+  // Screen size detection for responsive pagination
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    // Check on mount
+    checkScreenSize();
+
+    // Add event listener
+    window.addEventListener("resize", checkScreenSize);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Reset to page 1 when items per page changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage]);
 
   useEffect(() => {
     if (!mounted) return;

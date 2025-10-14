@@ -15,6 +15,7 @@ import {
   FaSignOutAlt,
   FaSignInAlt,
   FaUserPlus,
+  FaShoppingBag,
 } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
@@ -258,14 +259,14 @@ export default function Navbar() {
                               Profile Settings
                             </Link>
 
-                            {/* <Link
-                              href="/orders"
+                            <Link
+                              href="/profile?tab=orders"
                               className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
                               onClick={() => setShowUserMenu(false)}
                             >
-                              <FaShoppingCart className="w-4 h-4 mr-3 text-gray-400" />
+                              <FaShoppingBag className="w-4 h-4 mr-3 text-gray-400" />
                               My Orders
-                            </Link> */}
+                            </Link>
 
                             <Link
                               href="/wishlist"

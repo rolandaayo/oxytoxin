@@ -29,11 +29,37 @@ export default function Categories() {
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
   const [wishlistStatus, setWishlistStatus] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
   const { addToCart } = useCart();
+
+  // Responsive items per page: 10 for mobile, 12 for desktop
+  const itemsPerPage = isMobile ? 10 : 12;
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Screen size detection for responsive pagination
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    // Check on mount
+    checkScreenSize();
+
+    // Add event listener
+    window.addEventListener("resize", checkScreenSize);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Reset to page 1 when items per page changes or filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage, selectedCategory, searchTerm, priceRange]);
 
   const filterAndSortProducts = useCallback(() => {
     let filtered = [...products];
@@ -405,82 +431,157 @@ export default function Categories() {
                 : "grid-cols-1"
             }`}
           >
-            {filteredProducts.map((product, index) => (
-              <motion.div
-                key={product._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className={`bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group ${
-                  viewMode === "list" ? "flex" : ""
-                }`}
-              >
-                <div
-                  className={`${
-                    viewMode === "list"
-                      ? "w-48 flex-shrink-0"
-                      : "relative overflow-hidden h-40 sm:h-56 md:aspect-square"
-                  }`}
-                >
-                  <Image
-                    src={product.mainImage || "/images/logo.png"}
-                    alt={product.name}
-                    width={viewMode === "list" ? 200 : 300}
-                    height={viewMode === "list" ? 200 : 300}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"
-                  />
-                </div>
+            {(() => {
+              // Pagination calculations
+              const totalItems = filteredProducts.length;
+              const totalPages = Math.max(
+                1,
+                Math.ceil(totalItems / itemsPerPage)
+              );
+              const startIndex = (currentPage - 1) * itemsPerPage;
+              const endIndex = startIndex + itemsPerPage;
+              const pagedProducts = filteredProducts.slice(
+                startIndex,
+                endIndex
+              );
 
-                <div
-                  className={`p-4 ${
-                    viewMode === "list"
-                      ? "flex-1 flex flex-col justify-between"
-                      : ""
+              return pagedProducts.map((product, index) => (
+                <motion.div
+                  key={product._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className={`bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group ${
+                    viewMode === "list" ? "flex" : ""
                   }`}
                 >
-                  <div>
-                    <h3 className="font-medium text-base mb-2 text-gray-700 group-hover:text-blue-600 transition-colors">
-                      {product.name}
-                    </h3>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-lg font-semibold text-gray-800">
-                        ₦{product.price.toLocaleString()}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent triggering the card click
-                            handleWishlistToggle(product);
-                          }}
-                          className={`p-2 rounded-full transition-all duration-300 ${
-                            wishlistStatus[product._id]
-                              ? "text-red-500 bg-red-50 hover:bg-red-100"
-                              : "text-gray-400 hover:text-red-500 hover:bg-red-50"
-                          }`}
-                          title={
-                            wishlistStatus[product._id]
-                              ? "Remove from wishlist"
-                              : "Add to wishlist"
-                          }
-                        >
-                          <FaHeart className="w-4 h-4" />
-                        </button>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            product.instock
-                              ? "bg-green-50 text-green-700"
-                              : "bg-red-50 text-red-700"
-                          }`}
-                        >
-                          {product.instock ? "In Stock" : "Out of Stock"}
+                  <div
+                    className={`${
+                      viewMode === "list"
+                        ? "w-48 flex-shrink-0"
+                        : "relative overflow-hidden h-40 sm:h-56 md:aspect-square"
+                    }`}
+                  >
+                    <Image
+                      src={product.mainImage || "/images/logo.png"}
+                      alt={product.name}
+                      width={viewMode === "list" ? 200 : 300}
+                      height={viewMode === "list" ? 200 : 300}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"
+                    />
+                  </div>
+
+                  <div
+                    className={`p-4 ${
+                      viewMode === "list"
+                        ? "flex-1 flex flex-col justify-between"
+                        : ""
+                    }`}
+                  >
+                    <div>
+                      <h3 className="font-medium text-base mb-2 text-gray-700 group-hover:text-blue-600 transition-colors">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-lg font-semibold text-gray-800">
+                          ₦{product.price.toLocaleString()}
                         </span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent triggering the card click
+                              handleWishlistToggle(product);
+                            }}
+                            className={`p-2 rounded-full transition-all duration-300 ${
+                              wishlistStatus[product._id]
+                                ? "text-red-500 bg-red-50 hover:bg-red-100"
+                                : "text-gray-400 hover:text-red-500 hover:bg-red-50"
+                            }`}
+                            title={
+                              wishlistStatus[product._id]
+                                ? "Remove from wishlist"
+                                : "Add to wishlist"
+                            }
+                          >
+                            <FaHeart className="w-4 h-4" />
+                          </button>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              product.instock
+                                ? "bg-green-50 text-green-700"
+                                : "bg-red-50 text-red-700"
+                            }`}
+                          >
+                            {product.instock ? "In Stock" : "Out of Stock"}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ));
+            })()}
           </div>
+
+          {/* Pagination Controls */}
+          {(() => {
+            const totalItems = filteredProducts.length;
+            const totalPages = Math.max(
+              1,
+              Math.ceil(totalItems / itemsPerPage)
+            );
+
+            if (totalPages > 1) {
+              return (
+                <div className="flex items-center justify-center gap-3 mt-8">
+                  <button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 rounded-lg transition-colors ${
+                      currentPage === 1
+                        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                    }`}
+                  >
+                    Previous
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`w-10 h-10 rounded-lg transition-colors ${
+                            currentPage === page
+                              ? "bg-blue-600 text-white"
+                              : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      )
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      setCurrentPage(Math.min(totalPages, currentPage + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                    className={`px-4 py-2 rounded-lg transition-colors ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
+              );
+            }
+            return null;
+          })()}
 
           {filteredProducts.length === 0 && (
             <div className="text-center py-16">

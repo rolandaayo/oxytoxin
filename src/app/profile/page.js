@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import {
@@ -20,6 +20,7 @@ import { publicApi, userApi } from "../services/api";
 
 export default function ProfilePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
@@ -53,8 +54,14 @@ export default function ProfilePage() {
   const [uploadingPicture, setUploadingPicture] = useState(false);
 
   useEffect(() => {
+    // Check for tab parameter in URL
+    const tab = searchParams.get("tab");
+    if (tab && ["profile", "security", "orders", "account"].includes(tab)) {
+      setActiveTab(tab);
+    }
+
     checkAuthAndLoadData();
-  }, []);
+  }, [searchParams]);
 
   const checkAuthAndLoadData = async () => {
     const token = localStorage.getItem("authToken");

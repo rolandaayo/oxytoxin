@@ -35,7 +35,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
         if (!token) return;
 
         const response = await fetch(
-          "https://oxytoxin-backend.vercel.app/api/delivery/get",
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/get`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
       }
 
       const response = await fetch(
-        "https://oxytoxin-backend.vercel.app/api/delivery/save",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/save`,
         {
           method: "POST",
           headers: {
