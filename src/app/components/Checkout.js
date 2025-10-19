@@ -15,6 +15,11 @@ import toast from "react-hot-toast";
 
 export default function Checkout({ onClose, onProceedToPayment }) {
   const { cartItems, totalAmount, initializePayment } = useCart();
+
+  // Fallback URL in case environment variable is not set
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    "https://oxytoxin-backend.vercel.app";
   const [deliveryInfo, setDeliveryInfo] = useState({
     fullName: "",
     phoneNumber: "",
@@ -34,15 +39,12 @@ export default function Checkout({ onClose, onProceedToPayment }) {
         const token = localStorage.getItem("authToken");
         if (!token) return;
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/get`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${API_BASE_URL}/api/delivery/get`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -57,7 +59,7 @@ export default function Checkout({ onClose, onProceedToPayment }) {
     };
 
     loadDeliveryInfo();
-  }, []);
+  }, [API_BASE_URL]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -108,17 +110,14 @@ export default function Checkout({ onClose, onProceedToPayment }) {
         return;
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/save`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(deliveryInfo),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/delivery/save`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(deliveryInfo),
+      });
 
       console.log("Response status:", response.status);
       console.log("Response ok:", response.ok);

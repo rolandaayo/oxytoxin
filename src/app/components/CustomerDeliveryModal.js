@@ -12,6 +12,11 @@ import toast from "react-hot-toast";
 
 export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
   const [deliveryInfo, setDeliveryInfo] = useState(null);
+
+  // Fallback URL in case environment variable is not set
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    "https://oxytoxin-backend.vercel.app";
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
@@ -28,7 +33,7 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/admin/user/${customer._id}`,
+        `${API_BASE_URL}/api/delivery/admin/user/${customer._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,7 +67,7 @@ export default function CustomerDeliveryModal({ customer, onClose, onUpdate }) {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delivery/admin/user/${customer._id}`,
+        `${API_BASE_URL}/api/delivery/admin/user/${customer._id}`,
         {
           method: "PUT",
           headers: {
