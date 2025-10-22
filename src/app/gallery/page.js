@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { Poppins } from "next/font/google";
-import toast from "react-hot-toast";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -17,7 +16,6 @@ export default function GalleryPage() {
   const [galleryImages, setGalleryImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     // Build a list of gallery images from the repo's public images folder.
@@ -52,11 +50,7 @@ export default function GalleryPage() {
     setLoading(false);
   }, []);
 
-  const filteredImages = galleryImages.filter(
-    (image) =>
-      image.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      image.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredImages = galleryImages;
 
   const openImageModal = (image) => {
     setSelectedImage(image);
@@ -113,12 +107,10 @@ export default function GalleryPage() {
           <div className="text-center py-12">
             <div className="text-gray-400 text-6xl mb-4">📸</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {searchQuery ? "No images found" : "Gallery is empty"}
+              Gallery is empty
             </h3>
             <p className="text-gray-600">
-              {searchQuery
-                ? "Try adjusting your search terms"
-                : "Check back soon for new additions to our gallery"}
+              Check back soon for new additions to our gallery
             </p>
           </div>
         ) : (
@@ -166,45 +158,26 @@ export default function GalleryPage() {
 
       {/* Image Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="relative max-w-4xl max-h-[90vh] bg-white rounded-lg overflow-hidden">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4"
+          onClick={closeImageModal}
+        >
+          <div className="relative max-w-[90vw] max-h-[90vh]">
             <button
               onClick={closeImageModal}
-              className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-colors"
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
             >
-              <FaTimes className="w-5 h-5" />
+              <FaTimes className="w-8 h-8" />
             </button>
 
-            <div className="flex flex-col md:flex-row">
-              <div className="flex-1 relative aspect-square md:aspect-auto">
-                <Image
-                  src={selectedImage.imageUrl}
-                  alt={selectedImage.title || "Gallery image"}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-
-              {(selectedImage.title || selectedImage.description) && (
-                <div className="w-full md:w-80 p-6 bg-white">
-                  {selectedImage.title && (
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                      {selectedImage.title}
-                    </h2>
-                  )}
-                  {selectedImage.description && (
-                    <p className="text-gray-600 leading-relaxed">
-                      {selectedImage.description}
-                    </p>
-                  )}
-                  {selectedImage.createdAt && (
-                    <p className="text-sm text-gray-500 mt-4">
-                      Added:{" "}
-                      {new Date(selectedImage.createdAt).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-              )}
+            <div className="relative" onClick={(e) => e.stopPropagation()}>
+              <Image
+                src={selectedImage.imageUrl}
+                alt={selectedImage.title || "Gallery image"}
+                width={1200}
+                height={800}
+                className="max-w-full max-h-[90vh] object-contain"
+              />
             </div>
           </div>
         </div>
