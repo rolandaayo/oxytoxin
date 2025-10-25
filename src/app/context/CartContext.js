@@ -450,8 +450,8 @@ export function CartProvider({ children }) {
       console.log("Setting up Paystack with email:", userEmail);
 
       const handler = window.PaystackPop.setup({
-        key: "pk_test_d9443bda19dc2df77bfc470f16b18e57e727697a", // Test key
-        // key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35", // Live key (commented out)
+        // key: "pk_test_d9443bda19dc2df77bfc470f16b18e57e727697a", // Test key
+        key: "pk_live_e800a07fd891e2e418e93c56e409efede3a9ad35",
         email: userEmail || "customer@oxytoxin.com", // Fallback email
         amount: totalAmount * 100,
         currency: "NGN",
