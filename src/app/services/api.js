@@ -1,3 +1,5 @@
+import { handleAuthError } from "../utils/authUtils";
+
 // const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
 const BACKEND_URL =
   // process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
@@ -859,12 +861,17 @@ export const wishlistApi = {
 
       if (!response.ok) {
         const errorText = await response.text();
+        handleAuthError(
+          new Error(`HTTP error! status: ${response.status}`),
+          response
+        );
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
       return result;
     } catch (error) {
+      handleAuthError(error);
       throw error;
     }
   },
