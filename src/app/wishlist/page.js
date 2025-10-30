@@ -36,14 +36,29 @@ export default function WishlistPage() {
       }
     } catch (error) {
       console.error("Error loading wishlist:", error);
-      // Fallback to localStorage
-      try {
-        const savedWishlist = localStorage.getItem("wishlist");
-        if (savedWishlist) {
-          setWishlistItems(JSON.parse(savedWishlist));
+
+      // Check if it's an authentication error
+      if (
+        error.message &&
+        (error.message.includes("401") ||
+          error.message.includes("403") ||
+          error.message.includes("token") ||
+          error.message.includes("expired") ||
+          error.message.includes("unauthorized"))
+      ) {
+        // Don't auto-logout, just show empty wishlist and let user know
+        console.log("Authentication issue with wishlist, showing empty state");
+        setWishlistItems([]);
+      } else {
+        // For other errors, try fallback to localStorage
+        try {
+          const savedWishlist = localStorage.getItem("wishlist");
+          if (savedWishlist) {
+            setWishlistItems(JSON.parse(savedWishlist));
+          }
+        } catch (localError) {
+          console.error("Error loading from localStorage:", localError);
         }
-      } catch (localError) {
-        console.error("Error loading from localStorage:", localError);
       }
     } finally {
       setLoading(false);
@@ -116,68 +131,80 @@ export default function WishlistPage() {
                 Your wishlist is empty
               </h2>
               <p className="text-gray-600 mb-6">
-                Start adding items you love to your wishlist
+                {localStorage.getItem("authToken")
+                  ? "Start adding items you love to your wishlist"
+                  : "Please log in to view your wishlist or start browsing to add items"}
               </p>
-              <a
-                href="/categories"
-                className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors inline-block"
-              >
-                Browse Products
-              </a>
+              <div className="space-x-4">
+                <a
+                  href="/categories"
+                  className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors inline-block"
+                >
+                  Browse Products
+                </a>
+                {!localStorage.getItem("authToken") && (
+                  <a
+                    href="/login"
+                    className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors inline-block ml-4"
+                  >
+                    Login
+                  </a>
+                )}
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
               {wishlistItems
                 .filter((it) => it != null)
                 .map((item) => (
-                <div
-                  key={item?._id || item?.productId || Math.random()}
-                  className="rounded-lg overflow-hidden group cursor-pointer bg-white shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="relative h-[200px] md:h-[400px] overflow-hidden flex flex-col items-center justify-center">
-                    <Image
-                      src={item?.mainImage || "/images/logo.png"}
-                      alt={item?.name || "product"}
-                      width={500}
-                      height={500}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeFromWishlist(item?._id || item?.productId);
-                      }}
-                      className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
-                    >
-                      <FaTrash className="w-4 h-4 text-red-500" />
-                    </button>
-                  </div>
-                  <div className="p-3 md:p-4">
-                    <h3 className="text-xs md:text-sm font-semibold text-black truncate">
-                      {item?.name || "Unnamed product"}
-                    </h3>
-                    <div className="flex items-center justify-between pt-2 mb-3">
-                      <span className="text-base md:text-lg font-bold text-black">
-                        ₦{(item?.price ?? 0).toLocaleString()}
-                      </span>
+                  <div
+                    key={item?._id || item?.productId || Math.random()}
+                    className="rounded-lg overflow-hidden group cursor-pointer bg-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <div className="relative h-[200px] md:h-[400px] overflow-hidden flex flex-col items-center justify-center">
+                      <Image
+                        src={item?.mainImage || "/images/logo.png"}
+                        alt={item?.name || "product"}
+                        width={500}
+                        height={500}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      />
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          moveToCart(item);
+                          removeFromWishlist(item?._id || item?.productId);
                         }}
-                        disabled={!item?.instock}
-                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
-                          item?.instock
-                            ? "bg-black text-white hover:bg-gray-800"
-                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        }`}
+                        className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
                       >
-                        {item?.instock ? "Add to Cart" : "Out of Stock"}
+                        <FaTrash className="w-4 h-4 text-red-500" />
                       </button>
                     </div>
+                    <div className="p-3 md:p-4">
+                      <h3 className="text-xs md:text-sm font-semibold text-black truncate">
+                        {item?.name || "Unnamed product"}
+                      </h3>
+                      <div className="flex items-center justify-between pt-2 mb-3">
+                        <span className="text-base md:text-lg font-bold text-black">
+                          ₦{(item?.price ?? 0).toLocaleString()}
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveToCart(item);
+                          }}
+                          disabled={!item?.instock}
+                          className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
+                            item?.instock
+                              ? "bg-black text-white hover:bg-gray-800"
+                              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          }`}
+                        >
+                          {item?.instock ? "Add to Cart" : "Out of Stock"}
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </div>

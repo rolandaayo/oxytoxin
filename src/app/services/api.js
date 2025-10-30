@@ -861,17 +861,15 @@ export const wishlistApi = {
 
       if (!response.ok) {
         const errorText = await response.text();
-        handleAuthError(
-          new Error(`HTTP error! status: ${response.status}`),
-          response
-        );
+        // Don't call handleAuthError here to prevent automatic logout
+        // Let the calling component handle the error appropriately
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
       return result;
     } catch (error) {
-      handleAuthError(error);
+      // Don't call handleAuthError here to prevent automatic logout
       throw error;
     }
   },
