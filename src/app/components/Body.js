@@ -27,6 +27,7 @@ export default function Body() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [wishlistStatus, setWishlistStatus] = useState({});
+  const [wishlistLoading, setWishlistLoading] = useState({});
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [sortBy, setSortBy] = useState("default");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -139,23 +140,68 @@ export default function Body() {
     setRefreshTrigger((prev) => prev + 1);
   };
 
-  // Wishlist functions
+  // Wishlist functions with optimistic updates and Instagram-like animation
   const handleWishlistToggle = async (product) => {
-    try {
-      const isInWishlistResult = await isInWishlist(product._id);
+    const currentStatus = wishlistStatus[product._id] || false;
+    const newStatus = !currentStatus;
 
-      if (isInWishlistResult) {
+    // Prevent multiple clicks while processing
+    if (wishlistLoading[product._id]) return;
+
+    // Set loading state
+    setWishlistLoading((prev) => ({ ...prev, [product._id]: true }));
+
+    // Optimistic update - change UI immediately for instant feedback
+    setWishlistStatus((prev) => ({ ...prev, [product._id]: newStatus }));
+
+    try {
+      if (currentStatus) {
         // Item is in wishlist, remove it
         const { removeFromWishlist } = await import("../utils/wishlist");
-        await removeFromWishlist(product._id);
-        setWishlistStatus((prev) => ({ ...prev, [product._id]: false }));
+        const success = await removeFromWishlist(product._id, false); // Don't show toast, we'll handle it
+
+        if (success) {
+          // Show custom success message
+          toast.success("Removed from wishlist", {
+            icon: "💔",
+            duration: 2000,
+          });
+        } else {
+          // Revert the optimistic update
+          setWishlistStatus((prev) => ({
+            ...prev,
+            [product._id]: currentStatus,
+          }));
+        }
       } else {
         // Item is not in wishlist, add it
-        await addToWishlist(product);
-        setWishlistStatus((prev) => ({ ...prev, [product._id]: true }));
+        const success = await addToWishlist(product, false); // Don't show toast, we'll handle it
+
+        if (success) {
+          // Show custom success message with heart animation
+          toast.success("Added to wishlist!", {
+            icon: "❤️",
+            duration: 2000,
+            style: {
+              background: "#10b981",
+              color: "#fff",
+            },
+          });
+        } else {
+          // Revert the optimistic update
+          setWishlistStatus((prev) => ({
+            ...prev,
+            [product._id]: currentStatus,
+          }));
+        }
       }
     } catch (error) {
       console.error("Error toggling wishlist:", error);
+      // Revert the optimistic update on error
+      setWishlistStatus((prev) => ({ ...prev, [product._id]: currentStatus }));
+    } finally {
+      // Clear loading state
+      setWishlistLoading((prev) => ({ ...prev, [product._id]: false }));
     }
   };
 
@@ -489,18 +535,31 @@ export default function Body() {
                           e.stopPropagation(); // Prevent triggering the card click
                           handleWishlistToggle(item);
                         }}
-                        className={`p-2 rounded-full transition-all duration-300 ${
-                          wishlistStatus[item._id]
-                            ? "text-red-500 bg-red-50 hover:bg-red-100"
+                        disabled={wishlistLoading[item._id]}
+                        className={`wishlist-btn p-2 rounded-full transition-all duration-300 transform hover:scale-110 active:scale-95 ${
+                          wishlistLoading[item._id]
+                            ? "text-gray-400 bg-gray-100 cursor-not-allowed"
+                            : wishlistStatus[item._id]
+                            ? "text-red-500 bg-red-50 hover:bg-red-100 shadow-lg heart-beat"
                             : "text-gray-400 hover:text-red-500 hover:bg-red-50"
                         }`}
                         title={
-                          wishlistStatus[item._id]
+                          wishlistLoading[item._id]
+                            ? "Processing..."
+                            : wishlistStatus[item._id]
                             ? "Remove from wishlist"
                             : "Add to wishlist"
                         }
                       >
-                        <FaHeart className="w-4 h-4" />
+                        <FaHeart
+                          className={`w-4 h-4 transition-all duration-300 ${
+                            wishlistLoading[item._id]
+                              ? "animate-spin"
+                              : wishlistStatus[item._id]
+                              ? "heart-pop scale-110"
+                              : "hover:scale-110"
+                          }`}
+                        />
                       </button>
                     </div>
                   </div>

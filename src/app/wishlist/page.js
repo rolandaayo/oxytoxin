@@ -6,11 +6,13 @@ import { FaHeart, FaTrash } from "react-icons/fa";
 import Image from "next/image";
 import { useCart } from "../context/CartContext";
 import { wishlistApi } from "../services/api";
+import { removeFromWishlist as removeFromWishlistUtil } from "../utils/wishlist";
 import toast from "react-hot-toast";
 
 export default function WishlistPage() {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [removingItems, setRemovingItems] = useState({});
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -66,28 +68,38 @@ export default function WishlistPage() {
   };
 
   const removeFromWishlist = async (productId) => {
+    console.log("Removing from wishlist:", productId);
+
+    // Prevent multiple clicks
+    if (removingItems[productId]) return;
+
+    // Set loading state
+    setRemovingItems((prev) => ({ ...prev, [productId]: true }));
+
+    // Optimistic update - remove from UI immediately
+    const originalWishlist = [...wishlistItems];
+    const updatedWishlist = wishlistItems.filter(
+      (item) => (item.productId || item._id) !== productId
+    );
+    setWishlistItems(updatedWishlist);
+
     try {
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        // Use backend API
-        await wishlistApi.removeFromWishlist(productId);
-        const updatedWishlist = wishlistItems.filter(
-          (item) => item.productId !== productId
-        );
-        setWishlistItems(updatedWishlist);
-        toast.success("Removed from wishlist");
-      } else {
-        // Fallback to localStorage
-        const updatedWishlist = wishlistItems.filter(
-          (item) => item._id !== productId
-        );
-        setWishlistItems(updatedWishlist);
-        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-        toast.success("Removed from wishlist");
+      // Use the utility function for consistent behavior
+      const success = await removeFromWishlistUtil(productId);
+      console.log("Remove result:", success);
+
+      if (!success) {
+        // Revert the optimistic update if the API call failed
+        setWishlistItems(originalWishlist);
       }
     } catch (error) {
       console.error("Error removing from wishlist:", error);
+      // Revert the optimistic update on error
+      setWishlistItems(originalWishlist);
       toast.error("Failed to remove from wishlist");
+    } finally {
+      // Clear loading state
+      setRemovingItems((prev) => ({ ...prev, [productId]: false }));
     }
   };
 
@@ -174,9 +186,20 @@ export default function WishlistPage() {
                           e.stopPropagation();
                           removeFromWishlist(item?._id || item?.productId);
                         }}
-                        className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+                        disabled={removingItems[item?._id || item?.productId]}
+                        className={`absolute top-3 right-3 p-2 backdrop-blur-sm rounded-full transition-all duration-300 ${
+                          removingItems[item?._id || item?.productId]
+                            ? "bg-gray-200 cursor-not-allowed"
+                            : "bg-white/80 hover:bg-white hover:scale-110"
+                        }`}
                       >
-                        <FaTrash className="w-4 h-4 text-red-500" />
+                        <FaTrash
+                          className={`w-4 h-4 text-red-500 transition-all duration-300 ${
+                            removingItems[item?._id || item?.productId]
+                              ? "animate-spin"
+                              : ""
+                          }`}
+                        />
                       </button>
                     </div>
                     <div className="p-3 md:p-4">
