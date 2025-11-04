@@ -2,8 +2,8 @@ import { handleAuthError } from "../utils/authUtils";
 
 // const BACKEND_URL = "https://oxytoxin-backend.vercel.app";
 const BACKEND_URL =
-  // process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
-  process.env.NEXT_PUBLIC_BACKEND_URL || "https://oxytoxin-backend.vercel.app";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+// process.env.NEXT_PUBLIC_BACKEND_URL || "https://oxytoxin-backend.vercel.app";
 
 // Public API calls
 export const publicApi = {

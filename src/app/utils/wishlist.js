@@ -12,29 +12,56 @@ export const addToWishlist = async (product) => {
         toast.success("Added to wishlist!");
         return true;
       } catch (error) {
+        console.error("Backend wishlist error:", error);
         if (error.message.includes("already in wishlist")) {
           toast.error("Item already in wishlist");
-        } else {
-          toast.error("Failed to add to wishlist");
-        }
-        return false;
-      }
-    } else {
-      // Show login popup for non-authenticated users
-      toast.error("Please log in to add items to your wishlist", {
-        duration: 4000,
-        action: {
-          label: "Login",
-          onClick: () => {
-            // Store the current page to redirect back after login
+        } else if (
+          error.message.includes("401") ||
+          error.message.includes("403") ||
+          error.message.includes("unauthorized") ||
+          error.message.includes("TOKEN_EXPIRED") ||
+          error.message.includes("SESSION_EXPIRED")
+        ) {
+          toast.error("Your session has expired. Please login again.", {
+            duration: 4000,
+            style: {
+              background: "#ef4444",
+              color: "#fff",
+            },
+          });
+
+          // Clear invalid token and redirect to login
+          localStorage.removeItem("authToken");
+          setTimeout(() => {
             localStorage.setItem(
               "redirectAfterLogin",
               window.location.pathname
             );
             window.location.href = "/login";
-          },
+          }, 2000);
+        } else {
+          toast.error("Failed to add to wishlist. Please try again.");
+        }
+        return false;
+      }
+    } else {
+      // Show login message for non-authenticated users
+      toast.error("Please login to add items to your wishlist", {
+        duration: 4000,
+        style: {
+          background: "#ef4444",
+          color: "#fff",
         },
       });
+
+      // Optionally redirect to login after a short delay
+      setTimeout(() => {
+        if (confirm("Would you like to go to the login page now?")) {
+          localStorage.setItem("redirectAfterLogin", window.location.pathname);
+          window.location.href = "/login";
+        }
+      }, 1000);
+
       return false;
     }
   } catch (error) {
@@ -55,7 +82,26 @@ export const removeFromWishlist = async (productId) => {
         toast.success("Removed from wishlist");
         return true;
       } catch (error) {
-        toast.error("Failed to remove from wishlist");
+        console.error("Backend remove wishlist error:", error);
+        if (
+          error.message.includes("401") ||
+          error.message.includes("403") ||
+          error.message.includes("unauthorized") ||
+          error.message.includes("TOKEN_EXPIRED") ||
+          error.message.includes("SESSION_EXPIRED")
+        ) {
+          toast.error("Your session has expired. Please login again.");
+          localStorage.removeItem("authToken");
+          setTimeout(() => {
+            localStorage.setItem(
+              "redirectAfterLogin",
+              window.location.pathname
+            );
+            window.location.href = "/login";
+          }, 2000);
+        } else {
+          toast.error("Failed to remove from wishlist");
+        }
         return false;
       }
     } else {
@@ -88,6 +134,17 @@ export const isInWishlist = async (productId) => {
         return result.isInWishlist;
       } catch (error) {
         console.error("Error checking wishlist:", error);
+        // If authentication error, silently return false (don't show error to user)
+        if (
+          error.message.includes("401") ||
+          error.message.includes("403") ||
+          error.message.includes("unauthorized") ||
+          error.message.includes("TOKEN_EXPIRED") ||
+          error.message.includes("SESSION_EXPIRED")
+        ) {
+          // Silently clear invalid token
+          localStorage.removeItem("authToken");
+        }
         return false;
       }
     } else {
