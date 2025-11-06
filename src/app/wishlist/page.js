@@ -17,7 +17,19 @@ export default function WishlistPage() {
 
   useEffect(() => {
     loadWishlist();
+    // Test server connectivity
+    testServerConnection();
   }, []);
+
+  const testServerConnection = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/");
+      const result = await response.json();
+      console.log("Server connection test:", result);
+    } catch (error) {
+      console.error("Server connection failed:", error);
+    }
+  };
 
   const loadWishlist = async () => {
     try {
@@ -34,6 +46,7 @@ export default function WishlistPage() {
 
       const response = await wishlistApi.getWishlist();
       if (response.status === "success") {
+        console.log("Loaded wishlist items:", response.data.items);
         setWishlistItems(response.data.items || []);
       }
     } catch (error) {
@@ -85,16 +98,30 @@ export default function WishlistPage() {
 
     try {
       // Use the utility function for consistent behavior
-      const success = await removeFromWishlistUtil(productId);
+      console.log("Calling removeFromWishlistUtil with productId:", productId);
+      const success = await removeFromWishlistUtil(productId, false); // Don't show toast, we handle it here
       console.log("Remove result:", success);
+      console.log(
+        "Current wishlist items after API call:",
+        wishlistItems.length
+      );
 
-      if (!success) {
+      if (success) {
+        // Success! Keep the optimistic update and show success message
+        console.log("Success - keeping item removed");
+        toast.success("Removed from wishlist", {
+          icon: "💔",
+          duration: 2000,
+        });
+      } else {
         // Revert the optimistic update if the API call failed
+        console.log("Failed - reverting optimistic update");
         setWishlistItems(originalWishlist);
       }
     } catch (error) {
       console.error("Error removing from wishlist:", error);
       // Revert the optimistic update on error
+      console.log("Exception - reverting optimistic update");
       setWishlistItems(originalWishlist);
       toast.error("Failed to remove from wishlist");
     } finally {
@@ -184,7 +211,13 @@ export default function WishlistPage() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          removeFromWishlist(item?._id || item?.productId);
+                          const idToUse = item?.productId || item?._id;
+                          console.log("Item data:", {
+                            _id: item?._id,
+                            productId: item?.productId,
+                            idToUse,
+                          });
+                          removeFromWishlist(idToUse);
                         }}
                         disabled={removingItems[item?._id || item?.productId]}
                         className={`absolute top-3 right-3 p-2 backdrop-blur-sm rounded-full transition-all duration-300 ${

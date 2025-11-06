@@ -89,7 +89,12 @@ export const removeFromWishlist = async (productId, showToast = true) => {
     if (token) {
       // Use backend API
       try {
-        await wishlistApi.removeFromWishlist(productId);
+        console.log(
+          "Calling wishlistApi.removeFromWishlist with productId:",
+          productId
+        );
+        const result = await wishlistApi.removeFromWishlist(productId);
+        console.log("API remove result:", result);
         if (showToast) {
           toast.success("Removed from wishlist", {
             icon: "💔",
@@ -99,6 +104,7 @@ export const removeFromWishlist = async (productId, showToast = true) => {
         return true;
       } catch (error) {
         console.error("Backend remove wishlist error:", error);
+        console.error("Error details:", error.message);
         if (
           error.message.includes("401") ||
           error.message.includes("403") ||

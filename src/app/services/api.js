@@ -925,6 +925,9 @@ export const wishlistApi = {
       }
 
       const url = `${BACKEND_URL}/api/wishlist/remove/${productId}`;
+      console.log("Making DELETE request to:", url);
+      console.log("With token:", token ? "exists" : "missing");
+
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -933,14 +936,20 @@ export const wishlistApi = {
         },
       });
 
+      console.log("Response status:", response.status);
+      console.log("Response ok:", response.ok);
+
       if (!response.ok) {
         const errorText = await response.text();
+        console.error("Error response text:", errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
+      console.log("Remove API result:", result);
       return result;
     } catch (error) {
+      console.error("API removeFromWishlist error:", error);
       throw error;
     }
   },
