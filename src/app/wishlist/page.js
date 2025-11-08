@@ -91,9 +91,13 @@ export default function WishlistPage() {
 
     // Optimistic update - remove from UI immediately
     const originalWishlist = [...wishlistItems];
-    const updatedWishlist = wishlistItems.filter(
-      (item) => (item.productId || item._id) !== productId
-    );
+    const updatedWishlist = wishlistItems.filter((item) => {
+      const itemProductId =
+        typeof item.productId === "object"
+          ? item.productId._id
+          : item.productId;
+      return itemProductId !== productId;
+    });
     setWishlistItems(updatedWishlist);
 
     try {
@@ -101,10 +105,6 @@ export default function WishlistPage() {
       console.log("Calling removeFromWishlistUtil with productId:", productId);
       const success = await removeFromWishlistUtil(productId, false); // Don't show toast, we handle it here
       console.log("Remove result:", success);
-      console.log(
-        "Current wishlist items after API call:",
-        wishlistItems.length
-      );
 
       if (success) {
         // Success! Keep the optimistic update and show success message
@@ -132,7 +132,9 @@ export default function WishlistPage() {
 
   const moveToCart = async (item) => {
     addToCart(item);
-    await removeFromWishlist(item.productId || item._id);
+    const productId =
+      typeof item.productId === "object" ? item.productId._id : item.productId;
+    await removeFromWishlist(productId);
     toast.success("Moved to cart!");
   };
 
@@ -195,72 +197,77 @@ export default function WishlistPage() {
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
               {wishlistItems
                 .filter((it) => it != null)
-                .map((item) => (
-                  <div
-                    key={item?._id || item?.productId || Math.random()}
-                    className="rounded-lg overflow-hidden group cursor-pointer bg-white shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                    <div className="relative h-[200px] md:h-[400px] overflow-hidden flex flex-col items-center justify-center">
-                      <Image
-                        src={item?.mainImage || "/images/logo.png"}
-                        alt={item?.name || "product"}
-                        width={500}
-                        height={500}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const idToUse = item?.productId || item?._id;
-                          console.log("Item data:", {
-                            _id: item?._id,
-                            productId: item?.productId,
-                            idToUse,
-                          });
-                          removeFromWishlist(idToUse);
-                        }}
-                        disabled={removingItems[item?._id || item?.productId]}
-                        className={`absolute top-3 right-3 p-2 backdrop-blur-sm rounded-full transition-all duration-300 ${
-                          removingItems[item?._id || item?.productId]
-                            ? "bg-gray-200 cursor-not-allowed"
-                            : "bg-white/80 hover:bg-white hover:scale-110"
-                        }`}
-                      >
-                        <FaTrash
-                          className={`w-4 h-4 text-red-500 transition-all duration-300 ${
-                            removingItems[item?._id || item?.productId]
-                              ? "animate-spin"
-                              : ""
-                          }`}
+                .map((item) => {
+                  // Extract the actual product ID
+                  const productId =
+                    typeof item?.productId === "object"
+                      ? item?.productId?._id
+                      : item?.productId;
+
+                  return (
+                    <div
+                      key={item?._id || productId || Math.random()}
+                      className="rounded-lg overflow-hidden group cursor-pointer bg-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      <div className="relative h-[200px] md:h-[400px] overflow-hidden flex flex-col items-center justify-center">
+                        <Image
+                          src={item?.mainImage || "/images/logo.png"}
+                          alt={item?.name || "product"}
+                          width={500}
+                          height={500}
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         />
-                      </button>
-                    </div>
-                    <div className="p-3 md:p-4">
-                      <h3 className="text-xs md:text-sm font-semibold text-black truncate">
-                        {item?.name || "Unnamed product"}
-                      </h3>
-                      <div className="flex items-center justify-between pt-2 mb-3">
-                        <span className="text-base md:text-lg font-bold text-black">
-                          ₦{(item?.price ?? 0).toLocaleString()}
-                        </span>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            moveToCart(item);
+                            console.log("Item data:", {
+                              _id: item?._id,
+                              productId: item?.productId,
+                              extractedProductId: productId,
+                            });
+                            removeFromWishlist(productId);
                           }}
-                          disabled={!item?.instock}
-                          className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
-                            item?.instock
-                              ? "bg-black text-white hover:bg-gray-800"
-                              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          disabled={removingItems[productId]}
+                          className={`absolute top-3 right-3 p-2 backdrop-blur-sm rounded-full transition-all duration-300 ${
+                            removingItems[productId]
+                              ? "bg-gray-200 cursor-not-allowed"
+                              : "bg-white/80 hover:bg-white hover:scale-110"
                           }`}
                         >
-                          {item?.instock ? "Add to Cart" : "Out of Stock"}
+                          <FaTrash
+                            className={`w-4 h-4 text-red-500 transition-all duration-300 ${
+                              removingItems[productId] ? "animate-spin" : ""
+                            }`}
+                          />
                         </button>
                       </div>
+                      <div className="p-3 md:p-4">
+                        <h3 className="text-xs md:text-sm font-semibold text-black truncate">
+                          {item?.name || "Unnamed product"}
+                        </h3>
+                        <div className="flex items-center justify-between pt-2 mb-3">
+                          <span className="text-base md:text-lg font-bold text-black">
+                            ₦{(item?.price ?? 0).toLocaleString()}
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              moveToCart(item);
+                            }}
+                            disabled={!item?.instock}
+                            className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
+                              item?.instock
+                                ? "bg-black text-white hover:bg-gray-800"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            }`}
+                          >
+                            {item?.instock ? "Add to Cart" : "Out of Stock"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           )}
         </div>
