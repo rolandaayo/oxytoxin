@@ -35,6 +35,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
+  const [wishlistCount, setWishlistCount] = useState(0);
   const pathname = usePathname();
   const {
     cartItems,
@@ -62,6 +63,48 @@ export default function Navbar() {
     setIsAuthenticated(!!localStorage.getItem("authToken"));
     setUserName(localStorage.getItem("userName") || "");
   }, [showUserMenu]);
+
+  // Fetch wishlist count when authenticated
+  useEffect(() => {
+    const fetchWishlistCount = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        setWishlistCount(0);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${
+            process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000"
+          }/api/wishlist`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const result = await response.json();
+          setWishlistCount(result.data?.items?.length || 0);
+        } else {
+          setWishlistCount(0);
+        }
+      } catch (error) {
+        console.error("Error fetching wishlist count:", error);
+        setWishlistCount(0);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchWishlistCount();
+    } else {
+      setWishlistCount(0);
+    }
+  }, [isAuthenticated, showUserMenu]);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -270,11 +313,16 @@ export default function Navbar() {
 
                             <Link
                               href="/wishlist"
-                              className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
+                              className="flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 font-medium"
                               onClick={() => setShowUserMenu(false)}
                             >
-                              <FaHeart className="w-4 h-4 mr-3 text-gray-400" />
-                              Wishlist
+                              <div className="flex items-center">
+                                <FaHeart className="w-4 h-4 mr-3 text-gray-400" />
+                                Wishlist
+                              </div>
+                              {wishlistCount > 0 && (
+                                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                              )}
                             </Link>
 
                             <button
