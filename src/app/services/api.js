@@ -750,6 +750,27 @@ export const userApi = {
       throw error;
     }
   },
+
+  // Get single order by ID
+  getOrderById: async (orderId) => {
+    try {
+      const url = `${BACKEND_URL}/api/public/orders/${orderId}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to fetch order");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 // Auth API calls
