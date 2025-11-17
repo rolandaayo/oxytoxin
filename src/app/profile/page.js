@@ -342,6 +342,61 @@ function ProfilePageContent() {
           </p>
         </div>
 
+        {/* Track Orders Quick Access Card */}
+        <div className="mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            onClick={() => router.push("/track")}
+            className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all hover:scale-[1.02] transform"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="bg-white bg-opacity-20 p-4 rounded-lg">
+                  <svg
+                    width="32"
+                    height="32"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="text-white"
+                  >
+                    <path
+                      d="M18 18.5a1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5 1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5m1.5-9 1.96 2.5H17V9.5m-11 9A1.5 1.5 0 0 1 4.5 17 1.5 1.5 0 0 1 6 15.5 1.5 1.5 0 0 1 7.5 17 1.5 1.5 0 0 1 6 18.5M20 8h-3V4H3c-1.11 0-2 .89-2 2v11h2a3 3 0 0 0 3 3 3 3 0 0 0 3-3h6a3 3 0 0 0 3 3 3 3 0 0 0 3-3h2v-5l-3-4z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-white text-xl font-bold mb-1">
+                    Track Your Orders
+                  </h3>
+                  <p className="text-white text-opacity-90 text-sm">
+                    Monitor delivery status with real-time 3D progress tracking
+                  </p>
+                </div>
+              </div>
+              <div className="hidden sm:flex items-center space-x-2 bg-white bg-opacity-20 px-4 py-2 rounded-lg">
+                <span className="text-white font-semibold">
+                  {orders.length} {orders.length === 1 ? "Order" : "Orders"}
+                </span>
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="text-white"
+                >
+                  <path
+                    d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1 hidden lg:block">
@@ -649,9 +704,29 @@ function ProfilePageContent() {
               {/* Orders Tab */}
               {activeTab === "orders" && (
                 <div className="p-4 md:p-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    Order History
-                  </h2>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      Order History
+                    </h2>
+                    <button
+                      onClick={() => router.push("/track")}
+                      className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2.5 rounded-lg hover:from-green-600 hover:to-green-700 transition-all shadow-md hover:shadow-lg"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        className="mr-1"
+                      >
+                        <path
+                          d="M18 18.5a1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5 1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5m1.5-9 1.96 2.5H17V9.5m-11 9A1.5 1.5 0 0 1 4.5 17 1.5 1.5 0 0 1 6 15.5 1.5 1.5 0 0 1 7.5 17 1.5 1.5 0 0 1 6 18.5M20 8h-3V4H3c-1.11 0-2 .89-2 2v11h2a3 3 0 0 0 3 3 3 3 0 0 0 3-3h6a3 3 0 0 0 3 3 3 3 0 0 0 3-3h2v-5l-3-4z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span className="font-semibold">Track Orders</span>
+                    </button>
+                  </div>
 
                   {orders.length === 0 ? (
                     <div className="text-center py-12">
