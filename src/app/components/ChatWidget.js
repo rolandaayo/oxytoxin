@@ -238,18 +238,22 @@ export default function ChatWidget() {
                     <div
                       className={`max-w-[75%] rounded-2xl px-4 py-2 ${
                         msg.sender === "user"
-                          ? "bg-blue-500 text-white rounded-br-none"
-                          : "bg-white text-gray-800 shadow-md rounded-bl-none"
+                          ? "bg-blue-500 rounded-br-none"
+                          : "bg-white shadow-md rounded-bl-none"
                       }`}
                     >
-                      <p className="text-sm whitespace-pre-wrap break-words">
+                      <p
+                        className={`text-sm whitespace-pre-wrap break-words ${
+                          msg.sender === "user" ? "text-white" : "text-gray-900"
+                        }`}
+                      >
                         {msg.message}
                       </p>
                       <p
                         className={`text-xs mt-1 ${
                           msg.sender === "user"
                             ? "text-blue-100"
-                            : "text-gray-400"
+                            : "text-gray-500"
                         }`}
                       >
                         {formatTime(msg.timestamp)}
@@ -272,7 +276,7 @@ export default function ChatWidget() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type your message..."
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-400 bg-white"
                 />
                 <button
                   type="submit"

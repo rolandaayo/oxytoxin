@@ -199,47 +199,94 @@ export default function AdminMessagesPage() {
           {/* Conversations */}
           <div className="flex-1 overflow-y-auto">
             {conversations.length === 0 ? (
-              <div className="flex items-center justify-center h-full text-gray-400">
-                <p>No conversations</p>
+              <div className="flex items-center justify-center h-full text-gray-400 p-8">
+                <div className="text-center">
+                  <svg
+                    className="w-20 h-20 mx-auto mb-4 text-gray-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
+                  </svg>
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                    No {filterStatus !== "all" ? filterStatus : ""}{" "}
+                    conversations yet
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {filterStatus === "all"
+                      ? "Conversations will appear here when customers send messages"
+                      : `No ${filterStatus} conversations at the moment`}
+                  </p>
+                </div>
               </div>
             ) : (
               conversations.map((conv) => (
                 <div
                   key={conv._id}
                   onClick={() => handleSelectConversation(conv)}
-                  className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-all ${
+                  className={`p-4 border-b border-gray-100 cursor-pointer transition-all relative ${
                     selectedConversation?.userEmail === conv.userEmail
                       ? "bg-blue-50 border-l-4 border-l-blue-500"
-                      : ""
+                      : "hover:bg-gray-50"
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-1">
-                    <h3 className="font-semibold text-gray-900">
-                      {conv.userName}
-                    </h3>
-                    {conv.unreadCount > 0 && (
-                      <span className="w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-                        {conv.unreadCount}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-500 mb-1">{conv.userEmail}</p>
-                  <p className="text-sm text-gray-600 truncate">
-                    {getLastMessage(conv.messages)}
-                  </p>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-xs text-gray-400">
-                      {formatTime(conv.lastMessageAt)}
-                    </span>
-                    <span
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        conv.status === "open"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      {conv.status}
-                    </span>
+                  {/* User Avatar */}
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                        {conv.userName.charAt(0).toUpperCase()}
+                      </div>
+                      {conv.unreadCount > 0 && (
+                        <div className="absolute top-3 left-10 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white">
+                          {conv.unreadCount}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-bold text-gray-900 truncate">
+                          {conv.userName}
+                        </h3>
+                        <span className="text-xs text-gray-400 ml-2 flex-shrink-0">
+                          {formatTime(conv.lastMessageAt)}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-gray-500 mb-1 truncate">
+                        {conv.userEmail}
+                      </p>
+
+                      <p className="text-sm text-gray-600 truncate">
+                        {getLastMessage(conv.messages)}
+                      </p>
+
+                      <div className="flex items-center mt-2">
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full font-medium ${
+                            conv.status === "open"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
+                        >
+                          {conv.status}
+                        </span>
+                        {conv.messages && conv.messages.length > 0 && (
+                          <span className="text-xs text-gray-400 ml-2">
+                            {conv.messages.length}{" "}
+                            {conv.messages.length === 1
+                              ? "message"
+                              : "messages"}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))
@@ -282,11 +329,17 @@ export default function AdminMessagesPage() {
                     <div
                       className={`max-w-[70%] rounded-2xl px-4 py-3 ${
                         msg.sender === "admin"
-                          ? "bg-blue-500 text-white rounded-br-none"
-                          : "bg-white text-gray-800 shadow-md rounded-bl-none"
+                          ? "bg-blue-500 rounded-br-none"
+                          : "bg-white shadow-md rounded-bl-none"
                       }`}
                     >
-                      <p className="text-sm whitespace-pre-wrap break-words">
+                      <p
+                        className={`text-sm whitespace-pre-wrap break-words ${
+                          msg.sender === "admin"
+                            ? "text-white"
+                            : "text-gray-900"
+                        }`}
+                      >
                         {msg.message}
                       </p>
                       <div className="flex items-center justify-between mt-1">
@@ -294,7 +347,7 @@ export default function AdminMessagesPage() {
                           className={`text-xs ${
                             msg.sender === "admin"
                               ? "text-blue-100"
-                              : "text-gray-400"
+                              : "text-gray-500"
                           }`}
                         >
                           {formatTime(msg.timestamp)}
@@ -326,7 +379,7 @@ export default function AdminMessagesPage() {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your reply..."
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-400 bg-white"
                   />
                   <button
                     type="submit"
