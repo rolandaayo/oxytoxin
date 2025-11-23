@@ -16,6 +16,7 @@ import {
   FaSignInAlt,
   FaUserPlus,
   FaShoppingBag,
+  FaTruck,
 } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
@@ -309,6 +310,15 @@ export default function Navbar() {
                             >
                               <FaShoppingBag className="w-4 h-4 mr-3 text-gray-400" />
                               My Orders
+                            </Link>
+
+                            <Link
+                              href="/track"
+                              className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 font-medium"
+                              onClick={() => setShowUserMenu(false)}
+                            >
+                              <FaTruck className="w-4 h-4 mr-3 text-gray-400" />
+                              Track Orders
                             </Link>
 
                             <Link

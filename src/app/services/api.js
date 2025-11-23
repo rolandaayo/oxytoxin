@@ -1027,3 +1027,161 @@ export const wishlistApi = {
     }
   },
 };
+
+// Message/Chat API calls
+export const messageApi = {
+  // Get or create conversation
+  getConversation: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/messages/conversation?userEmail=${encodeURIComponent(
+        userEmail
+      )}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to fetch conversation");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Send message from user
+  sendMessage: async (userEmail, message) => {
+    try {
+      const url = `${BACKEND_URL}/api/messages/send`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail, message }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to send message");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Send admin reply
+  sendAdminReply: async (userEmail, message) => {
+    try {
+      const url = `${BACKEND_URL}/api/messages/admin/reply`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail, message }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to send reply");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Get all conversations (admin)
+  getAllConversations: async (status = "all") => {
+    try {
+      const url = `${BACKEND_URL}/api/messages/admin/conversations?status=${status}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to fetch conversations");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Mark messages as read
+  markAsRead: async (userEmail, sender) => {
+    try {
+      const url = `${BACKEND_URL}/api/messages/mark-read`;
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail, sender }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to mark as read");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Close conversation
+  closeConversation: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/messages/admin/close`;
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userEmail }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to close conversation");
+      }
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Get unread count
+  getUnreadCount: async (userEmail) => {
+    try {
+      const url = `${BACKEND_URL}/api/messages/unread-count?userEmail=${encodeURIComponent(
+        userEmail
+      )}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to get unread count");
+      }
+      return result.data.count;
+    } catch (error) {
+      throw error;
+    }
+  },
+};
