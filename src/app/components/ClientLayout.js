@@ -3,6 +3,7 @@
 import { Toaster } from "react-hot-toast";
 import { CartProvider } from "../context/CartContext";
 import ActivityTracker from "./ActivityTracker";
+import ChatWidget from "./ChatWidget";
 
 export default function ClientLayout({ children }) {
   return (
@@ -31,6 +32,7 @@ export default function ClientLayout({ children }) {
           }}
         />
         {children}
+        <ChatWidget />
       </ActivityTracker>
     </CartProvider>
   );

@@ -118,22 +118,71 @@ export default function ChatWidget() {
         {!isOpen && (
           <motion.button
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              y: [0, -10, 0],
+            }}
             exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
+            transition={{
+              y: {
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
+            whileHover={{ scale: 1.15, y: -5 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:shadow-blue-500/50 transition-all"
+            className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:shadow-blue-500/50 transition-all cursor-pointer"
+            style={{
+              boxShadow:
+                "0 10px 40px rgba(59, 130, 246, 0.4), 0 0 0 0 rgba(59, 130, 246, 0.4)",
+              animation: "pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            }}
           >
-            <FaComments className="w-7 h-7" />
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <FaComments className="w-7 h-7" />
+            </motion.div>
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center"
+              >
                 {unreadCount}
-              </span>
+              </motion.span>
             )}
           </motion.button>
         )}
       </AnimatePresence>
+
+      {/* Add CSS for pulse ring animation */}
+      <style jsx>{`
+        @keyframes pulse-ring {
+          0%,
+          100% {
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4),
+              0 0 0 0 rgba(59, 130, 246, 0.4);
+          }
+          50% {
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.6),
+              0 0 0 10px rgba(59, 130, 246, 0);
+          }
+        }
+      `}</style>
 
       {/* Chat Window */}
       <AnimatePresence>
