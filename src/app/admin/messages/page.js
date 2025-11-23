@@ -15,11 +15,17 @@ export default function AdminMessagesPage() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    loadConversations();
-    // Poll for new messages every 5 seconds
-    const interval = setInterval(loadConversations, 5000);
+    loadConversations(null);
+    // Poll for new messages every 5 seconds, keeping selection
+    const interval = setInterval(() => {
+      if (selectedConversation) {
+        loadConversations(selectedConversation.userEmail);
+      } else {
+        loadConversations(null);
+      }
+    }, 5000);
     return () => clearInterval(interval);
-  }, [filterStatus]);
+  }, [filterStatus, selectedConversation]);
 
   useEffect(() => {
     scrollToBottom();
@@ -29,7 +35,7 @@ export default function AdminMessagesPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const loadConversations = async () => {
+  const loadConversations = async (selectedEmail = null) => {
     try {
       const data = await messageApi.getAllConversations(filterStatus);
       setConversations(data);
@@ -41,15 +47,11 @@ export default function AdminMessagesPage() {
       );
       setTotalUnread(unreadTotal);
 
-      // Update selected conversation if it exists
-      if (selectedConversation) {
-        const updated = data.find(
-          (c) => c.userEmail === selectedConversation.userEmail
-        );
+      // Update selected conversation if selectedEmail is provided
+      if (selectedEmail) {
+        const updated = data.find((c) => c.userEmail === selectedEmail);
         if (updated) {
           setSelectedConversation(updated);
-          // Mark user messages as read
-          await messageApi.markAsRead(updated.userEmail, "user");
         }
       }
     } catch (error) {
@@ -64,7 +66,8 @@ export default function AdminMessagesPage() {
     // Mark user messages as read
     try {
       await messageApi.markAsRead(conversation.userEmail, "user");
-      await loadConversations();
+      // Reload conversations with the selected email
+      await loadConversations(conversation.userEmail);
     } catch (error) {
       console.error("Error marking as read:", error);
     }
@@ -82,7 +85,7 @@ export default function AdminMessagesPage() {
       );
       setSelectedConversation(updated);
       setNewMessage("");
-      await loadConversations();
+      await loadConversations(selectedConversation.userEmail);
       toast.success("Reply sent!");
     } catch (error) {
       console.error("Error sending reply:", error);
@@ -97,7 +100,7 @@ export default function AdminMessagesPage() {
       await messageApi.closeConversation(selectedConversation.userEmail);
       toast.success("Conversation closed");
       setSelectedConversation(null);
-      await loadConversations();
+      await loadConversations(null);
     } catch (error) {
       console.error("Error closing conversation:", error);
       toast.error("Failed to close conversation");

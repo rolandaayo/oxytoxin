@@ -120,7 +120,7 @@ export default function TrackOrderPage() {
                     <p className="order-date">{formatDate(order.createdAt)}</p>
                   </div>
                   <div className="order-amount">
-                    ${order.totalAmount.toFixed(2)}
+                    ₦{order.totalAmount.toLocaleString()}
                   </div>
                 </div>
 
@@ -230,7 +230,8 @@ export default function TrackOrderPage() {
                 <strong>Date:</strong> {formatDate(selectedOrder.createdAt)}
               </p>
               <p>
-                <strong>Total:</strong> ${selectedOrder.totalAmount.toFixed(2)}
+                <strong>Total:</strong> ₦
+                {selectedOrder.totalAmount.toLocaleString()}
               </p>
               <p>
                 <strong>Status:</strong>{" "}

@@ -162,7 +162,7 @@ export default function AdminTrackPage() {
                     </p>
                   </div>
                   <div className="admin-order-amount">
-                    ${order.totalAmount.toFixed(2)}
+                    ₦{order.totalAmount.toLocaleString()}
                   </div>
                 </div>
 
@@ -302,7 +302,8 @@ export default function AdminTrackPage() {
                 <strong>Date:</strong> {formatDate(selectedOrder.createdAt)}
               </p>
               <p>
-                <strong>Total:</strong> ${selectedOrder.totalAmount.toFixed(2)}
+                <strong>Total:</strong> ₦
+                {selectedOrder.totalAmount.toLocaleString()}
               </p>
             </div>
 
