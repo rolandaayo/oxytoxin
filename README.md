@@ -13,6 +13,7 @@
 
 ![Micro Desktop Demo](./readme-images/readme-1.png "Desktop Demo")
 ![Micro Desktop Demo](./readme-images/readme-2.png "Desktop Demo")
+![Micro Desktop Demo](./readme-images/readme-3.png "Desktop Demo")
 
 ### Prerequisites
 
